@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleQueue.Domain.Models
 {
@@ -24,6 +25,6 @@ namespace SimpleQueue.Domain.Models
         public string Name { get; set; }
         [StringLength(32, ErrorMessage = "Length of password must be less than 32 and more than 2", MinimumLength = 2)]
         public string Surname { get; set; }
-
+        public List<UserInQueue> UserInQueues { get; set; } = new List<UserInQueue>();
     }
 }
