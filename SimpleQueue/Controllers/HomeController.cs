@@ -1,20 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Models;
 using System.Diagnostics;
+using SimpleQueue.Domain.Interfaces;
 
 namespace SimpleQueue.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILoggerManager _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILoggerManager logger)
         {
             _logger = logger;
+            _logger.LogDebug("NLog injected into HomeController");
         }
 
         public IActionResult Index()
         {
+            _logger.LogInfo("asdasd");
             return View();
         }
 

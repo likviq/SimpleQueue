@@ -1,14 +1,19 @@
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// NLog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {
@@ -38,3 +43,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+NLog.LogManager.Shutdown();
+
