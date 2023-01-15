@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using SimpleQueue.Data;
+using SimpleQueue.Domain.Interfaces;
+using SimpleQueue.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
