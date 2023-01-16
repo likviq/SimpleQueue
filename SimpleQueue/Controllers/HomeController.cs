@@ -2,21 +2,28 @@
 using SimpleQueue.Models;
 using System.Diagnostics;
 using SimpleQueue.Domain.Interfaces;
+using AutoMapper;
+using SimpleQueue.Domain.Models;
+using SimpleQueue.WebUI.Models.DataTransferObjects;
 
 namespace SimpleQueue.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILoggerManager _logger;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILoggerManager logger)
+        public HomeController(ILoggerManager logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug("NLog injected into HomeController");
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public IActionResult Index([FromBody] QueueForCreationDto queueForCreationDto)
         {
+            var queue = _mapper.Map<Queue>(queueForCreationDto);
             _logger.LogInfo("asdasd");
             return View();
         }

@@ -3,6 +3,7 @@ using NLog.Web;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
+using SimpleQueue.WebUI.Automapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Host.UseNLog();
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {
