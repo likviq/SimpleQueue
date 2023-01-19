@@ -1,29 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using System.Linq.Expressions;
 
-namespace SimpleQueue.Services
+namespace SimpleQueue.Data
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public abstract class EFRepositoryBase<T> : IEFRepositoryBase<T> where T : class
     {
-        protected SimpleQueueDBContext _context;
+        protected DbContext _context;
 
-        public RepositoryBase(SimpleQueueDBContext context)
+        public EFRepositoryBase(DbContext context)
         {
             _context = context;
         }
 
-        public IQueryable<T> FindAll(bool trackChanges) => 
+        public IQueryable<T> FindAll(bool trackChanges = true) => 
             !trackChanges ?
             _context.Set<T>()
             .AsNoTracking() :
             _context.Set<T>();
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) => 
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges = true) => 
             !trackChanges ?
             _context.Set<T>()
-           .Where(expression)
+            .Where(expression)
             .AsNoTracking() :
             _context.Set<T>()
             .Where(expression);

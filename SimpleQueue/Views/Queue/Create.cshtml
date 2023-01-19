@@ -1,0 +1,36 @@
+﻿@model SimpleQueue.WebUI.Models.DataTransferObjects.CreateQueueDto
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create queue</title>
+</head>
+<body>
+    <div>
+        <h3>Form</h3>
+        <form method="post">
+            <div>
+                <div class="group-1">
+                    <label class="label" asp-for="Title">Queue Name</label>
+                    <input type="text" asp-for="Title" />
+                </div>
+                <div class="group-2">
+                    <label class="label" asp-for="Latitude">Latitude</label>
+                    <input type="text" asp-for="Latitude" />
+                </div>
+                <div class="group-3">
+                    <label class="label" asp-for="Longitude">Longitude</label>
+                    <input type="text" asp-for="Longitude" />
+                </div>
+                <div class="group-4">
+                    <label class="label" asp-for="Description">Description</label>
+                    <input type="text" asp-for="Description" />
+                </div>
+                <div class="group-5">
+                    <input type="submit" value="Create queue" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ﻿namespace SimpleQueue.WebUI.Models.DataTransferObjects
 {
-    public class QueueForCreationDto
+    public class CreateQueueDto
     {
         public string Title { get; set; }
         public string Description { get; set; }

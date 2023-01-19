@@ -3,7 +3,7 @@ using SimpleQueue.Models;
 using System.Diagnostics;
 using SimpleQueue.Domain.Interfaces;
 using AutoMapper;
-using SimpleQueue.Domain.Models;
+using SimpleQueue.Domain.Entities;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
 
 namespace SimpleQueue.Controllers
@@ -21,7 +21,7 @@ namespace SimpleQueue.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index([FromBody] QueueForCreationDto queueForCreationDto)
+        public IActionResult Index([FromBody] CreateQueueDto queueForCreationDto)
         {
             var queue = _mapper.Map<Queue>(queueForCreationDto);
             _logger.LogInfo("asdasd");
@@ -34,7 +34,7 @@ namespace SimpleQueue.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error404()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
-using SimpleQueue.Domain.Models;
+using SimpleQueue.Domain.Entities;
 
 namespace SimpleQueue.WebUI.Automapper
 {
@@ -8,7 +8,7 @@ namespace SimpleQueue.WebUI.Automapper
     {
         public MappingQueueProfile()
         {
-            CreateMap<QueueForCreationDto, Queue>();
+            CreateMap<CreateQueueDto, Queue>();
         }
     }
 }

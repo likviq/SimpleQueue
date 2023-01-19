@@ -33,6 +33,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithRedirects("/Home/Error404");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

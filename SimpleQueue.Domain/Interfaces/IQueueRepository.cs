@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleQueue.Domain.Entities;
 
 namespace SimpleQueue.Domain.Interfaces
 {
     public interface IQueueRepository
     {
+        void CreateQueue(Queue queue);
     }
 }

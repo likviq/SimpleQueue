@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleQueue.Data.Configurations;
-using SimpleQueue.Domain.Models;
+using SimpleQueue.Domain.Entities;
 
 namespace SimpleQueue.Data
 {
     public class SimpleQueueDBContext : DbContext
     {
-        public SimpleQueueDBContext(DbContextOptions options) 
+        public SimpleQueueDBContext(DbContextOptions<SimpleQueueDBContext> options) 
             : base(options)
         {
         }
