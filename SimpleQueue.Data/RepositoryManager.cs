@@ -1,13 +1,7 @@
-﻿using SimpleQueue.Data;
-using SimpleQueue.Domain.Interfaces;
-using SimpleQueue.Services.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleQueue.Domain.Interfaces;
+using SimpleQueue.Data.Repositories;
 
-namespace SimpleQueue.Services
+namespace SimpleQueue.Data
 {
     public class RepositoryManager : IRepositoryManager
     {

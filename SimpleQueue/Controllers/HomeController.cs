@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Models;
-using System.Diagnostics;
 using SimpleQueue.Domain.Interfaces;
 using AutoMapper;
-using SimpleQueue.Domain.Models;
+using SimpleQueue.Domain.Entities;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace SimpleQueue.Controllers
 {
@@ -20,11 +20,8 @@ namespace SimpleQueue.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public IActionResult Index([FromBody] QueueForCreationDto queueForCreationDto)
+        public IActionResult Index()
         {
-            var queue = _mapper.Map<Queue>(queueForCreationDto);
-            _logger.LogInfo("asdasd");
             return View();
         }
 
@@ -34,9 +31,15 @@ namespace SimpleQueue.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int statusCode, Exception ex)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var errorViewModel = new ErrorViewModel
+            {
+                StatusCode = statusCode,
+                StatusDescription = ReasonPhrases.GetReasonPhrase(statusCode)
+            };
+
+            return View(errorViewModel);
         }
     }
 }

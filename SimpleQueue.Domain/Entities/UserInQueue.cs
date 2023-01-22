@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SimpleQueue.Domain.Models
+﻿namespace SimpleQueue.Domain.Entities
 {
     public class UserInQueue
     {

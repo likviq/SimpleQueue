@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SimpleQueue.Domain.Models;
+using SimpleQueue.Domain.Entities;
 
 namespace SimpleQueue.Data.Configurations
 {
