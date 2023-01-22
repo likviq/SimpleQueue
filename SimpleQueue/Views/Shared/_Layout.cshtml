@@ -16,10 +16,10 @@
                         <div class="menu">
                             <ul class="menu">
                                 <li>
-                                    <a href="#">Home</a>
+                                    <a asp-controller="Home" asp-action="Index">Home</a>
                                 </li>
                                 <li class=" current-menu-item">
-                                    <a href="#">Create Queue</a>
+                                    <a asp-controller="Queue" asp-action="Create">Create Queue</a>
                                 </li>
                                 <li class="has-subnav">
                                     <a href="#">My Queues</a>
@@ -55,9 +55,7 @@
             </div>
 
             <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2023 - SimpleQueue - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
+                
             </footer>
             <script src="~/lib/jquery/dist/jquery.min.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

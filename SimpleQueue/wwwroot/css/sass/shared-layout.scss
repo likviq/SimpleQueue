@@ -2,6 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 $body-font-family: 'Montserrat';
 
+body {
+    margin: 0;
+    background-color: #83E4C1;
+}
+
 .menu-wrapper {
     font-family: $body-font-family;
 
