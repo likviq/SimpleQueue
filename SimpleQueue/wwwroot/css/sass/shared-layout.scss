@@ -1,0 +1,69 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+$body-font-family: 'Montserrat';
+
+.menu-wrapper {
+    font-family: $body-font-family;
+
+    nav {
+        .menu {
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #83E4C1;
+                display: flex;
+                justify-content: space-around;
+
+                li {
+                    margin: auto;
+                    float: left;
+                    width: 100%;
+
+                    a {
+                        display: block;
+                        color: white;
+                        text-align: center;
+                        padding: 14px 16px;
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+
+                        img {
+                            margin-left: 137px;
+                            width: 40px;
+                            height: auto;
+                            display: block;
+                            position: absolute;
+                            float: right;
+                        }
+                    }
+
+                    a:hover {
+                        background-color: bisque;
+                    }
+                }
+
+                .has-subnav {
+                    display: inline-block;
+
+                    .sub-menu {
+                        display: none;
+                        position: absolute;
+                        background-color: #83E4C1;
+                        min-width: 160px;
+                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                        z-index: 1;
+                    }
+                }
+
+                .has-subnav:hover .sub-menu {
+                    display: block;
+                }
+            }
+        }
+    }
+}

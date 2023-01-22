@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+body {
+  font-family: "Montserrat";
+  background-color: #83E4C1;
+  color: #555555;
+  margin: 0; }
+
+.form-back {
+  margin-top: 100px;
+  width: 100%; }
+  .form-back form {
+    min-width: 768px;
+    width: 50%;
+    padding-left: 45px;
+    margin: auto; }
+    .form-back form .form-group {
+      display: flex;
+      justify-content: space-between; }
+      .form-back form .form-group .form-wrapper {
+        width: 45%; }
+    .form-back form .form-group-checkbox {
+      display: flex;
+      margin-bottom: 17px; }
+      .form-back form .form-group-checkbox .checkbox {
+        position: relative;
+        margin-right: 30%; }
+        .form-back form .form-group-checkbox .checkbox label {
+          cursor: pointer; }
+          .form-back form .form-group-checkbox .checkbox label input {
+            cursor: pointer; }
+    .form-back form .form-wrapper {
+      margin-bottom: 17px; }
+      .form-back form .form-wrapper label {
+        font-size: 19px;
+        margin-bottom: 9px;
+        display: block;
+        color: #555555; }
+      .form-back form .form-wrapper input {
+        font-size: 17px;
+        padding: 0 15px;
+        border: 2px solid #ccc;
+        display: block;
+        width: 100%;
+        height: 40px;
+        border-radius: 20px;
+        font-family: "Montserrat";
+        color: #555555;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); }
+      .form-back form .form-wrapper textarea {
+        font-size: 17px;
+        padding: 15px 15px;
+        border: 2px solid #ccc;
+        display: block;
+        width: 100%;
+        height: 40px;
+        border-radius: 20px;
+        font-family: "Montserrat";
+        color: #555555;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); }
+      .form-back form .form-wrapper .description-field {
+        height: 100px; }
+      .form-back form .form-wrapper .btn-primary {
+        background-color: #82FF9D;
+        width: 300px;
+        margin: auto; }
+
+.white-left-back {
+  position: absolute;
+  top: 200px;
+  width: 40%;
+  height: 600px;
+  background-color: white;
+  border-radius: 0 300px 300px 0;
+  z-index: -2; }
+
+.white-right-back {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  background-color: white;
+  z-index: -1;
+  border-radius: 300px 0 0 0; }
+
+/*# sourceMappingURL=create-queue.css.map */

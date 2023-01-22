@@ -4,33 +4,57 @@
 <html>
 <head>
     <title>Create queue</title>
+    <link rel="stylesheet" href="~/css/create-queue.css" asp-append-version="true" />
 </head>
 <body>
-    <div>
-        <h3>Form</h3>
+    <div class="form-back">      
         <form method="post">
             <div>
-                <div class="group-1">
+                <div class="form-wrapper">
                     <label class="label" asp-for="Title">Queue Name</label>
-                    <input type="text" asp-for="Title" />
+                    <input type="text" asp-for="Title" placeholder="Queue title..." />
                 </div>
-                <div class="group-2">
-                    <label class="label" asp-for="Latitude">Latitude</label>
-                    <input type="text" asp-for="Latitude" />
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label class="label" asp-for="Latitude">Latitude</label>
+                        <input type="text" asp-for="Latitude" />
+                    </div>
+                    <div class="form-wrapper">
+                        <label class="label" asp-for="Longitude">Longitude</label>
+                        <input type="text" asp-for="Longitude"/>
+                    </div>
                 </div>
-                <div class="group-3">
-                    <label class="label" asp-for="Longitude">Longitude</label>
-                    <input type="text" asp-for="Longitude" />
-                </div>
-                <div class="group-4">
+                <div class="form-wrapper">
                     <label class="label" asp-for="Description">Description</label>
-                    <input type="text" asp-for="Description" />
+                    <textarea class="description-field" rows="5" cols="60" name="text" placeholder="Queue description...................." asp-for="Description"></textarea>
                 </div>
-                <div class="group-5">
+
+                <div class="form-wrapper">
+                    <label class="label" asp-for="Description">Password</label>
+                    <input type="text" asp-for="Description" placeholder="Password" disabled />
+                </div>
+                <div class="form-group-checkbox">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Enable Chat
+                            <span class="checkmark1"></span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Private Queue
+                            <span class="checkmark2"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-wrapper">
                     <input type="submit" value="Create queue" class="btn btn-primary">
                 </div>
             </div>
         </form>
     </div>
+    <div class="white-left-back"></div>
+    <div class="white-right-back"></div>
+    <script src="~/js/create-queue.js" asp-append-version="true"></script>
 </body>
 </html>

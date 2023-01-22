@@ -11,12 +11,12 @@ namespace SimpleQueue.WebUI.Controllers
     public class QueueController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IRepositoryManager _repository;
+        private readonly IQueueService _queueService;
         private readonly ILoggerManager _logger;
-        public QueueController(IMapper mapper, IRepositoryManager repository, ILoggerManager logger)
+        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger)
         {
             _mapper = mapper;
-            _repository = repository;
+            _queueService = queueService;
             _logger = logger;
         }
 
@@ -38,10 +38,10 @@ namespace SimpleQueue.WebUI.Controllers
 
                 var queue = _mapper.Map<Queue>(createQueueDto);
 
-                _repository.Queue.CreateQueue(queue);
-                _repository.Save();
+                _queueService.CreateQueue(queue);
                 _logger.LogInfo("New queue was successfully created");
 
+                //redirect to all queues page
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception ex)

@@ -14,6 +14,7 @@ builder.Logging.ClearProviders();
 builder.Host.UseNLog();
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 
