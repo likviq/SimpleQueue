@@ -8,7 +8,9 @@ namespace SimpleQueue.WebUI.Automapper
     {
         public MappingQueueProfile()
         {
-            CreateMap<CreateQueueDto, Queue>();
+            CreateMap<CreateQueueDto, Queue>()
+                .ForMember(c => c.Chat,
+                opt => opt.MapFrom(x => x.IsChat));
         }
     }
 }

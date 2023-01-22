@@ -1,4 +1,6 @@
-﻿namespace SimpleQueue.WebUI.Models.DataTransferObjects
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SimpleQueue.WebUI.Models.DataTransferObjects
 {
     public class CreateQueueDto
     {
@@ -9,5 +11,6 @@
         public string? Password { get; set; }
         public bool IsChat { get; set; }
         public DateTime CreatedTime => DateTime.Now;
+        public DateTime StartTime { get; set; }
     }
 }

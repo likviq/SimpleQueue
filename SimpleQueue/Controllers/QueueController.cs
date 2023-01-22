@@ -33,7 +33,7 @@ namespace SimpleQueue.WebUI.Controllers
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError("createQueueDto object is null");
-                    return BadRequest();
+                    return View();
                 }
 
                 var queue = _mapper.Map<Queue>(createQueueDto);
@@ -41,8 +41,7 @@ namespace SimpleQueue.WebUI.Controllers
                 _queueService.CreateQueue(queue);
                 _logger.LogInfo("New queue was successfully created");
 
-                //redirect to all queues page
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             catch(Exception ex)
             {
