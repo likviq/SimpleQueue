@@ -4,6 +4,7 @@ using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 using SimpleQueue.WebUI.Automapper;
+using SimpleQueue.WebUI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
 
+builder.Services.AddTransient<ExceptionHandlingException>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
@@ -35,6 +37,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
+app.UseMiddleware<ExceptionHandlingException>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

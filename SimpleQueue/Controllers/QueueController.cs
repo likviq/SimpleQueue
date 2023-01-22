@@ -28,26 +28,18 @@ namespace SimpleQueue.WebUI.Controllers
         [HttpPost]
         public ActionResult Create(CreateQueueDto? createQueueDto)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError("createQueueDto object is null");
-                    return View();
-                }
-
-                var queue = _mapper.Map<Queue>(createQueueDto);
-
-                _queueService.CreateQueue(queue);
-                _logger.LogInfo("New queue was successfully created");
-
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(Create)} action {ex}");
+                _logger.LogError("createQueueDto object is null");
                 return View();
             }
+
+            var queue = _mapper.Map<Queue>(createQueueDto);
+
+            _queueService.CreateQueue(queue);
+            _logger.LogInfo("New queue was successfully created");
+
+            return RedirectToAction(nameof(Index), "Home");
         }
     }
 }
