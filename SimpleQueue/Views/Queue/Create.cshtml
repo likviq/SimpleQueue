@@ -31,7 +31,7 @@
 
                 <div class="form-wrapper">
                     <label class="label" asp-for="Description">Password</label>
-                    <input type="text" asp-for="Description" placeholder="Password" disabled />
+                    <input id="password-value" type="text" asp-for="Description" placeholder="Password" disabled />
                 </div>
                 <div class="form-group-checkbox">
                     <div class="checkbox">
@@ -42,7 +42,7 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox"> Private Queue
+                            <input type="checkbox" onchange="changeQueuePrivacy()" class="queue-privacy"> Private Queue
                             <span class="checkmark2"></span>
                         </label>
                     </div>

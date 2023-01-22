@@ -1,26 +1,11 @@
-﻿function TSButton() {
-    let name: string = "Fred";
-    document.getElementById("ts-example").innerHTML = greeter(user);
-}
+﻿function changeQueuePrivacy() {
+    const checkbox = document.getElementsByClassName(
+        'queue-privacy',
+    )[0] as HTMLInputElement | null;
 
-class Student {
-    fullName: string;
-    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
-    }
-}
+    const passwordInput = document.getElementById(
+        'password-value',
+    ) as HTMLInputElement | null;
 
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person: Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-
-let user = new Student("Fred", "M.", "Smith");
-
-function display_alert() {
-    alert("asdasdasdasd");
+    passwordInput.disabled = !checkbox?.checked
 }
