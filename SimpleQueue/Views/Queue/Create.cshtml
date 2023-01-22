@@ -25,18 +25,20 @@
                     </div>
                 </div>
                 <div class="form-wrapper">
-                    <label class="label" asp-for="Description">Description</label>
-                    <textarea class="description-field" rows="5" cols="60" name="text" placeholder="Queue description...................." asp-for="Description"></textarea>
+                    <label class="label">Description</label>
+                    <textarea asp-for="Description" class="description-field" rows="5" cols="60" placeholder="Queue description....................">
+
+                    </textarea>
                 </div>
 
                 <div class="form-wrapper">
-                    <label class="label" asp-for="Description">Password</label>
-                    <input id="password-value" type="text" asp-for="Description" placeholder="Password" disabled />
+                    <label class="label" asp-for="Password">Password</label>
+                    <input id="password-value" type="text" asp-for="Password" placeholder="Password" disabled />
                 </div>
                 <div class="form-group-checkbox">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox"> Enable Chat
+                            <input type="checkbox" asp-for="IsChat"> Enable Chat
                             <span class="checkmark1"></span>
                         </label>
                     </div>
