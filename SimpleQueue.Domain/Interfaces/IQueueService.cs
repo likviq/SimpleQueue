@@ -9,6 +9,6 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IQueueService
     {
-        void CreateQueue(Queue queue);
+        Task CreateQueue(Queue queue);
     }
 }

@@ -26,7 +26,7 @@ namespace SimpleQueue.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CreateQueueDto? createQueueDto)
+        public async Task<ActionResult> CreateAsync(CreateQueueDto? createQueueDto)
         {
             if (!ModelState.IsValid)
             {
@@ -36,7 +36,7 @@ namespace SimpleQueue.WebUI.Controllers
 
             var queue = _mapper.Map<Queue>(createQueueDto);
 
-            _queueService.CreateQueue(queue);
+            await _queueService.CreateQueue(queue);
             _logger.LogInfo("New queue was successfully created");
 
             return RedirectToAction(nameof(Index), "Home");
