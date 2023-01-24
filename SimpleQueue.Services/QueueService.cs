@@ -18,7 +18,7 @@ namespace SimpleQueue.Services
 
         public async Task<Queue> GetQueue(Guid id)
         {
-            var queue = await _repository.Queue.GetQueueAsync(id);
+            return await _repository.Queue.GetQueueAsync(id);
         }
     }
 }

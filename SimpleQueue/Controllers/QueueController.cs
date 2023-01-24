@@ -5,6 +5,7 @@ using SimpleQueue.Data;
 using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
+using SimpleQueue.WebUI.Models.ViewModels;
 
 namespace SimpleQueue.WebUI.Controllers
 {
@@ -23,7 +24,10 @@ namespace SimpleQueue.WebUI.Controllers
         public async Task<IActionResult> GetAsync([FromQuery] Guid id)
         {
             var queue = await _queueService.GetQueue(id);
-            return View(queue);
+
+            var queueViewModel = _mapper.Map<GetQueueViewModel>(queue);
+
+            return View(queueViewModel);
         }
 
         public ActionResult Create()
