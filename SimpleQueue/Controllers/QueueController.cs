@@ -24,8 +24,17 @@ namespace SimpleQueue.WebUI.Controllers
         public async Task<IActionResult> GetAsync([FromQuery] Guid id)
         {
             var queue = await _queueService.GetQueue(id);
+            
+            if (queue == null)
+            {
+                _logger.LogError($"Queue with id - {id} does not exist");
+                return NotFound();
+            }
+
+            _logger.LogInfo($"Queue with id - {id} has been received");
 
             var queueViewModel = _mapper.Map<GetQueueViewModel>(queue);
+            _logger.LogInfo($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
 
             return View(queueViewModel);
         }
