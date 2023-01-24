@@ -10,5 +10,6 @@ namespace SimpleQueue.Domain.Interfaces
     public interface IQueueService
     {
         Task CreateQueue(Queue queue);
+        Task<Queue> GetQueue(Guid id);
     }
 }

@@ -20,6 +20,12 @@ namespace SimpleQueue.WebUI.Controllers
             _logger = logger;
         }
 
+        public async Task<IActionResult> GetAsync([FromQuery] Guid id)
+        {
+            var queue = await _queueService.GetQueue(id);
+            return View(queue);
+        }
+
         public ActionResult Create()
         {
             return View();
