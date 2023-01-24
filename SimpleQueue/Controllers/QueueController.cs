@@ -12,21 +12,30 @@ namespace SimpleQueue.WebUI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IQueueService _queueService;
+        private readonly IUserInQueueService _userInQueueService;
         private readonly ILoggerManager _logger;
-        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger)
+        public QueueController(IMapper mapper, IQueueService queueService, IUserInQueueService userInQueueService, ILoggerManager logger)
         {
             _mapper = mapper;
             _queueService = queueService;
+            _userInQueueService = userInQueueService;
             _logger = logger;
         }
 
-        public ActionResult Create()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            var queue = await _queueService.GetQueueAsync(id);
+            return Ok(queue);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(CreateQueueDto? createQueueDto)
+        public async Task<IActionResult> CreateAsync(CreateQueueDto? createQueueDto)
         {
             if (!ModelState.IsValid)
             {

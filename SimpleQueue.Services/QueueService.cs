@@ -15,5 +15,10 @@ namespace SimpleQueue.Services
             _repository.Queue.CreateQueue(queue);
             await _repository.SaveAsync();
         }
+
+        public async Task<Queue> GetQueueAsync(Guid id)
+        {
+            return await _repository.Queue.GetQueueAsync(id);
+        }
     }
 }

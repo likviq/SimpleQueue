@@ -43,7 +43,7 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasIndex("UserSecondId");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Models.ConversationMessage", b =>
@@ -74,7 +74,7 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasIndex("SenderUserId");
 
-                    b.ToTable("ConversationMessages");
+                    b.ToTable("ConversationMessages", (string)null);
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Models.Queue", b =>
@@ -119,7 +119,7 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Queues");
+                    b.ToTable("Queues", (string)null);
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Models.User", b =>
@@ -157,7 +157,7 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Models.UserInQueue", b =>
@@ -189,7 +189,7 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserInQueues");
+                    b.ToTable("UserInQueues", (string)null);
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Models.Conversation", b =>
