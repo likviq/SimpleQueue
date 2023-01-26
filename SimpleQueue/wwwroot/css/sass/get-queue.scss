@@ -1,0 +1,229 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+$body-font-family: 'Montserrat';
+
+.main-body {
+    font-family: $body-font-family;
+    margin: 100px auto;
+    max-width: 1502px;
+    width: 80%;
+    color: #555555;
+
+    .queue-info {
+        width: 100%;
+        background-color: #F4F4F4;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 32px;
+        display: flex;
+        padding: 24px;
+
+        .queue-image-container {
+        }
+
+        .container-for-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .queue-information {
+                margin-left: 44px;
+                max-width: 995px;
+
+                .queue-title {
+                    margin-top: 10px;
+                    margin-bottom: 20px;
+                    font-size: 24px;
+                    line-height: 29px;
+                }
+
+                .queue-description {
+                    font-size: 24px;
+                    line-height: 29px;
+                }
+            }
+
+            .queue-info-right-part {
+                display: flex;
+
+                .edit-queue-image {
+                    width: 75px;
+                    height: 75px;
+                    margin: auto;
+                }
+
+                .status-queue-image {
+                    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%), #82FF9D;
+                    border-radius: 25px;
+                    width: 50px;
+                    height: 50px;
+                    margin: auto 25px;
+                }
+            }
+        }
+    }
+
+    .queue-content {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .user-in-queue-container {
+            margin-top: 36px;
+            width: 846px;
+            height: 1088px;
+            background: #FFFFFF;
+            box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 67px;
+            padding: 24px;
+            padding: 48px 45px 64px 42px;
+            font-size: 24px;
+            line-height: 29px;
+
+            .user-position {
+                .user-info {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 28px;
+                    background: #F4F4F4;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    border-radius: 32px;
+                    height: 52px;
+
+                    .user-name {
+                        margin: 13px 28px;
+                    }
+
+                    .delete-user {
+                        margin: 8px 40px;
+                    }
+                }
+            }
+        }
+
+        .queue-controll-panel {
+            width: 517px;
+            margin: 24px;
+
+            .controll-buttons {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                button {
+                    border-width: 0;
+                    font-family: inherit;
+                    font-size: inherit;
+                    font-style: inherit;
+                    font-weight: inherit;
+                    line-height: inherit;
+                    color: inherit;
+                    padding: 0;
+                    cursor: pointer;
+                }
+
+                .controll-object {
+                    height: 230px;
+                    width: 230px;
+                    background: #FCFCFC;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    border-radius: 39px;
+                    margin: 18px 0 0 18px;
+                }
+
+                .people-in-queue {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+
+                    .number-of-people {
+                        font-size: 96px;
+                        line-height: 120px;
+                    }
+
+                    .in-queue {
+                        font-size: 36px;
+                        line-height: 44px;
+                    }
+                }
+
+                .next-button {
+                    .next-text {
+                        font-size: 64px;
+                        line-height: 78px;
+                    }
+                }
+
+                .deactivate-button {
+                    .deactivate-text {
+                        font-size: 37px;
+                        line-height: 44px;
+                    }
+                }
+
+                .end-button {
+                    .end-text {
+                        font-size: 64px;
+                        line-height: 78px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media (max-width: 1368px) {
+    body {
+        background-color: hotpink;
+
+        .main-body {
+            .queue-info {
+            }
+
+            .queue-content {
+                flex-direction: column-reverse;
+
+                .user-in-queue-container {
+                    width: 100%;
+                }
+
+                .queue-controll-panel {
+                    width: 100%;
+
+                    .controll-buttons {
+                        .people-in-queue {
+                            .number-of-people {
+                                font-size: 72px;
+                                line-height: 96px;
+                            }
+
+                            .in-queue {
+                                font-size: 30px;
+                                line-height: 44px;
+                            }
+                        }
+
+                        .next-button .next-text {
+                            font-size: 52px;
+                        }
+
+                        .deactivate-button .deactivate-text {
+                            font-size: 26px;
+                        }
+
+                        .end-button .end-text {
+                            font-size: 53px;
+                        }
+
+                        .controll-object {
+                            width: 23%;
+                            margin: auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -32,4 +32,8 @@
     <ProjectReference Include="..\SimpleQueue.Services\SimpleQueue.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\queue\" />
+  </ItemGroup>
+
 </Project>
