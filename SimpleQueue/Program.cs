@@ -1,14 +1,18 @@
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NLog.Web;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 using SimpleQueue.WebUI.Automapper;
 using SimpleQueue.WebUI.Middlewares;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization();
 
 // NLog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
@@ -24,6 +28,22 @@ builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("mySqlConnection");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+const string defaultCulture = "en";
+const string ukraineCultureName = "uk-UA";
+
+var supportedCultures = new[]
+{
+    new CultureInfo(defaultCulture),
+    new CultureInfo(ukraineCultureName)
+};
+builder.Services.Configure<RequestLocalizationOptions>(options => {
+    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
 });
 
 var app = builder.Build();
@@ -43,6 +63,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.UseAuthorization();
 

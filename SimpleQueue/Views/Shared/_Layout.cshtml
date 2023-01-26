@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer ViewLocalizer
+
+<!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="utf-8" />
@@ -16,30 +19,33 @@
                         <div class="menu">
                             <ul class="menu">
                                 <li>
-                                    <a asp-controller="Home" asp-action="Index">Home</a>
+                                    <a asp-controller="Home" asp-action="Index">@ViewLocalizer["Home"]</a>
                                 </li>
                                 <li class=" current-menu-item">
-                                    <a asp-controller="Queue" asp-action="Create">Create Queue</a>
+                                    <a asp-controller="Queue" asp-action="Create">@ViewLocalizer["Create Queue"]</a>
                                 </li>
                                 <li class="has-subnav">
-                                    <a href="#">My Queues</a>
+                                    <a href="#">@ViewLocalizer["My Queues"]</a>
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="#">Owner</a>
+                                            <a href="#">@ViewLocalizer["Owner"]</a>
                                         </li>
                                         <li>
-                                            <a href="#">Participant</a>
+                                            <a href="#">@ViewLocalizer["Participant"]</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="#">Messages</a>
+                                    <a href="#">@ViewLocalizer["Messages"]</a>
                                 </li>
                                 <li>
-                                    <a href="#">About</a>
+                                    <a href="#">@ViewLocalizer["About"]</a>
                                 </li>
                                 <li>
-                                    <a href="#">My Profile
+                                    @await Html.PartialAsync("_CulturePartial")
+                                </li>
+                                <li>
+                                    <a href="#">@ViewLocalizer["My Profile"]
                                         <img src="~/images/shared/user-profile-icon.svg"/>
                                     </a>
                                 </li>
