@@ -1,3 +1,9 @@
 ﻿function deleteUserFromQueue(id: string) {
-    alert(id);
+    /// ajax call delete user from queue
+
+    const userField = document.getElementById(
+        'user-' + id,
+    ) as HTMLInputElement | null;
+
+    userField.remove();
 }
