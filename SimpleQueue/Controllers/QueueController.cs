@@ -5,6 +5,7 @@ using SimpleQueue.Data;
 using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
+using SimpleQueue.WebUI.Models.ViewModels;
 
 namespace SimpleQueue.WebUI.Controllers
 {
@@ -20,13 +21,37 @@ namespace SimpleQueue.WebUI.Controllers
             _logger = logger;
         }
 
+        public async Task<IActionResult> GetAsync([FromQuery] Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                _logger.LogError("id from the query is incorrect or equal to zero");
+                return BadRequest();
+            }
+
+            var queue = await _queueService.GetQueue(id);
+            
+            if (queue == null)
+            {
+                _logger.LogError($"Queue with id - {id} does not exist");
+                return NotFound();
+            }
+
+            _logger.LogInfo($"Queue with id - {id} has been received");
+
+            var queueViewModel = _mapper.Map<GetQueueViewModel>(queue);
+            _logger.LogInfo($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
+
+            return View(queueViewModel);
+        }
+
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(CreateQueueDto? createQueueDto)
+        public async Task<ActionResult> CreateAsync(CreateQueueDto? createQueueDto)
         {
             if (!ModelState.IsValid)
             {
@@ -36,7 +61,7 @@ namespace SimpleQueue.WebUI.Controllers
 
             var queue = _mapper.Map<Queue>(createQueueDto);
 
-            _queueService.CreateQueue(queue);
+            await _queueService.CreateQueue(queue);
             _logger.LogInfo("New queue was successfully created");
 
             return RedirectToAction(nameof(Index), "Home");
