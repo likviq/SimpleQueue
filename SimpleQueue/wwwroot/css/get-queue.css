@@ -114,28 +114,26 @@
           line-height: 78px; }
 
 @media (max-width: 1368px) {
-  body {
-    background-color: hotpink; }
-    body .main-body .queue-content {
-      flex-direction: column-reverse; }
-      body .main-body .queue-content .user-in-queue-container {
-        width: 100%; }
-      body .main-body .queue-content .queue-controll-panel {
-        width: 100%; }
-        body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .number-of-people {
-          font-size: 72px;
-          line-height: 96px; }
-        body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .in-queue {
-          font-size: 30px;
-          line-height: 44px; }
-        body .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
-          font-size: 52px; }
-        body .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
-          font-size: 26px; }
-        body .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
-          font-size: 53px; }
-        body .main-body .queue-content .queue-controll-panel .controll-buttons .controll-object {
-          width: 23%;
-          margin: auto; } }
+  body .main-body .queue-content {
+    flex-direction: column-reverse; }
+    body .main-body .queue-content .user-in-queue-container {
+      width: 100%; }
+    body .main-body .queue-content .queue-controll-panel {
+      width: 100%; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .number-of-people {
+        font-size: 72px;
+        line-height: 96px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .in-queue {
+        font-size: 30px;
+        line-height: 44px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
+        font-size: 52px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
+        font-size: 26px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
+        font-size: 53px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .controll-object {
+        width: 23%;
+        margin: auto; } }
 
 /*# sourceMappingURL=get-queue.css.map */

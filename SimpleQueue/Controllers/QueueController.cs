@@ -23,6 +23,12 @@ namespace SimpleQueue.WebUI.Controllers
 
         public async Task<IActionResult> GetAsync([FromQuery] Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                _logger.LogError("id from the query is incorrect or equal to zero");
+                return BadRequest();
+            }
+
             var queue = await _queueService.GetQueue(id);
             
             if (queue == null)

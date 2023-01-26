@@ -34,6 +34,6 @@ namespace SimpleQueue.Data.Repositories
                         User = u.User
                     }).ToList()
             })
-            .FirstAsync();
+            .FirstOrDefaultAsync();
     }
 }
