@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+body {
+  margin: 0;
+  background-color: #83E4C1; }
+
+.menu-wrapper {
+  font-family: "Montserrat"; }
+  .menu-wrapper nav .menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #83E4C1;
+    display: flex;
+    justify-content: space-around; }
+    .menu-wrapper nav .menu ul li {
+      margin: auto;
+      float: left;
+      width: 100%; }
+      .menu-wrapper nav .menu ul li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative; }
+        .menu-wrapper nav .menu ul li a img {
+          margin-left: 137px;
+          width: 40px;
+          height: auto;
+          display: block;
+          position: absolute;
+          float: right; }
+      .menu-wrapper nav .menu ul li a:hover {
+        background-color: bisque; }
+    .menu-wrapper nav .menu ul .has-subnav {
+      display: inline-block; }
+      .menu-wrapper nav .menu ul .has-subnav .sub-menu {
+        display: none;
+        position: absolute;
+        background-color: #83E4C1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1; }
+    .menu-wrapper nav .menu ul .has-subnav:hover .sub-menu {
+      display: block; }
+
+/*# sourceMappingURL=shared-layout.css.map */

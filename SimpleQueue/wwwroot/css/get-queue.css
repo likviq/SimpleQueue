@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+.main-body {
+  font-family: "Montserrat";
+  margin: 100px auto;
+  max-width: 1502px;
+  width: 80%;
+  color: #555555; }
+  .main-body .queue-info {
+    width: 100%;
+    background-color: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 32px;
+    display: flex;
+    padding: 24px; }
+    .main-body .queue-info .container-for-info {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; }
+      .main-body .queue-info .container-for-info .queue-information {
+        margin-left: 44px;
+        max-width: 995px; }
+        .main-body .queue-info .container-for-info .queue-information .queue-title {
+          margin-top: 10px;
+          margin-bottom: 20px;
+          font-size: 24px;
+          line-height: 29px; }
+        .main-body .queue-info .container-for-info .queue-information .queue-description {
+          font-size: 24px;
+          line-height: 29px; }
+      .main-body .queue-info .container-for-info .queue-info-right-part {
+        display: flex; }
+        .main-body .queue-info .container-for-info .queue-info-right-part .edit-queue-image {
+          width: 75px;
+          height: 75px;
+          margin: auto; }
+        .main-body .queue-info .container-for-info .queue-info-right-part .status-queue-image {
+          background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%), #82FF9D;
+          border-radius: 25px;
+          width: 50px;
+          height: 50px;
+          margin: auto 25px; }
+  .main-body .queue-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap; }
+    .main-body .queue-content .user-in-queue-container {
+      margin-top: 36px;
+      width: 846px;
+      height: 1088px;
+      background: #FFFFFF;
+      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 67px;
+      padding: 24px;
+      padding: 48px 45px 64px 42px;
+      font-size: 24px;
+      line-height: 29px; }
+      .main-body .queue-content .user-in-queue-container .user-position .user-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        background: #F4F4F4;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 32px;
+        height: 52px; }
+        .main-body .queue-content .user-in-queue-container .user-position .user-info .user-name {
+          margin: 13px 28px; }
+        .main-body .queue-content .user-in-queue-container .user-position .user-info .delete-user {
+          margin: 8px 40px; }
+    .main-body .queue-content .queue-controll-panel {
+      width: 517px;
+      margin: 24px; }
+      .main-body .queue-content .queue-controll-panel .controll-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons button {
+          border-width: 0;
+          font-family: inherit;
+          font-size: inherit;
+          font-style: inherit;
+          font-weight: inherit;
+          line-height: inherit;
+          color: inherit;
+          padding: 0;
+          cursor: pointer; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .controll-object {
+          height: 230px;
+          width: 230px;
+          background: #FCFCFC;
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          border-radius: 39px;
+          margin: 18px 0 0 18px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column; }
+          .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .number-of-people {
+            font-size: 96px;
+            line-height: 120px; }
+          .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .in-queue {
+            font-size: 36px;
+            line-height: 44px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
+          font-size: 64px;
+          line-height: 78px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
+          font-size: 37px;
+          line-height: 44px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
+          font-size: 64px;
+          line-height: 78px; }
+
+@media (max-width: 1368px) {
+  body .main-body .queue-content {
+    flex-direction: column-reverse; }
+    body .main-body .queue-content .user-in-queue-container {
+      width: 100%; }
+    body .main-body .queue-content .queue-controll-panel {
+      width: 100%; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .number-of-people {
+        font-size: 72px;
+        line-height: 96px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .in-queue {
+        font-size: 30px;
+        line-height: 44px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
+        font-size: 52px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
+        font-size: 26px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
+        font-size: 53px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .controll-object {
+        width: 23%;
+        margin: auto; } }
+
+/*# sourceMappingURL=get-queue.css.map */
