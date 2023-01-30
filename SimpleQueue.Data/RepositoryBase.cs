@@ -4,11 +4,11 @@ using System.Linq.Expressions;
 
 namespace SimpleQueue.Data
 {
-    public abstract class EFRepositoryBase<T> : IEFRepositoryBase<T> where T : class
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected DbContext _context;
 
-        public EFRepositoryBase(DbContext context)
+        public RepositoryBase(DbContext context)
         {
             _context = context;
         }

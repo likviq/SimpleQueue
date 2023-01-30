@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleQueue.Data.Repositories
 {
-    public class QueueRepository : EFRepositoryBase<Queue>, IQueueRepository
+    public class QueueRepository : RepositoryBase<Queue>, IQueueRepository
     {
         public QueueRepository(SimpleQueueDBContext repositoryContext)
             : base(repositoryContext)

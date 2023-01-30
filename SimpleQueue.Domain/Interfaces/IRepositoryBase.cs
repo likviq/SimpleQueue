@@ -2,7 +2,7 @@
 
 namespace SimpleQueue.Domain.Interfaces
 {
-    public interface IEFRepositoryBase<T>
+    public interface IRepositoryBase<T>
     {
         IQueryable<T> FindAll(bool trackChanges);
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
