@@ -49,6 +49,11 @@ namespace SimpleQueue.Data.Configurations
                 .HasColumnType("varchar")
                 .HasMaxLength(64)
                 .IsRequired(false);
+
+            builder
+                .Property(pt => pt.IsEmailConfirmed)
+                .HasDefaultValue(false)
+                .IsRequired();
         }
     }
 }
