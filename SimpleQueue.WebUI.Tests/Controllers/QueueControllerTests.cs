@@ -48,6 +48,8 @@ namespace SimpleQueue.WebUI.Tests.Controllers
         {
             var queueDto = _fixture.Create<CreateQueueDto>();
 
+            var queue = _fixture.Create<Queue>();
+
             _mockMapper.Setup(x => x.Map<Queue>(It.IsAny<CreateQueueDto>()))
                 .Returns(It.IsAny<Queue>());
 

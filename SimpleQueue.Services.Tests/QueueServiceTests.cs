@@ -38,15 +38,7 @@ namespace SimpleQueue.Services.Tests
         [Fact]
         public async Task GivenAnExistingQueue_WhenGettingQueueById_ThenQueueReturns()
         {
-            var queue = new Queue()
-            {
-                Id = new Guid(),
-                Title = "Title",
-                Description = "Description",
-                Chat = true,
-                CreatedTime = DateTime.Now,
-                StartTime = DateTime.Now
-            };
+            var queue = _fixture.Create<Queue>();
 
             var result = _mockQueueService.CreateQueue(queue);
 
