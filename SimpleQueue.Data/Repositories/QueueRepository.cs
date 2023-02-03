@@ -25,7 +25,7 @@ namespace SimpleQueue.Data.Repositories
 
         public async Task<List<Queue>> GetParticipantQueues(Guid userId) =>
             await FindAll().Include(item => item.UserInQueues)
-            .Where(x => x.UserInQueues.Count(v => v.UserId.Equals(userId)) > 0)
+            .Where(x => x.UserInQueues.Any(v => v.UserId.Equals(userId)))
             .ToListAsync();
     }
 }
