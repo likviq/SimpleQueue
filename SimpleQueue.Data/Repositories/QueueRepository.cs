@@ -13,7 +13,7 @@ namespace SimpleQueue.Data.Repositories
         }
 
         public void CreateQueue(Queue queue) => Create(queue);
-        public async Task<Queue> GetQueueAsync(Guid id) =>
+        public async Task<Queue?> GetQueueAsync(Guid id) =>
             await FindByCondition(x => x.Id.Equals(id))
             .Include(x => x.UserInQueues).ThenInclude(x => x.User)
             .FirstOrDefaultAsync();

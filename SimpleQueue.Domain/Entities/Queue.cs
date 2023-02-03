@@ -11,6 +11,6 @@
         public bool Chat { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime StartTime { get; set; }
-        public List<UserInQueue> UserInQueues { get; set; } = new List<UserInQueue>();
+        public virtual ICollection<UserInQueue>? UserInQueues { get; set; }
     }
 }

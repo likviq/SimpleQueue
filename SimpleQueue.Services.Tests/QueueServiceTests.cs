@@ -38,7 +38,7 @@ namespace SimpleQueue.Services.Tests
         [Fact]
         public async Task GivenAnExistingQueue_WhenGettingQueueById_ThenQueueReturns()
         {
-            var queue = _fixture.Create<Queue>();
+            var queue = _fixture.Build<Queue>().Without(p => p.UserInQueues).Create();
 
             var result = _mockQueueService.CreateQueue(queue);
 
