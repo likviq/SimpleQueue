@@ -32,6 +32,10 @@ namespace SimpleQueue.WebUI.Automapper
             CreateMap<Queue, GetQueueViewModel>()
                 .ForMember(view => view.Users,
                 opt => opt.MapFrom(queue => queue.UserInQueues));
+
+            CreateMap<Queue, BriefQueueInfoViewModel>()
+                .ForMember(view => view.isStarted,
+                opt => opt.MapFrom(queue => queue.StartTime < DateTime.Now));
         }
     }
 }

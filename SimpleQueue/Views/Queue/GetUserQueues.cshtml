@@ -1,0 +1,71 @@
+﻿@model SimpleQueue.WebUI.Models.ViewModels.AllUserQueuesViewModel
+
+<link rel="stylesheet" href="~/css/get-user-queues.css" asp-append-version="true" />
+
+<div class="main-body">
+    <div class="top-buttons-container">
+        <button class="joined-button" onclick="toggleQueues()">
+            Joined
+        </button>
+        <button class="created-button" onclick="toggleQueues()">
+            Created
+        </button>
+    </div>
+    <div class="all-queues-container">
+        <div id="joined-queue-container" style="display: block;">
+            @foreach(var joinedQueue in Model.participantQueues)
+            {
+                <a asp-controller="Queue" asp-action="Get" asp-route-id=@joinedQueue.Id>
+                    <div class="queue-info joined-queue">
+                        <div class="queue-image-container">
+                            <img src="~/images/queue/queue-image.svg">
+                        </div>
+                        <div class="container-for-info">
+                            <div class="queue-information">
+                                <div class="queue-title">
+                                    @joinedQueue.Title
+                                </div>
+                                <div class="queue-description">
+                                    @joinedQueue.Description
+                                </div>
+                            </div>
+                            <div class="queue-info-right-part">
+                                <div class="status-queue-image"></div>
+                            </div>
+                        </div>     
+                    </div>
+                </a>
+            }
+        </div>
+        
+        <div id="created-queue-container" style="display: none;">
+            @foreach(var createdQueue in Model.ownerQueues)
+            {
+                <a asp-controller="Queue" asp-action="Get" asp-route-id=@createdQueue.Id>
+                    <div class="queue-info created-queue">
+                        <div class="queue-image-container">
+                            <img src="~/images/queue/queue-image.svg">
+                        </div>
+                        <div class="container-for-info">
+                            <div class="queue-information">
+                                <div class="queue-title">
+                                    @createdQueue.Title
+                                </div>
+                                <div class="queue-description">
+                                    @createdQueue.Description
+                                </div>
+                            </div>
+                            <div class="queue-info-right-part">
+                                <img class="edit-queue-image" src="~/images/queue/edit-icon.svg">
+                                <div class="status-queue-image"></div>
+                            </div>
+                        </div>     
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+    
+</div>
+
+<script src="~/js/get-user-queues.js" asp-append-version="true"></script>
