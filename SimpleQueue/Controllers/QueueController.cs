@@ -46,7 +46,7 @@ namespace SimpleQueue.WebUI.Controllers
         }
 
         [HttpGet("/user/{userId}/queues")]
-        public async Task<IActionResult> GetUserQueuesAsync(Guid userId, [FromQuery] string type)
+        public async Task<IActionResult> GetUserQueuesAsync(Guid userId)
         {
             if (userId == Guid.Empty)
             {
@@ -61,6 +61,7 @@ namespace SimpleQueue.WebUI.Controllers
             }
 
             var participantQueues = await _queueService.GetAllParticipantQueues(userId);
+            if (participantQueues == null)
             {
                 _logger.LogWarn($"No queues were found with user id - {userId} as a member");
             }
