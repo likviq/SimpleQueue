@@ -11,6 +11,21 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(config =>
+{
+    config.DefaultScheme = "Cookie";
+    config.DefaultChallengeScheme = "oidc";
+})
+    .AddCookie("Cookie")
+    .AddOpenIdConnect("oidc", config =>
+    {
+        config.Authority = "https://localhost:7210";
+        config.ClientId = "client_id_mvc";
+        config.ClientSecret = "client_secret_mvc";
+        config.SaveTokens = true;
+        config.ResponseType = "code";
+    });
+
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
 
@@ -63,6 +78,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.UseAuthorization();

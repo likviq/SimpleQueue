@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Data;
@@ -78,6 +79,7 @@ namespace SimpleQueue.WebUI.Controllers
             return View(queues);
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
