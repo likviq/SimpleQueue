@@ -1,0 +1,50 @@
+﻿@model SimpleQueue.IdentityServer.Controllers.RegisterViewModel
+
+<head>
+    <link rel="stylesheet" href="~/css/user-registration.css" asp-append-version="true" />
+</head>
+
+
+<div class="form-back">      
+    <form method="post">
+        <div>
+            <div class="form-wrapper">
+                <label class="label" asp-for="Username">User Name</label>
+                <input type="text" asp-for="Username" />
+                <span class="field-validation" asp-validation-for="Username"></span>
+            </div>
+            <div class="form-group">
+                <div class="form-wrapper">
+                    <label class="label" asp-for="FirstName">First Name</label>
+                    <input type="text" asp-for="FirstName" />
+                    <span class="field-validation" asp-validation-for="FirstName"></span>
+                </div>
+                <div class="form-wrapper">
+                    <label class="label" asp-for="Surname">Surname</label>
+                    <input type="text" asp-for="Surname"/>
+                    <span class="field-validation" asp-validation-for="Surname"></span>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <label class="label" asp-for="Email">Email</label>
+                <input type="text" asp-for="Email"/>
+                <span class="field-validation" asp-validation-for="Email"></span>
+            </div>
+            <div class="form-wrapper">
+                <label class="label" asp-for="Password">Password</label>
+                <input id="password-value" type="text" asp-for="Password" />
+                <span class="field-validation" asp-validation-for="Password"></span>
+            </div>
+            <div class="form-wrapper">
+                <label class="label" asp-for="ConfirmPassword">ConfirmPassword</label>
+                <input id="password-value" type="text" asp-for="ConfirmPassword" />
+                <span class="field-validation" asp-validation-for="ConfirmPassword"></span>
+            </div>
+            <div class="form-wrapper">
+                <input type="submit" value="Register" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="white-left-back"></div>
+<div class="white-right-back"></div>
