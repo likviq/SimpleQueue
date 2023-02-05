@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleQueue.Data;
 
@@ -10,9 +11,10 @@ using SimpleQueue.Data;
 namespace SimpleQueue.Data.Migrations
 {
     [DbContext(typeof(SimpleQueueDBContext))]
-    partial class SimpleQueueDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230203123145_queue-isFrozed-field")]
+    partial class queueisFrozedfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

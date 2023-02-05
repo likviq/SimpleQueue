@@ -13,27 +13,19 @@ namespace SimpleQueue.Data.Repositories
         }
 
         public void CreateQueue(Queue queue) => Create(queue);
-        public async Task<Queue> GetQueueAsync(Guid id) =>
+
+        public async Task<Queue?> GetQueueAsync(Guid id) =>
             await FindByCondition(x => x.Id.Equals(id))
-            .Select(q => new Queue
-            {
-                Id = q.Id,
-                Title = q.Title,
-                Description = q.Description,
-                Chat = q.Chat,
-                CreatedTime = q.CreatedTime,
-                StartTime = q.StartTime,
-                UserInQueues = q
-                    .UserInQueues
-                    .Select(u => new UserInQueue
-                    {
-                        Id = u.Id,
-                        UserId = u.UserId,
-                        NextId = u.NextId,
-                        JoinTime = u.JoinTime,
-                        User = u.User
-                    }).ToList()
-            })
+            .Include(x => x.UserInQueues).ThenInclude(x => x.User)
             .FirstOrDefaultAsync();
+
+        public async Task<List<Queue>> GetOwnerQueuesAsync(Guid userId) => 
+            await FindByCondition(x => x.OwnerId.Equals(userId))
+            .ToListAsync();
+
+        public async Task<List<Queue>> GetParticipantQueues(Guid userId) =>
+            await FindAll().Include(item => item.UserInQueues)
+            .Where(x => x.UserInQueues.Any(v => v.UserId.Equals(userId)))
+            .ToListAsync();
     }
 }

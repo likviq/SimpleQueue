@@ -21,7 +21,7 @@ namespace SimpleQueue.WebUI.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> GetAsync([FromQuery] Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
             if (id == Guid.Empty)
             {
@@ -43,6 +43,39 @@ namespace SimpleQueue.WebUI.Controllers
             _logger.LogInfo($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
 
             return View(queueViewModel);
+        }
+
+        [HttpGet("/user/{userId}/queues")]
+        public async Task<IActionResult> GetUserQueuesAsync(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                _logger.LogError("id from the query is incorrect or equal to zero");
+                return BadRequest();
+            }
+
+            var ownerQueues = await _queueService.GetAllOwnerQueues(userId);
+            if (ownerQueues == null)
+            {
+                _logger.LogWarn($"No queue was found that is owned by user with id - {userId}");
+            }
+
+            var participantQueues = await _queueService.GetAllParticipantQueues(userId);
+            if (participantQueues == null)
+            {
+                _logger.LogWarn($"No queues were found with user id - {userId} as a member");
+            }
+
+            var ownerQueuesViewModel = _mapper.Map<List<BriefQueueInfoViewModel>>(ownerQueues);
+            _logger.LogInfo($"Owner queues with has been converted to the list of object {nameof(BriefQueueInfoViewModel)}");
+
+            var participantQueuesViewModel = _mapper.Map<List<BriefQueueInfoViewModel>>(participantQueues);
+            _logger.LogInfo($"Participant queues with has been converted to the list of object {nameof(BriefQueueInfoViewModel)}");
+
+            var queues = new AllUserQueuesViewModel(ownerQueuesViewModel, participantQueuesViewModel);
+            _logger.LogInfo($"Two models were successfully converted to {nameof(AllUserQueuesViewModel)}");
+
+            return View(queues);
         }
 
         public ActionResult Create()

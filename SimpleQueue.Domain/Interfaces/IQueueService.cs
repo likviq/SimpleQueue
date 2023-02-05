@@ -11,5 +11,7 @@ namespace SimpleQueue.Domain.Interfaces
     {
         Task CreateQueue(Queue queue);
         Task<Queue> GetQueue(Guid id);
+        Task<List<Queue>> GetAllOwnerQueues(Guid userId);
+        Task<List<Queue>> GetAllParticipantQueues(Guid userId);
     }
 }

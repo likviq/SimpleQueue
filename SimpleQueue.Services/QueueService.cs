@@ -20,5 +20,19 @@ namespace SimpleQueue.Services
         {
             return await _repository.Queue.GetQueueAsync(id);
         }
+
+        public async Task<List<Queue>> GetAllOwnerQueues(Guid userId)
+        {
+            var ownerQueues = await _repository.Queue.GetOwnerQueuesAsync(userId);
+
+            return ownerQueues;
+        }
+
+        public async Task<List<Queue>> GetAllParticipantQueues(Guid userId)
+        {
+            var participantQueues = await _repository.Queue.GetParticipantQueues(userId);
+
+            return participantQueues;
+        }
     }
 }

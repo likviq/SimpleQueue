@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+.main-body {
+  font-family: "Montserrat";
+  margin: 100px auto;
+  max-width: 1502px;
+  width: 80%;
+  color: #555555; }
+  .main-body .top-buttons-container {
+    width: 100%;
+    display: flex; }
+    .main-body .top-buttons-container .joined-button, .main-body .top-buttons-container .created-button {
+      width: 50%;
+      padding: 24px;
+      background-color: white;
+      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 62px 62px 0 0;
+      text-align: center;
+      font-size: 36px;
+      line-height: 44px;
+      border: none;
+      cursor: pointer; }
+    .main-body .top-buttons-container .joined-button {
+      height: 120px; }
+    .main-body .top-buttons-container .created-button {
+      height: 68px;
+      margin-top: 52px; }
+  .main-body .all-queues-container {
+    background-color: white;
+    height: 1080px;
+    padding-top: 22px; }
+    .main-body .all-queues-container a {
+      color: #555555;
+      text-decoration: none; }
+    .main-body .all-queues-container .queue-info {
+      width: 90%;
+      margin: 0 auto 44px auto;
+      background-color: #F4F4F4;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 32px;
+      display: flex;
+      padding: 24px; }
+      .main-body .all-queues-container .queue-info .container-for-info {
+        display: flex;
+        justify-content: space-between;
+        width: 100%; }
+        .main-body .all-queues-container .queue-info .container-for-info .queue-information {
+          margin-left: 44px;
+          max-width: 995px; }
+          .main-body .all-queues-container .queue-info .container-for-info .queue-information .queue-title {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            line-height: 29px; }
+          .main-body .all-queues-container .queue-info .container-for-info .queue-information .queue-description {
+            font-size: 24px;
+            line-height: 29px; }
+        .main-body .all-queues-container .queue-info .container-for-info .queue-info-right-part {
+          display: flex; }
+          .main-body .all-queues-container .queue-info .container-for-info .queue-info-right-part .edit-queue-image {
+            width: 75px;
+            height: 75px;
+            margin: auto; }
+          .main-body .all-queues-container .queue-info .container-for-info .queue-info-right-part .status-queue-image {
+            background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%), #82FF9D;
+            border-radius: 25px;
+            width: 50px;
+            height: 50px;
+            margin: auto 25px; }
+
+/*# sourceMappingURL=get-user-queues.css.map */
