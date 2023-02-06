@@ -31,11 +31,23 @@ namespace SimpleQueue.IdentityServer
                     ClientId = "client_id_mvc",
                     ClientSecrets = { new Secret("client_secret_mvc".ToSha256())},
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = { "https://localhost:7253/signin-oidc",
-                                     "https://localhost:7147/signin-oidc"},
+                    RedirectUris = { "https://localhost:7253/signin-oidc"},
                     AllowedScopes = { 
                         "ApiOne", 
                         "ApiTwo", 
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    },
+                    RequireConsent = false
+                },
+                new Client{
+                    ClientId = "client_id_api",
+                    ClientSecrets = { new Secret("client_secret_api".ToSha256())},
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = { "https://localhost:7147/signin-oidc"},
+                    AllowedScopes = {
+                        "ApiOne",
+                        "ApiTwo",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },

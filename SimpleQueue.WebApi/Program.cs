@@ -9,8 +9,8 @@ builder.Services.AddAuthentication(config =>
     .AddOpenIdConnect("oidc", config =>
     {
         config.Authority = "https://localhost:7210";
-        config.ClientId = "client_id_mvc";
-        config.ClientSecret = "client_secret_mvc";
+        config.ClientId = "client_id_api";
+        config.ClientSecret = "client_secret_api";
         config.SaveTokens = true;
         config.ResponseType = "code";
     });
