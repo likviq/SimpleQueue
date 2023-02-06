@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,8 +81,14 @@ namespace SimpleQueue.WebUI.Controllers
         }
 
         [Authorize]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            var accessToken = HttpContext.GetTokenAsync("access_token");
+            var idToken = HttpContext.GetTokenAsync("id_token");
+            var refreshToken = HttpContext.GetTokenAsync("refresh_token");
+
+            var claims = User.Claims;
+
             return View();
         }
 

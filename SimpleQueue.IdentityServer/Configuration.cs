@@ -31,7 +31,8 @@ namespace SimpleQueue.IdentityServer
                     ClientId = "client_id_mvc",
                     ClientSecrets = { new Secret("client_secret_mvc".ToSha256())},
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = { "https://localhost:7253/signin-oidc" },
+                    RedirectUris = { "https://localhost:7253/signin-oidc",
+                                     "https://localhost:7147/signin-oidc"},
                     AllowedScopes = { 
                         "ApiOne", 
                         "ApiTwo", 
