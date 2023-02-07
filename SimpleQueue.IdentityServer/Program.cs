@@ -24,6 +24,7 @@ builder.Services.ConfigureApplicationCookie(config =>
 {
     config.Cookie.Name = "Identity.Cookie";
     config.LoginPath = "/Auth/Login";
+    config.LogoutPath = "/Auth/Logout";
 });
 
 builder.Services.AddIdentityServer()
@@ -32,6 +33,12 @@ builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
     .AddInMemoryClients(Configuration.GetClients())
     .AddDeveloperSigningCredential();
+
+builder.Services.AddAuthentication().AddFacebook(config =>
+{
+    config.AppId = "541927581259891";
+    config.AppSecret = "6f5406d63d0f008af028bdf922121a2c";
+});
 
 builder.Services.AddControllersWithViews();
 

@@ -32,12 +32,14 @@ namespace SimpleQueue.IdentityServer
                     ClientSecrets = { new Secret("client_secret_mvc".ToSha256())},
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = { "https://localhost:7253/signin-oidc"},
+                    PostLogoutRedirectUris = { "https://localhost:7253/Home/Index" },
                     AllowedScopes = { 
                         "ApiOne", 
                         "ApiTwo", 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },
+                    RequirePkce = true,
                     RequireConsent = false
                 },
                 new Client{
@@ -45,6 +47,7 @@ namespace SimpleQueue.IdentityServer
                     ClientSecrets = { new Secret("client_secret_api".ToSha256())},
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = { "https://localhost:7147/signin-oidc"},
+                    PostLogoutRedirectUris = { "https://localhost:7147/Home/Index" },
                     AllowedScopes = {
                         "ApiOne",
                         "ApiTwo",
