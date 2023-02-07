@@ -38,6 +38,11 @@ builder.Services.AddAuthentication().AddFacebook(config =>
 {
     config.AppId = "541927581259891";
     config.AppSecret = "6f5406d63d0f008af028bdf922121a2c";
+})
+    .AddGoogle(config =>
+{
+    config.ClientId = "1070453281257-ad8p7qpg890aqk9ngbl98qptet9ctf8f.apps.googleusercontent.com";
+    config.ClientSecret = "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";
 });
 
 builder.Services.AddControllersWithViews();

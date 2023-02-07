@@ -114,13 +114,13 @@ namespace SimpleQueue.IdentityServer.Controllers
 
             var username = info.Principal.FindFirst(ClaimTypes.Name).Value.Replace(" ", "");
             var firstname = info.Principal.FindFirst(ClaimTypes.GivenName).Value;
-            var surname = info.Principal.FindFirst(ClaimTypes.Surname).Value;
+            //var surname = info.Principal.FindFirst(ClaimTypes.Surname).Value;
             var email = info.Principal.FindFirst(ClaimTypes.Email).Value;
             return View("ExternalRegister", new ExternalRegisterViewModel
             {
                 Username = username,
                 FirstName = firstname,
-                Surname = surname,
+                //Surname = surname,
                 Email = email,
                 ReturnUrl = returnUrl
             });
