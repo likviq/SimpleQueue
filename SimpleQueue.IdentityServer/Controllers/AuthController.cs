@@ -55,7 +55,7 @@ namespace SimpleQueue.IdentityServer.Controllers
 
             if (result.IsLockedOut)
             {
-                Redirect("/");
+                return Redirect("/");
             }
 
             return Redirect(vm.ReturnUrl);
@@ -80,7 +80,7 @@ namespace SimpleQueue.IdentityServer.Controllers
 
             if (!result.Succeeded)
             {
-                Redirect("/");
+                return Redirect("/");
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);

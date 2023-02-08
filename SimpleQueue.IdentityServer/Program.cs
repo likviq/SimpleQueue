@@ -64,6 +64,8 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseIdentityServer();

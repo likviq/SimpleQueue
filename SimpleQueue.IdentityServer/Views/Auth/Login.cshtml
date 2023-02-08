@@ -1,34 +1,52 @@
 ﻿@model SimpleQueue.IdentityServer.Controllers.LoginViewModel
 
-<form asp-controller="Auth" asp-action="ExternalLogin" 
+<title>Sign In</title>
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/css/user-signin.css")"  media="screen" />
+
+
+<div class="form-back">      
+    <form asp-controller="Auth" asp-action="Login" method="post">
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div>
+            <div class="form-wrapper">
+                <label class="label" asp-for="Username">User Name</label>
+                <input type="text" asp-for="Username" />
+                <span class="field-validation" asp-validation-for="Username"></span>
+            </div>
+            <div class="form-wrapper">
+                <label class="label" asp-for="Password">Password</label>
+                <input id="password-value" type="text" asp-for="Password" />
+                <span class="field-validation" asp-validation-for="Password"></span>
+            </div>
+            <div class="form-wrapper">
+                <input type="submit" value="Sign In" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+    <div class="register-provider">
+        <a asp-controller="Auth" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">
+            Registration first
+        </a>
+    </div>
+</div>
+
+<div class="intermediate-part">
+    <hr>
+    <div class="or-word">
+        or
+    </div>
+    <hr>
+</div>
+
+
+
+<form class="provider-form" asp-controller="Auth" asp-action="ExternalLogin" 
     asp-route-returnUrl="@Model.ReturnUrl" method="post">
     @foreach(var provider in Model.ExternalProviders)
     {
-        <button name="provider" type="submit" value="@provider.Name">
-            @provider.Name
+        <button name="provider" type="submit" value="@provider.Name" class="provider-button">
+            Login with @provider.Name
         </button>
     }    
 </form>
-
-<form asp-controller="Auth" asp-action="Login" method="post">
-    <input type="hidden" asp-for="ReturnUrl" />
-    <div>
-        <label>Username</label>
-        <input asp-for="Username" />
-    </div>
-    <div>
-        <label>Password</label>
-        <input asp-for="Password" value="asdasd" />
-    </div>
-    <div>
-        <button type="submit">
-            Sign In
-        </button>
-    </div>
-</form>
-
-<div>
-    <a asp-controller="Auth" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">
-        Registration first
-    </a>
-</div>
