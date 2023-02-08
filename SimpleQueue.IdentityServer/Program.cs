@@ -1,13 +1,18 @@
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SimpleQueue.IdentityServer;
 using SimpleQueue.IdentityServer.Data;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("mySqlConfigConnection");
+
 builder.Services.AddDbContext<AppDbContext>(config =>
 {
-    config.UseInMemoryDatabase("Memory");
+    config.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
@@ -27,11 +32,25 @@ builder.Services.ConfigureApplicationCookie(config =>
     config.LogoutPath = "/Auth/Logout";
 });
 
+var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
+
 builder.Services.AddIdentityServer()
     .AddAspNetIdentity<IdentityUser>()
-    .AddInMemoryApiResources(Configuration.GetApis())
-    .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
-    .AddInMemoryClients(Configuration.GetClients())
+    .AddConfigurationStore(options =>
+    {
+        options.ConfigureDbContext = b => b.UseMySql(connectionString, 
+            ServerVersion.AutoDetect(connectionString), 
+            sql => sql.MigrationsAssembly(migrationsAssembly));
+    })
+    .AddOperationalStore(options =>
+    {
+        options.ConfigureDbContext = b => b.UseMySql(connectionString,
+            ServerVersion.AutoDetect(connectionString), 
+            sql => sql.MigrationsAssembly(migrationsAssembly));
+    })
+    //.AddInMemoryApiResources(Configuration.GetApis())
+    //.AddInMemoryIdentityResources(Configuration.GetIdentityResources())
+    //.AddInMemoryClients(Configuration.GetClients())
     .AddDeveloperSigningCredential();
 
 builder.Services.AddAuthentication().AddFacebook(config =>
@@ -57,6 +76,38 @@ using (var scope = app.Services.CreateScope())
 
     var user = new IdentityUser("bob");
     userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
+
+    scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+    var context = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+    context.Database.Migrate();
+    
+    if (!context.Clients.Any())
+    {
+        foreach (var client in Configuration.GetClients())
+        {
+            context.Clients.Add(client.ToEntity());
+        }
+        context.SaveChanges();
+    }
+
+    if (!context.IdentityResources.Any())
+    {
+        foreach (var resource in Configuration.GetIdentityResources())
+        {
+            context.IdentityResources.Add(resource.ToEntity());
+        }
+        context.SaveChanges();
+    }
+
+    if (!context.ApiResources.Any())
+    {
+        foreach (var resource in Configuration.GetApis())
+        {
+            context.ApiResources.Add(resource.ToEntity());
+        }
+        context.SaveChanges();
+    }
 }
 
 if (app.Environment.IsDevelopment())

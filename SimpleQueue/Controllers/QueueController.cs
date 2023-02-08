@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Entities;
@@ -16,11 +17,13 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly IMapper _mapper;
         private readonly IQueueService _queueService;
         private readonly ILoggerManager _logger;
-        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger)
+        private readonly UserManager<IdentityUser> _userManager;
+        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger, UserManager<IdentityUser> userManager)
         {
             _mapper = mapper;
             _queueService = queueService;
             _logger = logger;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> GetAsync(Guid id)
@@ -88,6 +91,8 @@ namespace SimpleQueue.WebUI.Controllers
             var refreshToken = HttpContext.GetTokenAsync("refresh_token");
 
             var claims = User.Claims;
+
+            var userID = _userManager.GetUserId(User);
 
             return View();
         }
