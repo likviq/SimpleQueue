@@ -9,6 +9,7 @@ using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
 using SimpleQueue.WebUI.Models.ViewModels;
+using System.Security.Claims;
 
 namespace SimpleQueue.WebUI.Controllers
 {
@@ -17,13 +18,11 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly IMapper _mapper;
         private readonly IQueueService _queueService;
         private readonly ILoggerManager _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger, UserManager<IdentityUser> userManager)
+        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger)
         {
             _mapper = mapper;
             _queueService = queueService;
             _logger = logger;
-            _userManager = userManager;
         }
 
         public async Task<IActionResult> GetAsync(Guid id)
@@ -90,9 +89,7 @@ namespace SimpleQueue.WebUI.Controllers
             var idToken = HttpContext.GetTokenAsync("id_token");
             var refreshToken = HttpContext.GetTokenAsync("refresh_token");
 
-            var claims = User.Claims;
-
-            var userID = _userManager.GetUserId(User);
+            var claims = User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
 
             return View();
         }
