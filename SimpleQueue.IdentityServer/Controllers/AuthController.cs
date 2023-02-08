@@ -1,6 +1,9 @@
-﻿using IdentityServer4.Services;
+﻿using AutoMapper;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SimpleQueue.Domain.Entities;
+using SimpleQueue.Domain.Interfaces;
 using System.Security.Claims;
 
 namespace SimpleQueue.IdentityServer.Controllers
@@ -10,15 +13,21 @@ namespace SimpleQueue.IdentityServer.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IIdentityServerInteractionService _interactionService;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
         public AuthController(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IIdentityServerInteractionService interactionService)
+            IIdentityServerInteractionService interactionService,
+            IMapper mapper,
+            IUserService userService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _interactionService = interactionService;
+            _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -83,11 +92,26 @@ namespace SimpleQueue.IdentityServer.Controllers
                 return Redirect("/");
             }
 
+            try
+            {
+                vm.Id = new Guid(user.Id);
+            
+                var userEntity = _mapper.Map<User>(vm);
+
+                await _userService.RegisterUser(userEntity);
+            }
+            catch (Exception ex)
+            {
+                await _userManager.DeleteAsync(user);
+
+                return BadRequest();
+            }
+
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Redirect(vm.ReturnUrl);
         }
 
-        public async Task<IActionResult> ExternalLogin(string returnUrl, string provider)
+        public IActionResult ExternalLogin(string returnUrl, string provider)
         {
             var redirectUri = Url.Action(nameof(ExternalLoginCallback), "Auth", new { returnUrl });
 

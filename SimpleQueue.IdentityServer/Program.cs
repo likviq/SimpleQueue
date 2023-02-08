@@ -2,17 +2,32 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SimpleQueue.Data;
+using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.IdentityServer;
+using SimpleQueue.IdentityServer.AutoMapper;
 using SimpleQueue.IdentityServer.Data;
+using SimpleQueue.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("mySqlConfigConnection");
+var connectionConfigString = builder.Configuration.GetConnectionString("mySqlConfigConnection");
+
+builder.Services.AddAutoMapper(typeof(MappingUserProfile));
+
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("mySqlConnection");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
 
 builder.Services.AddDbContext<AppDbContext>(config =>
 {
-    config.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    config.UseMySql(connectionConfigString, ServerVersion.AutoDetect(connectionConfigString));
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
@@ -38,14 +53,14 @@ builder.Services.AddIdentityServer()
     .AddAspNetIdentity<IdentityUser>()
     .AddConfigurationStore(options =>
     {
-        options.ConfigureDbContext = b => b.UseMySql(connectionString, 
-            ServerVersion.AutoDetect(connectionString), 
+        options.ConfigureDbContext = b => b.UseMySql(connectionConfigString, 
+            ServerVersion.AutoDetect(connectionConfigString), 
             sql => sql.MigrationsAssembly(migrationsAssembly));
     })
     .AddOperationalStore(options =>
     {
-        options.ConfigureDbContext = b => b.UseMySql(connectionString,
-            ServerVersion.AutoDetect(connectionString), 
+        options.ConfigureDbContext = b => b.UseMySql(connectionConfigString,
+            ServerVersion.AutoDetect(connectionConfigString), 
             sql => sql.MigrationsAssembly(migrationsAssembly));
     })
     //.AddInMemoryApiResources(Configuration.GetApis())
