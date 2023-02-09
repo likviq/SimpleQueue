@@ -37,13 +37,16 @@ namespace SimpleQueue.IdentityServer.Controllers
         public async Task<IActionResult> Logout(string logoutId)
         {
             await _signInManager.SignOutAsync();
+            _logger.LogInformation("Sign out the current user");
 
             var logoutRequest = await _interactionService.GetLogoutContextAsync(logoutId);
-
+            
             if (logoutRequest.PostLogoutRedirectUri == null)
             {
+                _logger.LogInformation("PostLogoutRedirectUri from logout request is null");
                 return RedirectToAction("Index", "Home");
             }
+            _logger.LogInformation($"logout request from client - {logoutRequest.ClientId}");
 
             return Redirect(logoutRequest.PostLogoutRedirectUri);
         }
