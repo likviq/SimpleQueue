@@ -94,8 +94,7 @@ namespace SimpleQueue.IdentityServer.Controllers
 
             try
             {
-                vm.Id = new Guid(user.Id);
-            
+                vm.Id = new Guid(user.Id);            
                 var userEntity = _mapper.Map<User>(vm);
 
                 await _userService.RegisterUser(userEntity);
@@ -173,6 +172,20 @@ namespace SimpleQueue.IdentityServer.Controllers
             if (!result.Succeeded)
             {
                 return View(vm);
+            }
+
+            try
+            {
+                vm.Id = new Guid(user.Id);
+                var userEntity = _mapper.Map<User>(vm);
+
+                await _userService.RegisterUser(userEntity);
+            }
+            catch (Exception ex)
+            {
+                await _userManager.DeleteAsync(user);
+
+                return BadRequest();
             }
 
             await _signInManager.SignInAsync(user, false);

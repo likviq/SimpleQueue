@@ -11,6 +11,10 @@ namespace SimpleQueue.IdentityServer.AutoMapper
             CreateMap<RegisterViewModel, User>()
                 .ForMember(c => c.Name,
                 opt => opt.MapFrom(x => x.FirstName));
+
+            CreateMap<ExternalRegisterViewModel, User>()
+                .ForMember(c => c.Name,
+                opt => opt.MapFrom(x => x.FirstName));
         }
     }
 }
