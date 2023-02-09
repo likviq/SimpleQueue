@@ -12,6 +12,6 @@ namespace SimpleQueue.IdentityServer.Controllers
         public string Password { get; set; }
         [Required]
         public string ReturnUrl { get; set; }
-        public IEnumerable<AuthenticationScheme> ExternalProviders { get; set; }
+        public IEnumerable<AuthenticationScheme>? ExternalProviders { get; set; }
     }
 }

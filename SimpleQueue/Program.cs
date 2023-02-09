@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NLog.Web;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
@@ -25,6 +26,10 @@ builder.Services.AddAuthentication(config =>
         config.SaveTokens = true;
         config.ResponseType = "code";
         config.SignedOutCallbackPath = "/Home/Index";
+
+        config.Scope.Add(OpenIdConnectScope.OpenId);
+
+        config.Scope.Add("simplequeue-webapi");
     });
 
 builder.Services.AddControllersWithViews()

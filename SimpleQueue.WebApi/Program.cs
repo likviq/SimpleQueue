@@ -1,10 +1,27 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(config =>
-{
-    config.DefaultScheme = "Cookie";
-    config.DefaultChallengeScheme = "oidc";
-})
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(config =>
+    {
+        string authority = "https://localhost:7210";
+        string validIssuer = "https://localhost:7210";
+        string validAudience = "webapi";
+
+        config.Authority = authority;
+        config.Audience = validAudience;
+
+        config.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidAudience = validAudience,
+            ValidIssuer = validIssuer,
+
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true
+        };
+    })
     .AddCookie("Cookie")
     .AddOpenIdConnect("oidc", config =>
     {

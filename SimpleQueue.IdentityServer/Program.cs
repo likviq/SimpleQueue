@@ -123,6 +123,14 @@ using (var scope = app.Services.CreateScope())
         }
         context.SaveChanges();
     }
+    if (!context.ApiScopes.Any())
+    {
+        foreach (var resource in Configuration.GetScopes())
+        {
+            context.ApiScopes.Add(resource.ToEntity());
+        }
+        context.SaveChanges();
+    }
 }
 
 if (app.Environment.IsDevelopment())
