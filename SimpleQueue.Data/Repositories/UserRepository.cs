@@ -10,5 +10,7 @@ namespace SimpleQueue.Data.Repositories
             : base(repositoryContext)
         {
         }
+
+        public void CreateUser(User user) => Create(user);
     }
 }

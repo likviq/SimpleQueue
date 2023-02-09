@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
 using SimpleQueue.WebUI.Models.ViewModels;
+using System.Security.Claims;
 
 namespace SimpleQueue.WebUI.Controllers
 {
@@ -78,8 +82,15 @@ namespace SimpleQueue.WebUI.Controllers
             return View(queues);
         }
 
-        public ActionResult Create()
+        [Authorize]
+        public async Task<ActionResult> Create()
         {
+            var accessToken = HttpContext.GetTokenAsync("access_token");
+            var idToken = HttpContext.GetTokenAsync("id_token");
+            var refreshToken = HttpContext.GetTokenAsync("refresh_token");
+
+            var claims = User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
+
             return View();
         }
 

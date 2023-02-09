@@ -41,5 +41,10 @@ namespace SimpleQueue.Controllers
 
             return View(errorViewModel);
         }
+
+        public IActionResult Logout()
+        {
+            return SignOut("Cookie", "oidc");
+        }
     }
 }

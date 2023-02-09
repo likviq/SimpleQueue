@@ -29,10 +29,6 @@ namespace SimpleQueue.Data.Configurations
                 .IsRequired();
 
             builder
-                .Property(pt => pt.Password)
-                .IsRequired();
-
-            builder
                 .Property(pt => pt.PhoneNumber)
                 .HasColumnType("varchar")
                 .HasMaxLength(21)
@@ -49,11 +45,6 @@ namespace SimpleQueue.Data.Configurations
                 .HasColumnType("varchar")
                 .HasMaxLength(64)
                 .IsRequired(false);
-
-            builder
-                .Property(pt => pt.IsEmailConfirmed)
-                .HasDefaultValue(false)
-                .IsRequired();
         }
     }
 }

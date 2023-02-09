@@ -2,8 +2,8 @@
 
 namespace SimpleQueue.Domain.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserService
     {
-        void CreateUser(User user);
+        Task RegisterUser(User user);
     }
 }
