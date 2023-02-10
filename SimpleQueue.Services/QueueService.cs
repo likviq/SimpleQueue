@@ -34,5 +34,25 @@ namespace SimpleQueue.Services
 
             return participantQueues;
         }
+
+        public async Task FreezeQueue(Guid id)
+        {
+            var queue = await _repository.Queue.GetQueueAsync(id);
+
+            queue.isFrozen = !queue.isFrozen;
+
+            await _repository.SaveAsync();
+        }
+
+        public async Task<UserInQueue?> NextParticipant(Guid id)
+        {
+            return await _repository.UserInQueue.FirstParticipant(id);
+        }
+
+        public void DeleteParticipant(UserInQueue participant)
+        {
+            _repository.UserInQueue.DeleteUserInQueue(participant);
+            _repository.SaveAsync();
+        }
     }
 }

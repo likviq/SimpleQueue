@@ -10,5 +10,7 @@
         public DateTime JoinTime { get; set; }
         public Guid? NextId { get; set; }
         public UserInQueue? Next { get; set; }
+        public Guid? PreviousId { get; set; }
+        public UserInQueue? Previous { get; set; }
     }
 }

@@ -49,9 +49,12 @@ namespace SimpleQueue.WebUI.Controllers
             return View(queueViewModel);
         }
 
-        [HttpGet("/user/{userId}/queues")]
-        public async Task<IActionResult> GetUserQueuesAsync(Guid userId)
+        [Authorize]
+        [HttpGet("/user/queues")]
+        public async Task<IActionResult> GetUserQueuesAsync()
         {
+            var userId = new Guid(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
             if (userId == Guid.Empty)
             {
                 _logger.LogError("id from the query is incorrect or equal to zero");
@@ -85,12 +88,6 @@ namespace SimpleQueue.WebUI.Controllers
         [Authorize]
         public async Task<ActionResult> Create()
         {
-            var accessToken = HttpContext.GetTokenAsync("access_token");
-            var idToken = HttpContext.GetTokenAsync("id_token");
-            var refreshToken = HttpContext.GetTokenAsync("refresh_token");
-
-            var claims = User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
-
             return View();
         }
 
