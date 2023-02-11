@@ -26,7 +26,7 @@ namespace SimpleQueue.WebApi.Controllers
         {          
             try
             {
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
                 var queue = await _queueService.GetQueue(id);
                 if (queue == null)
@@ -60,7 +60,7 @@ namespace SimpleQueue.WebApi.Controllers
         {
             try
             {
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
                 var queue = await _queueService.GetQueue(id);
                 if (queue == null)

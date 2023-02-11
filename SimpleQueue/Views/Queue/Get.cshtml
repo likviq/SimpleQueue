@@ -21,7 +21,7 @@
             </div>
             <div class="queue-info-right-part">
                 <img class="edit-queue-image" src="~/images/queue/edit-icon.svg">
-                <div class="status-queue-image"></div>
+                <div class="status-queue-image" style=@(Model.isFrozen == false ? "background-color:#82FF9D":"")></div>
             </div>
         </div>
         
@@ -48,15 +48,25 @@
                     <div class="number-of-people">@Model.Users.Count()</div>
                     <div class="in-queue">In Queue</div>
                 </div>
-                <button class="next-button controll-object">
-                    <div class="next-text">Next</div>
-                </button>
-                <button class="deactivate-button controll-object">
-                    <div class="deactivate-text">Deactivate</div>
-                </button>
+                @if(User.Identity.IsAuthenticated && Model.YourId == Model.OwnerId){
+                    <button class="next-button controll-object">
+                        <div class="next-text">Next</div>
+                    </button>
+                    <button class="deactivate-button controll-object">
+                        <div class="deactivate-text">Deactivate</div>
+                    </button>
+                }
+                else{
+                    <button class="next-button controll-object">
+                        <div class="next-text">Your position</div>
+                    </button>
+                    <button class="deactivate-button controll-object">
+                        <div class="deactivate-text">Enter</div>
+                    </button>
+                }
                 <button class="end-button controll-object">
-                    <div class="end-text">End</div>
-                </button>
+                    <div class="end-text">Click</div>
+                </button>               
             </div>
         </div>
     </div>
