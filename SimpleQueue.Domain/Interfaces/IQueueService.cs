@@ -16,5 +16,6 @@ namespace SimpleQueue.Domain.Interfaces
         Task FreezeQueue(Guid id);
         Task<UserInQueue?> NextParticipant(Guid id);
         void DeleteParticipant(UserInQueue participant);
+        void DeleteQueue(Queue queue);
     }
 }

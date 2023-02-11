@@ -25,6 +25,7 @@ namespace SimpleQueue.WebUI.Controllers
             _logger = logger;
         }
 
+        [HttpGet("/queue/{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             if (id == Guid.Empty)
@@ -94,15 +95,16 @@ namespace SimpleQueue.WebUI.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Create()
+        [HttpGet("/queue")]
+        public IActionResult Create()
         {
             var token = HttpContext.GetTokenAsync("access_token");
             return View();
         }
 
         [Authorize]
-        [HttpPost]
-        public async Task<ActionResult> CreateAsync(CreateQueueDto? createQueueDto)
+        [HttpPost("/queue")]
+        public async Task<IActionResult> CreateAsync(CreateQueueDto? createQueueDto)
         {
             if (!ModelState.IsValid)
             {

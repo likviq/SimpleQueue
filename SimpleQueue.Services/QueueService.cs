@@ -16,7 +16,7 @@ namespace SimpleQueue.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<Queue> GetQueue(Guid id)
+        public async Task<Queue?> GetQueue(Guid id)
         {
             return await _repository.Queue.GetQueueAsync(id);
         }
@@ -52,6 +52,12 @@ namespace SimpleQueue.Services
         public void DeleteParticipant(UserInQueue participant)
         {
             _repository.UserInQueue.DeleteUserInQueue(participant);
+            _repository.SaveAsync();
+        }
+
+        public void DeleteQueue(Queue queue)
+        {
+            _repository.Queue.DeleteQueue(queue);
             _repository.SaveAsync();
         }
     }

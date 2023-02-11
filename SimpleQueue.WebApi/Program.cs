@@ -33,6 +33,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
+builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {

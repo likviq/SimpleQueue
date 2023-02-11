@@ -21,17 +21,17 @@ namespace SimpleQueue.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("queue/{id}")]
-        public async Task<IActionResult> FreezeQueue(Guid id)
+        [HttpPost("queue/{queueId}")]
+        public async Task<IActionResult> FreezeQueue(Guid queueId)
         {          
             try
             {
                 var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-                var queue = await _queueService.GetQueue(id);
+                var queue = await _queueService.GetQueue(queueId);
                 if (queue == null)
                 {
-                    _logger.LogWarning($"queue with id - {id} not found");
+                    _logger.LogWarning($"queue with id - {queueId} not found");
                     return NotFound();
                 }
 
@@ -42,7 +42,7 @@ namespace SimpleQueue.WebApi.Controllers
                     return Unauthorized();
                 }
 
-                await _queueService.FreezeQueue(id);
+                await _queueService.FreezeQueue(queueId);
             }
             catch (Exception ex)
             {
@@ -55,31 +55,31 @@ namespace SimpleQueue.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("queue/{id}/next")]
-        public async Task<IActionResult> NextParticipant(Guid id)
+        [HttpPost("queue/{queueId}/next")]
+        public async Task<IActionResult> NextParticipant(Guid queueId)
         {
             try
             {
-                var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueue(id);
+                var queue = await _queueService.GetQueue(queueId);
                 if (queue == null)
                 {
-                    _logger.LogWarning($"queue with id - {id} not found");
+                    _logger.LogWarning($"queue with id - {queueId} not found");
                     return NotFound();
                 }
 
-                if (queue.OwnerId != new Guid(userId))
+                if (queue.OwnerId != userId)
                 {
                     _logger.LogWarning($"queue owner id is - {queue.OwnerId}, " +
                         $"but id from claims is - {userId}");
                     return Unauthorized();
                 }
 
-                var participant = await _queueService.NextParticipant(id);
+                var participant = await _queueService.NextParticipant(queueId);
                 if (participant == null)
                 {
-                    _logger.LogWarning($"queue with id - {id} has no members");
+                    _logger.LogWarning($"queue with id - {queueId} has no members");
                     return NotFound();
                 }
 
@@ -92,6 +92,41 @@ namespace SimpleQueue.WebApi.Controllers
             }
             _logger.LogInformation("Successfully changed the next participant");
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpDelete("queue/{queueId}")]
+        public async Task<IActionResult> DeleteQueue(Guid queueId)
+        {
+            try
+            {
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+                var queue = await _queueService.GetQueue(queueId);
+                if (queue == null)
+                {
+                    _logger.LogWarning($"queue with id - {queueId} not found");
+                    return NotFound();
+                }
+
+                if (queue.OwnerId != userId)
+                {
+                    _logger.LogWarning($"Someone with id - {userId} tried to delete a queue " +
+                            $"with id - {queueId}");
+                    return Forbid();
+                }
+
+                _queueService.DeleteQueue(queue);
+                
+                _logger.LogInformation($"User with id - {userId} successfully deleted own queue with id - {queueId}");
+                
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unable to delete the queue due to an unexpected error - {ex.Message}");
+                return BadRequest();
+            }   
         }
     }
 }
