@@ -25,6 +25,7 @@ namespace SimpleQueue.WebUI.Controllers
             _logger = logger;
         }
 
+        [HttpGet("/queue/{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             if (id == Guid.Empty)
@@ -46,12 +47,23 @@ namespace SimpleQueue.WebUI.Controllers
             var queueViewModel = _mapper.Map<GetQueueViewModel>(queue);
             _logger.LogInfo($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
 
+            if (User.Identity.IsAuthenticated)
+            {
+                var identityUserId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                
+                queueViewModel.YourId = identityUserId;
+                _logger.LogInfo($"User with id - {identityUserId} visit queue with id - {id}");
+            }
+
             return View(queueViewModel);
         }
 
-        [HttpGet("/user/{userId}/queues")]
-        public async Task<IActionResult> GetUserQueuesAsync(Guid userId)
+        [Authorize]
+        [HttpGet("/user/queues")]
+        public async Task<IActionResult> GetUserQueuesAsync()
         {
+            var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
             if (userId == Guid.Empty)
             {
                 _logger.LogError("id from the query is incorrect or equal to zero");
@@ -83,19 +95,16 @@ namespace SimpleQueue.WebUI.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Create()
+        [HttpGet("/queue")]
+        public IActionResult Create()
         {
-            var accessToken = HttpContext.GetTokenAsync("access_token");
-            var idToken = HttpContext.GetTokenAsync("id_token");
-            var refreshToken = HttpContext.GetTokenAsync("refresh_token");
-
-            var claims = User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
-
+            var token = HttpContext.GetTokenAsync("access_token");
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateAsync(CreateQueueDto? createQueueDto)
+        [Authorize]
+        [HttpPost("/queue")]
+        public async Task<IActionResult> CreateAsync(CreateQueueDto? createQueueDto)
         {
             if (!ModelState.IsValid)
             {
@@ -104,6 +113,10 @@ namespace SimpleQueue.WebUI.Controllers
             }
 
             var queue = _mapper.Map<Queue>(createQueueDto);
+            _logger.LogInfo($"{nameof(CreateQueueDto)} object has been converted to the {nameof(Queue)} entity");
+
+            var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            queue.OwnerId = new Guid(userId);
 
             await _queueService.CreateQueue(queue);
             _logger.LogInfo("New queue was successfully created");

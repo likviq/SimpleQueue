@@ -31,6 +31,15 @@ namespace SimpleQueue.Data.Configurations
             builder
                 .Property(pt => pt.NextId)
                 .HasDefaultValue(null);
+
+            builder
+                .Property(pt => pt.PreviousId)
+                .HasDefaultValue(null);
+
+            builder
+                .HasOne(pt => pt.Previous)
+                .WithOne()
+                .HasForeignKey<UserInQueue>(pt => pt.PreviousId);
         }
     }
 }

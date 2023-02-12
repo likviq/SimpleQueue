@@ -27,5 +27,7 @@ namespace SimpleQueue.Data.Repositories
             await FindAll().Include(item => item.UserInQueues)
             .Where(x => x.UserInQueues.Any(v => v.UserId.Equals(userId)))
             .ToListAsync();
+
+        public void DeleteQueue(Queue queue) => Delete(queue);
     }
 }
