@@ -107,5 +107,44 @@ namespace SimpleQueue.WebApi.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("queue/{queueId}/participant/{userInQueueId}/after/{targetUserInQueueId}")]
+        public async Task<IActionResult> ChangePosition(Guid queueId, Guid userInQueueId, Guid targetUserInQueueId)
+        {
+            var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            var queue = await _queueService.GetQueue(queueId);
+            if (queue == null)
+            {
+                _logger.LogWarning($"Queue with id - {queueId} not found");
+                return NotFound();
+            }
+
+            var isUserInQueue = _userInQueueService.IsUserInQueue(userId, queueId);
+            if (!isUserInQueue && queue.OwnerId != userId)
+            {
+                _logger.LogWarning($"There is no user with id - {userId} in queue with id - {queueId}");
+                return NotFound();
+            }
+
+            var userInQueue = await _userInQueueService.GetUserInQueue(userInQueueId);
+            var targetUserInQueue = await _userInQueueService.GetUserInQueue(targetUserInQueueId);
+            if (userInQueue.QueueId != queueId || targetUserInQueue.QueueId != userInQueue.QueueId)
+            {
+                _logger.LogWarning($"{userInQueueId} and {targetUserInQueueId} are in different queues");
+                return BadRequest();
+            }
+
+            if (userInQueue.UserId != userId && queue.OwnerId != userId)
+            {
+                _logger.LogWarning($"Someone with id - {userId} tried to move a {nameof(UserInQueue)} " +
+                        $"with id - {userInQueueId} from queue with id - {queueId}");
+                return Forbid();
+            }
+            _userInQueueService.MoveUserInQueueAfter(userInQueue, targetUserInQueue);
+
+            return Ok();
+        }
     }
 }

@@ -55,13 +55,27 @@ namespace SimpleQueue.Services
             return newParticipant;
         }
 
-        private UserInQueue PrepareForSave(UserInQueue userInQueue)
+        public void MoveUserInQueueAfter(UserInQueue userInQueue, UserInQueue targetUserInQueue)
         {
-            userInQueue.Queue = null;
-            userInQueue.Previous = null;
-            userInQueue.User = null;
+            var nextAfterSwapUserInQueue = targetUserInQueue.Next;
+            if (nextAfterSwapUserInQueue != null)
+            {
+                nextAfterSwapUserInQueue.PreviousId = userInQueue.Id;
+            }
 
-            return userInQueue;
+            var previousBeforeSwapUserInQueue = userInQueue.Previous;
+            var nextBeforeSwapUserInQueue = userInQueue.Next;
+            if (previousBeforeSwapUserInQueue != null && nextBeforeSwapUserInQueue != null)
+            {
+                previousBeforeSwapUserInQueue.NextId = nextBeforeSwapUserInQueue.Id;
+                nextBeforeSwapUserInQueue.PreviousId = previousBeforeSwapUserInQueue.Id;
+            }
+
+            userInQueue.NextId = targetUserInQueue.NextId;
+            targetUserInQueue.NextId = userInQueue.Id;
+            userInQueue.PreviousId = targetUserInQueue.Id;
+
+            _repository.SaveAsync();
         }
     }
 }
