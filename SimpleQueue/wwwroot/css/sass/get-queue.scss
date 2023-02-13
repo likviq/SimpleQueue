@@ -163,9 +163,14 @@ $body-font-family: 'Montserrat';
                 }
 
                 .end-button {
+                    .clicker-number {
+                        font-size: 37px;
+                        line-height: 44px;
+                    }
+
                     .end-text {
-                        font-size: 64px;
-                        line-height: 78px;
+                        font-size: 44px;
+                        line-height: 66px;
                     }
                 }
             }

@@ -109,9 +109,12 @@
         .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
           font-size: 37px;
           line-height: 44px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .clicker-number {
+          font-size: 37px;
+          line-height: 44px; }
         .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
-          font-size: 64px;
-          line-height: 78px; }
+          font-size: 44px;
+          line-height: 66px; }
 
 @media (max-width: 1368px) {
   body .main-body .queue-content {

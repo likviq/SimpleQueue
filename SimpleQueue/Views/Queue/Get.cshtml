@@ -21,7 +21,8 @@
             </div>
             <div class="queue-info-right-part">
                 <img class="edit-queue-image" src="~/images/queue/edit-icon.svg">
-                <div class="status-queue-image" style=@(Model.isFrozen == false ? "background-color:#82FF9D":"")></div>
+                <div id="status-queue-image" class="status-queue-image" 
+                style=@(Model.isFrozen == false ? "background-color:#82FF9D":"")></div>
             </div>
         </div>
         
@@ -30,13 +31,13 @@
         <div class="user-in-queue-container">
             @foreach (var user in Model.Users)
             {
-                <div class="user-position" id="user-@user.Id">
+                <div class="user-position" id="user-@user.IdInQueue">
                     <div class="user-info">
                         <div class="user-name">
                             @user.Username
                         </div>
                         <div class="delete-user">
-                            <input onclick="deleteUserFromQueue('@user.Id')" id="trash-image-@user.Id" type="image" src="~/images/queue/trash-icon.svg" />
+                            <input onclick="deleteUserFromQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
                         </div>
                     </div>
                 </div>
@@ -45,15 +46,25 @@
         <div class="queue-controll-panel">
             <div class="controll-buttons">
                 <div class="people-in-queue controll-object">
-                    <div class="number-of-people">@Model.Users.Count()</div>
+                    <div id="admin-number" class="number-of-people">@Model.Users.Count()</div>
                     <div class="in-queue">In Queue</div>
                 </div>
                 @if(User.Identity.IsAuthenticated && Model.YourId == Model.OwnerId){
-                    <button class="next-button controll-object">
+                    <button class="next-button controll-object"
+                    onclick="nextUser('@Model.Id')">
                         <div class="next-text">Next</div>
                     </button>
-                    <button class="deactivate-button controll-object">
-                        <div class="deactivate-text">Deactivate</div>
+                    <button class="deactivate-button controll-object"
+                        id="freeze-button"
+                        onclick="freezeQueue('@Model.Id')" 
+                        style=@(Model.isFrozen == false ? "":"display:none")>
+                        <div class="deactivate-text">Freeze</div>
+                    </button>
+                    <button class="deactivate-button controll-object" 
+                        id="unfreeze-button"    
+                        onclick="freezeQueue('@Model.Id')" 
+                        style=@(Model.isFrozen == false ? "display:none":"")>
+                        <div class="deactivate-text">UnFreeze</div>
                     </button>
                 }
                 else{
@@ -64,7 +75,9 @@
                         <div class="deactivate-text">Enter</div>
                     </button>
                 }
-                <button class="end-button controll-object">
+                <button class="end-button controll-object"
+                    onclick="clicker()">
+                    <div id="clicker-value" class="clicker-number">0</div>
                     <div class="end-text">Click</div>
                 </button>               
             </div>
