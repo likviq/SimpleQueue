@@ -33,6 +33,30 @@ namespace SimpleQueue.Services
             return _repository.UserInQueue.IsUserInQueue(userId, queueId);
         }
 
+        public async Task<int?> UserPositionInQueue(Guid userId, Guid queueId)
+        {
+            var participant = _repository.UserInQueue.FirstParticipant(queueId).Result;
+            var position = 1;
+
+            if (participant == null)
+            {
+                return null;
+            }
+
+            while (participant.UserId != userId && participant.NextId != null)
+            {
+                participant = await _repository.UserInQueue.Get(participant.NextId);
+                position++;
+
+                if (participant.NextId == null && participant.UserId != userId)
+                {
+                    return null;
+                }
+            }
+
+            return position;
+        }
+
         public async Task<UserInQueue> InitializeUserInQueue(Guid userId, Guid queueId)
         {
             var newParticipant = new UserInQueue { Id = Guid.NewGuid(), QueueId = queueId, UserId = userId };

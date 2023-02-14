@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
+using SimpleQueue.WebApi.Models.ViewModels;
 using System.Security.Claims;
 
 namespace SimpleQueue.WebApi.Controllers
@@ -11,12 +13,18 @@ namespace SimpleQueue.WebApi.Controllers
     [ApiController]
     public class UserInQueueController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IUserInQueueService _userInQueueService;
         private readonly IQueueService _queueService;
         private readonly ILogger<UserInQueueController> _logger;
 
-        public UserInQueueController(IUserInQueueService userInQueueService, IQueueService queueService, ILogger<UserInQueueController> logger)
+        public UserInQueueController(
+            IMapper mapper, 
+            IUserInQueueService userInQueueService, 
+            IQueueService queueService, 
+            ILogger<UserInQueueController> logger)
         {
+            _mapper = mapper;
             _userInQueueService = userInQueueService;
             _queueService = queueService;
             _logger = logger;
@@ -64,6 +72,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 _logger.LogError($"Method {nameof(DeleteUser)} from the controller {nameof(UserInQueueController)} " +
                     $"was broken due to an error: {ex.Message}");
+                return BadRequest();
             }
             _logger.LogInformation($"Method {nameof(DeleteUser)} from the controller {nameof(UserInQueueController)} " +
                 $"completed successfully");
@@ -96,16 +105,23 @@ namespace SimpleQueue.WebApi.Controllers
                 var userInQueue = await _userInQueueService.InitializeUserInQueue(userId, queueId);
                 _logger.LogInformation($"User with id - {userId} has been added to the queue with id - {queueId}." +
                     $"Id in {nameof(UserInQueue)} object is {userInQueue.Id}");
+
+                var userInQueueViewModel = _mapper.Map<UserInQueueViewModel>(userInQueue);
+                
+                _logger.LogInformation($"{nameof(UserInQueueViewModel)} object successfully " +
+                    $"created from {nameof(UserInQueue)}");
+
+                _logger.LogInformation($"Method {nameof(EnterQueue)} from the controller {nameof(UserInQueueController)} " +
+                $"completed successfully");
+
+                return Ok(userInQueueViewModel);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Method {nameof(EnterQueue)} from the controller {nameof(UserInQueueController)} " +
                     $"was broken due to an error: {ex.Message}");
-            }
-            _logger.LogInformation($"Method {nameof(EnterQueue)} from the controller {nameof(UserInQueueController)} " +
-                $"completed successfully");
-
-            return Ok();
+                return BadRequest();
+            }           
         }
 
         [Authorize]

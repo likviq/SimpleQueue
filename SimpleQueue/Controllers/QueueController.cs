@@ -17,11 +17,17 @@ namespace SimpleQueue.WebUI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IQueueService _queueService;
+        private readonly IUserInQueueService _userInQueueService;
         private readonly ILoggerManager _logger;
-        public QueueController(IMapper mapper, IQueueService queueService, ILoggerManager logger)
+        public QueueController(
+            IMapper mapper, 
+            IQueueService queueService, 
+            IUserInQueueService userInQueueService, 
+            ILoggerManager logger)
         {
             _mapper = mapper;
             _queueService = queueService;
+            _userInQueueService = userInQueueService;
             _logger = logger;
         }
 
@@ -47,12 +53,14 @@ namespace SimpleQueue.WebUI.Controllers
             var queueViewModel = _mapper.Map<GetQueueViewModel>(queue);
             _logger.LogInfo($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated != false)
             {
                 var identityUserId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-                
+
                 queueViewModel.YourId = identityUserId;
                 _logger.LogInfo($"User with id - {identityUserId} visit queue with id - {id}");
+
+                queueViewModel.YourPosition = await _userInQueueService.UserPositionInQueue(identityUserId, queueViewModel.Id);
             }
 
             return View(queueViewModel);

@@ -1,3 +1,7 @@
+////export interface UserInQueueViewModel {
+////    UserId: string;
+////    UserInQueueId: string;
+////}
 var apiEndpointUri = "https://localhost:7253/api/callapi";
 var isFrozen = false;
 setFreezeVariable();
@@ -23,7 +27,61 @@ function deleteUserFromQueue(idQueue, idParticipant) {
     api(apiEndpointUri, method, uri);
     var userField = document.getElementById('user-' + idParticipant);
     userField.remove();
+}
+function leaveQueue(idQueue, idParticipant) {
+    deleteUserFromQueue(idQueue, idParticipant);
+    afterLeave();
+}
+function afterLeave() {
     decreaseAmountOfParticipant();
+    var enterButton = document.getElementById('join-queue-button');
+    enterButton.style.display = '';
+    var myPositionNull = document.getElementById('your-position-is-null');
+    myPositionNull.style.display = '';
+    var leaveButton = document.getElementById('leave-queue-button');
+    leaveButton.style.display = 'none';
+    var myPositionNotNull = document.getElementById('your-position-is-not-null');
+    myPositionNotNull.style.display = 'none';
+}
+function enterQueue(idQueue) {
+    var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/enter");
+    var method = "post";
+    var viewModel = apiEnterQueue(apiEndpointUri, method, uri);
+    alert(viewModel);
+    afterJoin();
+    cloneUserElement("asdasdasd");
+}
+function cloneUserElement(userInQueueId) {
+    var elem = document.querySelector('.user-position:last-child');
+    elem.id = "user-" + userInQueueId;
+    var clone = elem.cloneNode(true);
+    elem.after(clone);
+}
+function apiEnterQueue(url, method, uri) {
+    url = prepareRequest(url, method, uri);
+    return fetch(url)
+        .then(function (response) {
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        console.log(response.text);
+        return response.json();
+    })
+        .then(function (data) {
+        return data;
+    });
+}
+function afterJoin() {
+    increaseAmountOfParticipant();
+    var enterButton = document.getElementById('join-queue-button');
+    enterButton.style.display = 'none';
+    var myPositionNull = document.getElementById('your-position-is-null');
+    myPositionNull.style.display = 'none';
+    var leaveButton = document.getElementById('leave-queue-button');
+    leaveButton.style.display = '';
+    var myPositionNotNull = document.getElementById('your-position-is-not-null');
+    myPositionNotNull.style.display = '';
+    myPositionNotNull.querySelector('.position-user').textContent = amountOfParticipant.toString();
 }
 function decreaseAmountOfParticipant() {
     var participants = document.getElementById('admin-number');
@@ -76,6 +134,7 @@ function api(url, method, uri) {
         return response.json();
     })
         .then(function (data) {
+        console.log(data.data);
         return data.data;
     });
 }

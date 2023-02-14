@@ -8,6 +8,7 @@ namespace SimpleQueue.Domain.Interfaces
         void Delete(UserInQueue userInQueue);
         void EnterQueue(UserInQueue userInQueue);
         bool IsUserInQueue(Guid userId, Guid queueId);
+        Task<int?> UserPositionInQueue(Guid userId, Guid queueId);
         Task<UserInQueue> InitializeUserInQueue(Guid userId, Guid queueId);
         void MoveUserInQueueAfter(UserInQueue userInQueue, UserInQueue targetUserInQueue);
     }

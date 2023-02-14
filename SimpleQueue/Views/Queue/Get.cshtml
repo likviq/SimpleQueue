@@ -3,6 +3,16 @@
     ViewData["Title"] = "Queue";
 }
 
+@{
+    var currentUserInQueueId = "";
+
+    foreach (var user in Model.Users) {
+        if( user.Id == Model.YourId){
+            currentUserInQueueId = user.IdInQueue.ToString();
+        }
+    }
+}
+
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
 
 <div class="main-body">
@@ -68,12 +78,28 @@
                     </button>
                 }
                 else{
-                    <button class="next-button controll-object">
-                        <div class="next-text">Your position</div>
+                    <div id="your-position-is-not-null" class="position-in-queue people-in-queue controll-object"
+                    style=@(Model.YourPosition != null ? "":"display:none")>
+                        <div class="position-user">@Model.YourPosition</div>
+                        <div class="next-text">You</div>
+                    </div>
+                    <button id="leave-queue-button" class="deactivate-button controll-object"
+                    onclick="leaveQueue('@Model.Id', '@currentUserInQueueId')"
+                    style=@(Model.YourPosition != null ? "":"display:none")>
+                        <div class="deactivate-text">Leave</div>
                     </button>
-                    <button class="deactivate-button controll-object">
+
+                    <div id="your-position-is-null" class="position-in-queue people-in-queue controll-object"
+                    style=@(Model.YourPosition == null ? "":"display:none")>
+                        <div class="position-user"></div>
+                        <div class="next-text"></div>
+                    </div>
+                    <button id="join-queue-button" class="deactivate-button controll-object"
+                    onclick="enterQueue('@Model.Id')"
+                    style=@(Model.YourPosition == null ? "":"display:none")>
                         <div class="deactivate-text">Enter</div>
                     </button>
+                    
                 }
                 <button class="end-button controll-object"
                     onclick="clicker()">

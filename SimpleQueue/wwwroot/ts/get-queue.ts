@@ -1,4 +1,9 @@
-﻿const apiEndpointUri = "https://localhost:7253/api/callapi";
+﻿////export interface UserInQueueViewModel {
+////    UserId: string;
+////    UserInQueueId: string;
+////}
+
+const apiEndpointUri = "https://localhost:7253/api/callapi";
 
 let isFrozen = false;
 setFreezeVariable();
@@ -44,8 +49,99 @@ function deleteUserFromQueue(idQueue: string, idParticipant: string) {
     ) as HTMLInputElement | null;
 
     userField.remove();
+}
 
+function leaveQueue(idQueue: string, idParticipant: string) {
+    deleteUserFromQueue(idQueue, idParticipant);
+
+    afterLeave();
+}
+
+function afterLeave() {
     decreaseAmountOfParticipant();
+
+    const enterButton = document.getElementById(
+        'join-queue-button',
+    ) as HTMLInputElement | null;
+    enterButton.style.display = '';
+
+    const myPositionNull = document.getElementById(
+        'your-position-is-null',
+    ) as HTMLInputElement | null;
+    myPositionNull.style.display = '';
+
+    const leaveButton = document.getElementById(
+        'leave-queue-button',
+    ) as HTMLInputElement | null;
+    leaveButton.style.display = 'none';
+
+    const myPositionNotNull = document.getElementById(
+        'your-position-is-not-null',
+    ) as HTMLInputElement | null;
+    myPositionNotNull.style.display = 'none';
+}
+
+function enterQueue(idQueue: string) {
+    const uri = `https://localhost:7147/api/queue/${idQueue}/enter`;
+    const method = "post";
+
+    let viewModel = apiEnterQueue(apiEndpointUri, method, uri);
+    alert(viewModel);
+
+    afterJoin();
+
+    cloneUserElement("asdasdasd");
+}
+
+function cloneUserElement(userInQueueId: string) {
+    var elem = document.querySelector('.user-position:last-child') as HTMLDivElement;
+    elem.id = "user-" + userInQueueId;
+
+    var clone = elem.cloneNode(true);
+
+    elem.after(clone);
+}
+
+function apiEnterQueue(url: string, method: string, uri: string): Promise<string> {
+    url = prepareRequest(url, method, uri);
+
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText)
+            }
+
+            console.log(response.text);
+            return response.json()
+        })
+        .then(data => {
+            return data as string
+        });
+}
+
+function afterJoin() {
+    increaseAmountOfParticipant();
+
+    const enterButton = document.getElementById(
+        'join-queue-button',
+    ) as HTMLInputElement | null;
+    enterButton.style.display = 'none';
+
+    const myPositionNull = document.getElementById(
+        'your-position-is-null',
+    ) as HTMLInputElement | null;
+    myPositionNull.style.display = 'none';
+
+    const leaveButton = document.getElementById(
+        'leave-queue-button',
+    ) as HTMLInputElement | null;
+    leaveButton.style.display = '';
+
+    const myPositionNotNull = document.getElementById(
+        'your-position-is-not-null',
+    ) as HTMLInputElement | null;
+    myPositionNotNull.style.display = '';
+    myPositionNotNull.querySelector('.position-user').textContent = amountOfParticipant.toString();
 }
 
 function decreaseAmountOfParticipant() {
@@ -135,6 +231,7 @@ function api<T>(url: string, method: string, uri: string): Promise<T> {
             return response.json() as Promise<{ data: T }>
         })
         .then(data => {
+            console.log(data.data)
             return data.data
         })
 }

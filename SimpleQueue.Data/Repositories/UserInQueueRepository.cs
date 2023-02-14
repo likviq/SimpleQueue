@@ -18,7 +18,7 @@ namespace SimpleQueue.Data.Repositories
         public void DeleteUserInQueue(UserInQueue userInQueue) =>
             Delete(userInQueue);
 
-        public async Task<UserInQueue?> Get(Guid userInQueueId) =>
+        public async Task<UserInQueue?> Get(Guid? userInQueueId) =>
             await FindByCondition(x => x.Id.Equals(userInQueueId))
             .FirstOrDefaultAsync();
 
