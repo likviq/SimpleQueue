@@ -32,9 +32,10 @@ namespace SimpleQueue.WebApi.Controllers
             if (result.IsSuccessStatusCode)
             {
                 response = result.Content.ToString();
+                return Ok(response);
             }
 
-            return Ok(response);
+            return BadRequest();
         }
     }
 }

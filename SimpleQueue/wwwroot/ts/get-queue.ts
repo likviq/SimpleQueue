@@ -39,10 +39,6 @@ function nextUser(idQueue: string) {
 }
 
 function deleteUserFromQueue(idQueue: string, idParticipant: string) {
-    const uri = `https://localhost:7147/api/queue/${idQueue}/participant/${idParticipant}`;
-    const method = "post";
-
-    api(apiEndpointUri, method, uri);
 
     const userField = document.getElementById(
         'user-' + idParticipant,
@@ -52,9 +48,19 @@ function deleteUserFromQueue(idQueue: string, idParticipant: string) {
 }
 
 function leaveQueue(idQueue: string, idParticipant: string) {
-    deleteUserFromQueue(idQueue, idParticipant);
+    const uri = `https://localhost:7147/api/queue/${idQueue}/participant/${idParticipant}`;
+    const method = "post";
 
-    afterLeave();
+    api(apiEndpointUri, method, uri).then((response) => {
+        if (response.ok) {
+            deleteUserFromQueue(idQueue, idParticipant);
+
+            afterLeave();
+        }
+        else throw new Error(response.statusText)
+    });
+
+    
 }
 
 function afterLeave() {
@@ -85,12 +91,13 @@ function enterQueue(idQueue: string) {
     const uri = `https://localhost:7147/api/queue/${idQueue}/enter`;
     const method = "post";
 
-    let viewModel = apiEnterQueue(apiEndpointUri, method, uri);
-    alert(viewModel);
+    api(apiEndpointUri, method, uri).then(() => {
 
-    afterJoin();
+        afterJoin();
 
-    cloneUserElement("asdasdasd");
+        cloneUserElement("asdasdasd");
+    });
+
 }
 
 function cloneUserElement(userInQueueId: string) {
@@ -102,7 +109,12 @@ function cloneUserElement(userInQueueId: string) {
     elem.after(clone);
 }
 
-function apiEnterQueue(url: string, method: string, uri: string): Promise<string> {
+interface Todo {
+    UserId: string;
+    UserInQueueId: string;
+}
+
+function apiEnterQueue<T>(url: string, method: string, uri: string): Promise<T> {
     url = prepareRequest(url, method, uri);
 
     return fetch(url)
@@ -110,12 +122,7 @@ function apiEnterQueue(url: string, method: string, uri: string): Promise<string
             if (!response.ok) {
                 throw new Error(response.statusText)
             }
-
-            console.log(response.text);
-            return response.json()
-        })
-        .then(data => {
-            return data as string
+            return response.json();
         });
 }
 
@@ -218,22 +225,10 @@ function setAmountOfParticipant() {
     amountOfParticipant = parseInt(participants.textContent);
 }
 
-function api<T>(url: string, method: string, uri: string): Promise<T> {
+function api(url: string, method: string, uri: string) {
     url = prepareRequest(url, method, uri);
 
-    return fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText)
-            }
-
-            console.log(response.text);
-            return response.json() as Promise<{ data: T }>
-        })
-        .then(data => {
-            console.log(data.data)
-            return data.data
-        })
+    return fetch(url);
 }
 
 function prepareRequest(url: string, method: string, uri: string): string {

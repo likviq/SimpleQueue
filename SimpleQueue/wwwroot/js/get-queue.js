@@ -22,15 +22,20 @@ function nextUser(idQueue) {
     decreaseAmountOfParticipant();
 }
 function deleteUserFromQueue(idQueue, idParticipant) {
-    var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/participant/").concat(idParticipant);
-    var method = "post";
-    api(apiEndpointUri, method, uri);
     var userField = document.getElementById('user-' + idParticipant);
     userField.remove();
 }
 function leaveQueue(idQueue, idParticipant) {
-    deleteUserFromQueue(idQueue, idParticipant);
-    afterLeave();
+    var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/participant/").concat(idParticipant);
+    var method = "post";
+    api(apiEndpointUri, method, uri).then(function (response) {
+        if (response.ok) {
+            deleteUserFromQueue(idQueue, idParticipant);
+            afterLeave();
+        }
+        else
+            throw new Error(response.statusText);
+    });
 }
 function afterLeave() {
     decreaseAmountOfParticipant();
@@ -46,10 +51,10 @@ function afterLeave() {
 function enterQueue(idQueue) {
     var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/enter");
     var method = "post";
-    var viewModel = apiEnterQueue(apiEndpointUri, method, uri);
-    alert(viewModel);
-    afterJoin();
-    cloneUserElement("asdasdasd");
+    api(apiEndpointUri, method, uri).then(function () {
+        afterJoin();
+        cloneUserElement("asdasdasd");
+    });
 }
 function cloneUserElement(userInQueueId) {
     var elem = document.querySelector('.user-position:last-child');
@@ -64,11 +69,7 @@ function apiEnterQueue(url, method, uri) {
         if (!response.ok) {
             throw new Error(response.statusText);
         }
-        console.log(response.text);
         return response.json();
-    })
-        .then(function (data) {
-        return data;
     });
 }
 function afterJoin() {
@@ -125,18 +126,7 @@ function setAmountOfParticipant() {
 }
 function api(url, method, uri) {
     url = prepareRequest(url, method, uri);
-    return fetch(url)
-        .then(function (response) {
-        if (!response.ok) {
-            throw new Error(response.statusText);
-        }
-        console.log(response.text);
-        return response.json();
-    })
-        .then(function (data) {
-        console.log(data.data);
-        return data.data;
-    });
+    return fetch(url);
 }
 function prepareRequest(url, method, uri) {
     return url + "?" + "method=" + method + "&uri=" + uri;
