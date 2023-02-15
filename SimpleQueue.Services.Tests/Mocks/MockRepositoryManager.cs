@@ -11,7 +11,7 @@ namespace SimpleQueue.Services.Tests.Mocks
             var queueRepoMock = MockIQueueRepository.GetMock();
 
             mock.Setup(m => m.Queue).Returns(() => queueRepoMock.Object);
-            mock.Setup(m => m.SaveAsync()).Callback(() => { return; });
+            mock.Setup(m => m.Save()).Callback(() => { return; });
 
             return mock;
         }
