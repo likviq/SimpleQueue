@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Єбаут</value>
+    <value>Про сервіс</value>
   </data>
   <data name="Create Queue" xml:space="preserve">
     <value>Створити чергу</value>
@@ -140,5 +140,23 @@
   </data>
   <data name="Participant" xml:space="preserve">
     <value>Я - учасник</value>
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
+  <data name="Sign out" xml:space="preserve">
+    <value>Вихід</value>
+  </data>
+  <data name="Sign Up" xml:space="preserve">
+    <value>Зареєструватись</value>
+  </data>
+  <data name="Your messages" xml:space="preserve">
+    <value>Ваші повідомлення</value>
+  </data>
+  <data name="Your profile" xml:space="preserve">
+    <value>Ваш профіль</value>
+  </data>
+  <data name="Your queues" xml:space="preserve">
+    <value>Ваші черги</value>
   </data>
 </root>

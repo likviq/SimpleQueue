@@ -46,9 +46,11 @@
                         <div class="user-name">
                             @user.Username
                         </div>
-                        <div class="delete-user">
-                            <input onclick="deleteUserFromQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
-                        </div>
+                        @if (Model.OwnerId == Model.YourId) {
+                            <div class="delete-user">
+                                <input onclick="deleteUserFromQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
+                            </div>
+                        }
                     </div>
                 </div>
             }
@@ -68,12 +70,14 @@
                         id="freeze-button"
                         onclick="freezeQueue('@Model.Id')" 
                         style=@(Model.isFrozen == false ? "":"display:none")>
+                        <img class="freeze-icon" src="~/images/queue/freeze-icon-2.png"/>
                         <div class="deactivate-text">Freeze</div>
                     </button>
                     <button class="deactivate-button controll-object" 
                         id="unfreeze-button"    
                         onclick="freezeQueue('@Model.Id')" 
                         style=@(Model.isFrozen == false ? "display:none":"")>
+                        <img class="freeze-icon" src="~/images/queue/unfreeze-icon.png"/>
                         <div class="deactivate-text">UnFreeze</div>
                     </button>
                 }

@@ -96,6 +96,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          text-align: center;
           flex-direction: column; }
           .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .number-of-people {
             font-size: 96px;
@@ -103,11 +104,32 @@
           .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .in-queue {
             font-size: 36px;
             line-height: 44px; }
-        .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
-          font-size: 64px;
-          line-height: 78px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .next-button {
+          background-color: #82FF9D; }
+          .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
+            font-size: 64px;
+            line-height: 78px; }
         .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
           font-size: 37px;
+          line-height: 44px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .freeze-icon {
+          max-width: 100px;
+          height: auto; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons #unfreeze-button {
+          background-color: #82FF9D; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons #freeze-button {
+          background-color: #A4DEF9; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons #leave-queue-button {
+          background-color: #E87C64;
+          color: white; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons #join-queue-button {
+          background-color: #82FF9D;
+          color: white; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .position-in-queue .position-user {
+          font-size: 96px;
+          line-height: 120px; }
+        .main-body .queue-content .queue-controll-panel .controll-buttons .position-in-queue .next-text {
+          font-size: 36px;
           line-height: 44px; }
         .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .clicker-number {
           font-size: 37px;
@@ -129,12 +151,18 @@
       body .main-body .queue-content .queue-controll-panel .controll-buttons .people-in-queue .in-queue {
         font-size: 30px;
         line-height: 44px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .position-in-queue .position-user {
+        font-size: 72px;
+        line-height: 96px; }
+      body .main-body .queue-content .queue-controll-panel .controll-buttons .position-in-queue .next-text {
+        font-size: 30px;
+        line-height: 44px; }
       body .main-body .queue-content .queue-controll-panel .controll-buttons .next-button .next-text {
         font-size: 52px; }
       body .main-body .queue-content .queue-controll-panel .controll-buttons .deactivate-button .deactivate-text {
         font-size: 26px; }
       body .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
-        font-size: 53px; }
+        font-size: 40px; }
       body .main-body .queue-content .queue-controll-panel .controll-buttons .controll-object {
         width: 23%;
         margin: auto; } }
