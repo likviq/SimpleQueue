@@ -23,46 +23,45 @@
                     <nav id="menu" role="navigation">
                         <div class="menu">
                             <ul class="menu">
-                                <li>
+                                <li class="menu-elements">
                                     <a asp-controller="Home" asp-action="Index">@ViewLocalizer["Home"]</a>
                                 </li>
-                                <li class=" current-menu-item">
+                                <li class="menu-elements">
                                     <a asp-controller="Queue" asp-action="Create">@ViewLocalizer["Create Queue"]</a>
                                 </li>
-                                <li class="has-subnav">
+                                <li class="menu-elements">
                                     <a href="/user/queues">@ViewLocalizer["My Queues"]</a>
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="#">@ViewLocalizer["Owner"]</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">@ViewLocalizer["Participant"]</a>
-                                        </li>
-                                    </ul>
                                 </li>
-                                <li>
+                                <li class="menu-elements">
                                     <a href="#">@ViewLocalizer["Messages"]</a>
                                 </li>
-                                <li>
+                                <li class="menu-elements">
                                     <a href="#">@ViewLocalizer["About"]</a>
                                 </li>
-                                <li>
+                                <li class="menu-elements">
                                     @await Html.PartialAsync("_CulturePartial")
                                 </li>
                                 @if (isAuthenticated) {
-                                    <li class="has-subnav">
-                                        <a asp-controller="Home" asp-action="LoginOIDC">@username
+                                    <li class="has-subnav menu-elements">
+                                        <a asp-controller="User" asp-action="Profile" class="user-profile">
+                                            @username
                                             <img src="~/images/shared/user-profile-icon.svg"/>
                                         </a>
                                         <ul class="sub-menu">
                                             <li>
-                                                <a href="#">@ViewLocalizer["Your profile"]</a>
+                                                <a asp-controller="User" asp-action="Profile">
+                                                    @ViewLocalizer["Your profile"]
+                                                </a>
                                             </li>
                                             <li>
-                                                <a href="#">@ViewLocalizer["Your queues"]</a>
+                                                <a href="/user/queues">
+                                                    @ViewLocalizer["Your queues"]
+                                                </a>
                                             </li>
                                             <li>
-                                                <a href="#">@ViewLocalizer["Your messages"]</a>
+                                                <a asp-controller="User" asp-action="Messages">
+                                                    @ViewLocalizer["Your messages"]
+                                                </a>
                                             </li>
                                             <li>
                                                 <a asp-controller="Home" asp-action="Logout">@ViewLocalizer["Sign out"]</a>
@@ -71,12 +70,12 @@
                                     </li>
                                 }
                                 else {
-                                    <li>
+                                    <li class="menu-elements">
                                         <a asp-controller="Home" asp-action="Login">@ViewLocalizer["Sign In"]
 
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="menu-elements">
                                         <a asp-controller="Home" asp-action="Register">@ViewLocalizer["Sign Up"]
 
                                         </a>
