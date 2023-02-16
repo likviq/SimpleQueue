@@ -5,6 +5,7 @@ using AutoMapper;
 using SimpleQueue.Domain.Entities;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Authentication;
 
 namespace SimpleQueue.Controllers
 {
@@ -18,6 +19,34 @@ namespace SimpleQueue.Controllers
             _logger = logger;
             _logger.LogDebug("NLog injected into HomeController");
             _mapper = mapper;
+        }
+
+        [HttpGet("/login")]
+        public IActionResult Login()
+        {
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = "/"
+            });
+        }
+
+        [HttpGet("/register")]
+        public IActionResult Register()
+        {
+            var callbackUrl = Url.Action("Register");
+
+            var props = new AuthenticationProperties
+            {
+                RedirectUri = callbackUrl
+            };
+
+            return Challenge(props);
+        }
+
+        [HttpGet("/logout")]
+        public IActionResult Logout()
+        {
+            return SignOut("Cookie", "oidc");
         }
 
         public IActionResult Index()
@@ -40,11 +69,6 @@ namespace SimpleQueue.Controllers
             };
 
             return View(errorViewModel);
-        }
-
-        public IActionResult Logout()
-        {
-            return SignOut("Cookie", "oidc");
         }
     }
 }

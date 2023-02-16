@@ -1,8 +1,9 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer ViewLocalizer
+﻿@using Microsoft.AspNetCore.Identity
 
 @{
     var isAuthenticated = User.Identity.IsAuthenticated;
+    
+    var username = User.Identity.Name;
 }
 
 <!DOCTYPE html>
@@ -50,7 +51,7 @@
                                 </li>
                                 @if (isAuthenticated) {
                                     <li class="has-subnav">
-                                        <a asp-controller="Home" asp-action="LoginOIDC">@ViewLocalizer["My Profile"]
+                                        <a asp-controller="Home" asp-action="LoginOIDC">@username
                                             <img src="~/images/shared/user-profile-icon.svg"/>
                                         </a>
                                         <ul class="sub-menu">
@@ -64,19 +65,19 @@
                                                 <a href="#">@ViewLocalizer["Your messages"]</a>
                                             </li>
                                             <li>
-                                                <a href="#">@ViewLocalizer["Sign out"]</a>
+                                                <a asp-controller="Home" asp-action="Logout">@ViewLocalizer["Sign out"]</a>
                                             </li>
                                         </ul>
                                     </li>
                                 }
                                 else {
                                     <li>
-                                        <a asp-controller="Home" asp-action="LoginOIDC">@ViewLocalizer["Sign In"]
+                                        <a asp-controller="Home" asp-action="Login">@ViewLocalizer["Sign In"]
 
                                         </a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Home" asp-action="LoginOIDC">@ViewLocalizer["Sign Up"]
+                                        <a asp-controller="Home" asp-action="Register">@ViewLocalizer["Sign Up"]
 
                                         </a>
                                     </li>
