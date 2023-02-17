@@ -1,3 +1,4 @@
+"use strict";
 ////export interface UserInQueueViewModel {
 ////    UserId: string;
 ////    UserInQueueId: string;
@@ -38,6 +39,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+var signalR = require("@microsoft/signalr");
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("/queue/hub")
+    .build();
 var apiEndpointUri = "https://localhost:7253/api/callapi";
 var isFrozen = false;
 setFreezeVariable();
