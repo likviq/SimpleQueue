@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
+using SimpleQueue.WebApi.AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
+
+builder.Services.AddAutoMapper(typeof(MappingUserProfile));
 
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {

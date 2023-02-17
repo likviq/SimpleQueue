@@ -1,5 +1,10 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer ViewLocalizer
+﻿@using Microsoft.AspNetCore.Identity
+
+@{
+    var isAuthenticated = User.Identity.IsAuthenticated;
+    
+    var username = User.Identity.Name;
+}
 
 <!DOCTYPE html>
     <html lang="en">
@@ -18,37 +23,64 @@
                     <nav id="menu" role="navigation">
                         <div class="menu">
                             <ul class="menu">
-                                <li>
+                                <li class="menu-elements">
                                     <a asp-controller="Home" asp-action="Index">@ViewLocalizer["Home"]</a>
                                 </li>
-                                <li class=" current-menu-item">
+                                <li class="menu-elements">
                                     <a asp-controller="Queue" asp-action="Create">@ViewLocalizer["Create Queue"]</a>
                                 </li>
-                                <li class="has-subnav">
+                                <li class="menu-elements">
                                     <a href="/user/queues">@ViewLocalizer["My Queues"]</a>
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="#">@ViewLocalizer["Owner"]</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">@ViewLocalizer["Participant"]</a>
-                                        </li>
-                                    </ul>
                                 </li>
-                                <li>
+                                <li class="menu-elements">
                                     <a href="#">@ViewLocalizer["Messages"]</a>
                                 </li>
-                                <li>
+                                <li class="menu-elements">
                                     <a href="#">@ViewLocalizer["About"]</a>
                                 </li>
-                                <li>
+                                <li class="menu-elements">
                                     @await Html.PartialAsync("_CulturePartial")
                                 </li>
-                                <li>
-                                    <a asp-controller="Home" asp-action="LoginOIDC">@ViewLocalizer["My Profile"]
-                                        <img src="~/images/shared/user-profile-icon.svg"/>
-                                    </a>
-                                </li>
+                                @if (isAuthenticated) {
+                                    <li class="has-subnav menu-elements">
+                                        <a asp-controller="User" asp-action="Profile" class="user-profile">
+                                            @username
+                                            <img src="~/images/shared/user-profile-icon.svg"/>
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a asp-controller="User" asp-action="Profile">
+                                                    @ViewLocalizer["Your profile"]
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/user/queues">
+                                                    @ViewLocalizer["Your queues"]
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-controller="User" asp-action="Messages">
+                                                    @ViewLocalizer["Your messages"]
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-controller="Home" asp-action="Logout">@ViewLocalizer["Sign out"]</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                }
+                                else {
+                                    <li class="menu-elements">
+                                        <a asp-controller="Home" asp-action="Login">@ViewLocalizer["Sign In"]
+
+                                        </a>
+                                    </li>
+                                    <li class="menu-elements">
+                                        <a asp-controller="Home" asp-action="Register">@ViewLocalizer["Sign Up"]
+
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </nav>

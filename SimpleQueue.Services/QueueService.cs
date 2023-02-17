@@ -13,7 +13,7 @@ namespace SimpleQueue.Services
         public async Task CreateQueue(Queue queue)
         {
             _repository.Queue.CreateQueue(queue);
-            await _repository.SaveAsync();
+            _repository.Save();
         }
 
         public async Task<Queue?> GetQueue(Guid id)
@@ -41,7 +41,7 @@ namespace SimpleQueue.Services
 
             queue.isFrozen = !queue.isFrozen;
 
-            await _repository.SaveAsync();
+            _repository.Save();
         }
 
         public async Task<UserInQueue?> NextParticipant(Guid id)
@@ -52,13 +52,13 @@ namespace SimpleQueue.Services
         public void DeleteParticipant(UserInQueue participant)
         {
             _repository.UserInQueue.DeleteUserInQueue(participant);
-            _repository.SaveAsync();
+            _repository.Save();
         }
 
         public void DeleteQueue(Queue queue)
         {
             _repository.Queue.DeleteQueue(queue);
-            _repository.SaveAsync();
+            _repository.Save();
         }
     }
 }

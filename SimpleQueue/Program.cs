@@ -42,6 +42,7 @@ builder.Host.UseNLog();
 builder.Services.AddTransient<ExceptionHandlingException>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
+builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 

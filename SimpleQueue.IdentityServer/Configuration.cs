@@ -62,7 +62,8 @@ namespace SimpleQueue.IdentityServer
                     },
                     
                     RequirePkce = true,
-                    RequireConsent = false
+                    RequireConsent = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                 },
                 new Client{
                     ClientId = "client_id_api",

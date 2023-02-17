@@ -19,18 +19,42 @@ namespace SimpleQueue.Services
         public void Delete(UserInQueue userInQueue)
         {
             _repository.UserInQueue.DeleteUserInQueue(userInQueue);
-            _repository.SaveAsync();
+            _repository.Save();
         }
 
         public void EnterQueue(UserInQueue userInQueue)
         {
             _repository.UserInQueue.CreateUserInQueue(userInQueue);
-            _repository.SaveAsync();
+            _repository.Save();
         }
 
         public bool IsUserInQueue(Guid userId, Guid queueId)
         {
             return _repository.UserInQueue.IsUserInQueue(userId, queueId);
+        }
+
+        public async Task<int?> UserPositionInQueue(Guid userId, Guid queueId)
+        {
+            var participant = _repository.UserInQueue.FirstParticipant(queueId).Result;
+            var position = 1;
+
+            if (participant == null)
+            {
+                return null;
+            }
+
+            while (participant.UserId != userId && participant.NextId != null)
+            {
+                participant = await _repository.UserInQueue.Get(participant.NextId);
+                position++;
+
+                if (participant.NextId == null && participant.UserId != userId)
+                {
+                    return null;
+                }
+            }
+
+            return position;
         }
 
         public async Task<UserInQueue> InitializeUserInQueue(Guid userId, Guid queueId)
@@ -40,7 +64,7 @@ namespace SimpleQueue.Services
             var lastParticipantInQueue = await _repository.UserInQueue.LastParticipantInQueue(queueId);
 
             _repository.UserInQueue.CreateUserInQueue(newParticipant);
-            await _repository.SaveAsync();
+            _repository.Save();
            
             if (lastParticipantInQueue == null)
             {
@@ -50,7 +74,7 @@ namespace SimpleQueue.Services
             newParticipant.PreviousId = lastParticipantInQueue.Id;
             lastParticipantInQueue.NextId = newParticipant.Id;
             
-            await _repository.SaveAsync();
+            _repository.Save();
 
             return newParticipant;
         }
@@ -75,7 +99,7 @@ namespace SimpleQueue.Services
             targetUserInQueue.NextId = userInQueue.Id;
             userInQueue.PreviousId = targetUserInQueue.Id;
 
-            _repository.SaveAsync();
+            _repository.Save();
         }
     }
 }
