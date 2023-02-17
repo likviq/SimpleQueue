@@ -20,22 +20,20 @@ namespace SimpleQueue.WebApi.Controllers
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var response = string.Empty;
-
             HttpRequestMessage request = new HttpRequestMessage
             {
                 Method = new HttpMethod(method),
                 RequestUri = new Uri(url)
             };
 
-            HttpResponseMessage result = await client.SendAsync(request);
-            if (result.IsSuccessStatusCode)
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
             {
-                response = result.Content.ToString();
-                return Ok(response);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                return Ok(responseBody);
             }
 
-            return BadRequest();
+            return BadRequest(response.StatusCode);
         }
     }
 }

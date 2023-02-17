@@ -46,11 +46,9 @@
                         <div class="user-name">
                             @user.Username
                         </div>
-                        @if (Model.OwnerId == Model.YourId) {
-                            <div class="delete-user">
-                                <input onclick="deleteUserFromQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
-                            </div>
-                        }
+                        <div class="delete-user" style=@(Model.OwnerId == Model.YourId ? "":"display:none")>
+                            <input onclick="leaveQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
+                        </div>
                     </div>
                 </div>
             }

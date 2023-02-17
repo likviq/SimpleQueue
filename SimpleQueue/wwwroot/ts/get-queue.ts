@@ -87,43 +87,60 @@ function afterLeave() {
     myPositionNotNull.style.display = 'none';
 }
 
-function enterQueue(idQueue: string) {
+async function enterQueue(idQueue: string) {
     const uri = `https://localhost:7147/api/queue/${idQueue}/enter`;
     const method = "post";
 
-    api(apiEndpointUri, method, uri).then(() => {
+    let user: User;
+    user = await request<User>(apiEndpointUri, method, uri);
 
-        afterJoin();
+    afterJoin();
 
-        cloneUserElement("asdasdasd");
-    });
+    changeLeaveButton(user.queueId, user.userInQueueId);
 
+    cloneUserElement(user.queueId, user.userInQueueId);
 }
 
-function cloneUserElement(userInQueueId: string) {
-    var elem = document.querySelector('.user-position:last-child') as HTMLDivElement;
+function changeLeaveButton(queueId: string, userInQueueId: string) {
+    document.getElementById('leave-queue-button')
+        .setAttribute('onclick', `leaveQueue('${queueId}', '${userInQueueId}')`);
+}
+
+function cloneUserElement(queueId: string, userInQueueId: string) {
+    let elem = document.querySelector('.user-position:last-child');
+
+    let clone = elem.cloneNode(true);
+
     elem.id = "user-" + userInQueueId;
 
-    var clone = elem.cloneNode(true);
+    elem.getElementsByClassName('delete-user')[0]
+        .getElementsByTagName('input')[0]
+        .setAttribute('onclick', `leaveQueue('${queueId}', '${userInQueueId}')`);
 
-    elem.after(clone);
+    
+
+    const username = document.getElementsByClassName('user-profile')[0] as HTMLDivElement;
+    console.log(username.textContent);
+
+    elem.getElementsByClassName('user-name')[0].innerHTML = username.textContent;
+
+    elem.before(clone);
 }
 
-interface Todo {
-    UserId: string;
-    UserInQueueId: string;
+interface User {
+    userId: string;
+    queueId: string;
+    userInQueueId: string;
 }
 
-function apiEnterQueue<T>(url: string, method: string, uri: string): Promise<T> {
+function request<TResponse>(url: string, method: string, uri: string): Promise<TResponse> {
+
     url = prepareRequest(url, method, uri);
 
     return fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText)
-            }
-            return response.json();
-        });
+        .then((response) => response.json())
+        .then((data) => data as TResponse);
+
 }
 
 function afterJoin() {
