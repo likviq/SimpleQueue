@@ -3,12 +3,6 @@
 ////    UserInQueueId: string;
 ////}
 
-import * as signalR from "@microsoft/signalr";
-
-const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/queue/hub")
-    .build();
-
 const apiEndpointUri = "https://localhost:7253/api/callapi";
 
 let isFrozen = false;

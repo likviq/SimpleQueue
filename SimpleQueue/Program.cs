@@ -7,7 +7,6 @@ using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 using SimpleQueue.WebUI.Automapper;
-using SimpleQueue.WebUI.Hubs;
 using SimpleQueue.WebUI.Middlewares;
 using System.Globalization;
 
@@ -47,8 +46,6 @@ builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 
-builder.Services.AddSignalR();
-
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("mySqlConnection");
@@ -86,8 +83,6 @@ app.UseMiddleware<ExceptionHandlingException>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-app.MapHub<QueueHub>("/queue/hub");
 
 app.UseRouting();
 
