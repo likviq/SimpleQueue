@@ -47,11 +47,11 @@ namespace SimpleQueue.Services
             {
                 participant = await _repository.UserInQueue.Get(participant.NextId);
                 position++;
+            }
 
-                if (participant.NextId == null && participant.UserId != userId)
-                {
-                    return null;
-                }
+            if (participant.NextId == null && participant.UserId != userId)
+            {
+                return null;
             }
 
             return position;
