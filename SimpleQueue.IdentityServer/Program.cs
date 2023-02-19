@@ -63,17 +63,14 @@ builder.Services.AddIdentityServer()
             ServerVersion.AutoDetect(connectionConfigString), 
             sql => sql.MigrationsAssembly(migrationsAssembly));
     })
-    //.AddInMemoryApiResources(Configuration.GetApis())
-    //.AddInMemoryIdentityResources(Configuration.GetIdentityResources())
-    //.AddInMemoryClients(Configuration.GetClients())
     .AddDeveloperSigningCredential();
 
 
 
 builder.Services.AddAuthentication().AddFacebook(config =>
 {
-    var facebookAppId = builder.Configuration.GetValue<string>("GoogleSecrets:ClientId");
-    var facebookAppSecret = builder.Configuration.GetValue<string>("GoogleSecrets:ClientSecret");
+    var facebookAppId = builder.Configuration.GetValue<string>("FacebookSecrets:AppId");
+    var facebookAppSecret = builder.Configuration.GetValue<string>("FacebookSecrets:AppSecret");
 
     config.AppId = facebookAppId;
     config.AppSecret = facebookAppSecret;
@@ -94,11 +91,6 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var userManager = scope.ServiceProvider
-        .GetRequiredService<UserManager<IdentityUser>>();
-
-    var user = new IdentityUser("bob");
-    userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
 
     scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
@@ -107,7 +99,7 @@ using (var scope = app.Services.CreateScope())
     
     if (!context.Clients.Any())
     {
-        foreach (var client in Configuration.GetClients())
+        foreach (var client in Configuration.GetClients(builder))
         {
             context.Clients.Add(client.ToEntity());
         }
@@ -125,7 +117,7 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.ApiResources.Any())
     {
-        foreach (var resource in Configuration.GetApis())
+        foreach (var resource in Configuration.GetApis(builder))
         {
             context.ApiResources.Add(resource.ToEntity());
         }
