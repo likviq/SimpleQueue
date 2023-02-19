@@ -11,9 +11,9 @@ namespace SimpleQueue.Services
             _repository = repository;
         }
 
-        public async Task<UserInQueue?> GetUserInQueue(Guid userInQueueId)
+        public Task<UserInQueue?> GetUserInQueue(Guid userInQueueId)
         {
-            return await _repository.UserInQueue.Get(userInQueueId);
+            return _repository.UserInQueue.Get(userInQueueId);
         }
 
         public void Delete(UserInQueue userInQueue)

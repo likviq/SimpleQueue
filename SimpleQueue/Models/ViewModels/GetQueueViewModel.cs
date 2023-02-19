@@ -12,7 +12,6 @@
         public Guid? YourId { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime StartTime { get; set; }
-        public IEnumerable<UserInQueueViewModel> Users { get; set; }
-        = Array.Empty<UserInQueueViewModel>();
+        public ICollection<UserInQueueViewModel>? Users { get; set; }
     }
 }

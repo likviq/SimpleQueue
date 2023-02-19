@@ -19,7 +19,8 @@ namespace SimpleQueue.WebUI.Tests.Controllers
     {
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<IQueueService> _mockQueueService;
-        private readonly Mock<ILoggerManager> _mockQogger;
+        private readonly Mock<IUserInQueueService> _mockUserInQueueService;
+        private readonly Mock<ILoggerManager> _mockLogger;
         private readonly QueueController _controller;
         private readonly Fixture _fixture;
 
@@ -31,8 +32,10 @@ namespace SimpleQueue.WebUI.Tests.Controllers
             
             _mockMapper = new Mock<IMapper>();
             _mockQueueService = new Mock<IQueueService>();
-            _mockQogger = new Mock<ILoggerManager>();
-            _controller = new QueueController(_mockMapper.Object, _mockQueueService.Object, _mockQogger.Object);
+            _mockLogger = new Mock<ILoggerManager>();
+            _mockUserInQueueService = new Mock<IUserInQueueService>();
+            _controller = new QueueController(
+                _mockMapper.Object, _mockQueueService.Object, _mockUserInQueueService.Object, _mockLogger.Object);
             _fixture = new Fixture();
         }
 
