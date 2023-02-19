@@ -37,7 +37,7 @@ namespace SimpleQueue.Services
         {
             var queue = await _repository.Queue.GetQueueAsync(id);
 
-            queue.isFrozen = !queue.isFrozen;
+            queue.IsFrozen = !queue.IsFrozen;
 
             _repository.Save();
         }

@@ -9,7 +9,7 @@
         public float? Longitude { get; set; }
         public string? Password { get; set; }
         public bool Chat { get; set; }
-        public bool isFrozen { get; set; }
+        public bool IsFrozen { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime StartTime { get; set; }
         public Guid OwnerId { get; set; }

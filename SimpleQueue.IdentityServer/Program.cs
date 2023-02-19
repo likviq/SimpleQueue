@@ -25,9 +25,9 @@ builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-builder.Services.AddDbContext<AppDbContext>(config =>
+builder.Services.AddDbContext<global::SimpleQueue.IdentityServer.Data.IdentityDbContext>((global::Microsoft.EntityFrameworkCore.DbContextOptionsBuilder config) =>
 {
-    config.UseMySql(connectionConfigString, ServerVersion.AutoDetect(connectionConfigString));
+    config.UseMySql(connectionConfigString, (global::Microsoft.EntityFrameworkCore.ServerVersion)global::Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(connectionConfigString));
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
@@ -37,7 +37,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
     config.Password.RequireNonAlphanumeric = false;
     config.Password.RequireUppercase = false;
 })
-    .AddEntityFrameworkStores<AppDbContext>()
+    .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(config =>
