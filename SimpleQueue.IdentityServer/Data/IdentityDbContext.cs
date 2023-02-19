@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleQueue.IdentityServer.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class IdentityDbContext : Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)
         {
 

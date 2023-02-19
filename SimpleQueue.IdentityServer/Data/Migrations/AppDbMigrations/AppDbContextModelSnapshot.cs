@@ -9,7 +9,7 @@ using SimpleQueue.IdentityServer.Data;
 
 namespace SimpleQueue.IdentityServer.Data.Migrations.AppDbMigrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(IdentityDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

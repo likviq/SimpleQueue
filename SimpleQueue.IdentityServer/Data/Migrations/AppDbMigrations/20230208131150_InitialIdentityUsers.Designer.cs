@@ -10,7 +10,7 @@ using SimpleQueue.IdentityServer.Data;
 
 namespace SimpleQueue.IdentityServer.Data.Migrations.AppDbMigrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(IdentityDbContext))]
     [Migration("20230208131150_InitialIdentityUsers")]
     partial class InitialIdentityUsers
     {

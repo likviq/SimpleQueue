@@ -34,7 +34,7 @@
             <div class="queue-info-right-part">
                 <img class="edit-queue-image" src="~/images/queue/edit-icon.svg">
                 <div id="status-queue-image" class="status-queue-image" 
-                style=@(Model.isFrozen == false ? "background-color:#82FF9D":"")></div>
+                style=@(Model.IsFrozen == false ? "background-color:#82FF9D":"")></div>
             </div>
         </div>
         
@@ -69,14 +69,14 @@
                     <button class="deactivate-button controll-object"
                         id="freeze-button"
                         onclick="freezeQueue('@Model.Id')" 
-                        style=@(Model.isFrozen == false ? "":"display:none")>
+                        style=@(Model.IsFrozen == false ? "":"display:none")>
                         <img class="freeze-icon" src="~/images/queue/freeze-icon-2.png"/>
                         <div class="deactivate-text">Freeze</div>
                     </button>
                     <button class="deactivate-button controll-object" 
                         id="unfreeze-button"    
                         onclick="freezeQueue('@Model.Id')" 
-                        style=@(Model.isFrozen == false ? "display:none":"")>
+                        style=@(Model.IsFrozen == false ? "display:none":"")>
                         <img class="freeze-icon" src="~/images/queue/unfreeze-icon.png"/>
                         <div class="deactivate-text">UnFreeze</div>
                     </button>

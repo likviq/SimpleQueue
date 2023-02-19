@@ -14,7 +14,7 @@ namespace SimpleQueue.IdentityServer
                 new IdentityResources.Profile(),
             };
         
-        public static IEnumerable<ApiResource> GetApis() =>
+        public static IEnumerable<ApiResource> GetApis(WebApplicationBuilder builder) =>
             new List<ApiResource> {
                 new ApiResource("ApiOne"),
                 new ApiResource("ApiTwo"),
@@ -22,7 +22,8 @@ namespace SimpleQueue.IdentityServer
                 {
                     Name = "webapi",
                     DisplayName = "Web Api",
-                    ApiSecrets = { new Secret("simple-webapi-secret".ToSha256()) },
+                    ApiSecrets = { new Secret(builder.Configuration
+                        .GetValue<string>("ApiResoursesSecret:webapi").ToSha256()) },
                     Scopes = new List<string> { "simplequeue-webapi" },
                     UserClaims = { ClaimTypes.Email, ClaimTypes.NameIdentifier, ClaimTypes.Sid}
                 }
@@ -38,17 +39,19 @@ namespace SimpleQueue.IdentityServer
                 }
             };
 
-        public static IEnumerable<Client> GetClients() =>
+        public static IEnumerable<Client> GetClients(WebApplicationBuilder builder) =>
             new List<Client>{
                 new Client{
                     ClientId = "client_id",
-                    ClientSecrets = { new Secret("client_secret".ToSha256())},
+                    ClientSecrets = { new Secret(builder.Configuration
+                        .GetValue<string>("IdentityClientSecrets:client_id").ToSha256())},
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "ApiOne" }
                 },
                 new Client{
                     ClientId = "client_id_mvc",
-                    ClientSecrets = { new Secret("client_secret_mvc".ToSha256())},
+                    ClientSecrets = { new Secret(builder.Configuration
+                        .GetValue<string>("IdentityClientSecrets:client_id_mvc").ToSha256())},
                     
                     AllowedGrantTypes = GrantTypes.Code,
                     
@@ -64,20 +67,6 @@ namespace SimpleQueue.IdentityServer
                     RequirePkce = true,
                     RequireConsent = false,
                     AlwaysIncludeUserClaimsInIdToken = true,
-                },
-                new Client{
-                    ClientId = "client_id_api",
-                    ClientSecrets = { new Secret("client_secret_api".ToSha256())},
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = { "https://localhost:7147/signin-oidc"},
-                    PostLogoutRedirectUris = { "https://localhost:7147/Home/Index" },
-                    AllowedScopes = {
-                        "ApiOne",
-                        "ApiTwo",
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    },
-                    RequireConsent = false
                 }
             };
     }

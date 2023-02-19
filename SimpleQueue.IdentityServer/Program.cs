@@ -25,9 +25,9 @@ builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-builder.Services.AddDbContext<AppDbContext>(config =>
+builder.Services.AddDbContext<global::SimpleQueue.IdentityServer.Data.IdentityDbContext>((global::Microsoft.EntityFrameworkCore.DbContextOptionsBuilder config) =>
 {
-    config.UseMySql(connectionConfigString, ServerVersion.AutoDetect(connectionConfigString));
+    config.UseMySql(connectionConfigString, (global::Microsoft.EntityFrameworkCore.ServerVersion)global::Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(connectionConfigString));
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
@@ -37,7 +37,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
     config.Password.RequireNonAlphanumeric = false;
     config.Password.RequireUppercase = false;
 })
-    .AddEntityFrameworkStores<AppDbContext>()
+    .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(config =>
@@ -63,20 +63,25 @@ builder.Services.AddIdentityServer()
             ServerVersion.AutoDetect(connectionConfigString), 
             sql => sql.MigrationsAssembly(migrationsAssembly));
     })
-    //.AddInMemoryApiResources(Configuration.GetApis())
-    //.AddInMemoryIdentityResources(Configuration.GetIdentityResources())
-    //.AddInMemoryClients(Configuration.GetClients())
     .AddDeveloperSigningCredential();
+
+
 
 builder.Services.AddAuthentication().AddFacebook(config =>
 {
-    config.AppId = "541927581259891";
-    config.AppSecret = "6f5406d63d0f008af028bdf922121a2c";
+    var facebookAppId = builder.Configuration.GetValue<string>("FacebookSecrets:AppId");
+    var facebookAppSecret = builder.Configuration.GetValue<string>("FacebookSecrets:AppSecret");
+
+    config.AppId = facebookAppId;
+    config.AppSecret = facebookAppSecret;
 })
     .AddGoogle(config =>
 {
-    config.ClientId = "1070453281257-ad8p7qpg890aqk9ngbl98qptet9ctf8f.apps.googleusercontent.com";
-    config.ClientSecret = "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";
+    var googleClientId = builder.Configuration.GetValue<string>("GoogleSecrets:ClientId");
+    var googleClientSecret = builder.Configuration.GetValue<string>("GoogleSecrets:ClientSecret");
+
+    config.ClientId = googleClientId;
+    config.ClientSecret = googleClientSecret;
 });
 
 builder.Services.AddControllersWithViews();
@@ -86,11 +91,6 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var userManager = scope.ServiceProvider
-        .GetRequiredService<UserManager<IdentityUser>>();
-
-    var user = new IdentityUser("bob");
-    userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
 
     scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
@@ -99,7 +99,7 @@ using (var scope = app.Services.CreateScope())
     
     if (!context.Clients.Any())
     {
-        foreach (var client in Configuration.GetClients())
+        foreach (var client in Configuration.GetClients(builder))
         {
             context.Clients.Add(client.ToEntity());
         }
@@ -117,7 +117,7 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.ApiResources.Any())
     {
-        foreach (var resource in Configuration.GetApis())
+        foreach (var resource in Configuration.GetApis(builder))
         {
             context.ApiResources.Add(resource.ToEntity());
         }
