@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+.main-body {
+  display: flex;
+  flex-direction: row;
+  height: 688px; }
+  .main-body .search-field, .main-body .information-field {
+    width: 1000px; }
+  .main-body .search-field {
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .main-body .search-field .input-body {
+      position: absolute; }
+      .main-body .search-field .input-body .input-background {
+        width: 734px;
+        height: 87px;
+        background: #CECECE;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 25px;
+        position: relative; }
+      .main-body .search-field .input-body .input-field {
+        width: 697px;
+        height: 70px;
+        background: #FFFFFF;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 15px;
+        border: none;
+        position: relative;
+        top: -79px;
+        left: 10px;
+        font-family: "Montserrat";
+        font-size: 38px;
+        line-height: 51px;
+        color: #555555;
+        padding-left: 14px; }
+    .main-body .search-field .join-button {
+      width: 232px;
+      height: 80px;
+      background: #EDB734;
+      font-family: "Montserrat";
+      font-size: 38px;
+      line-height: 51px;
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 22px;
+      position: relative;
+      top: 68px; }
+  .main-body .information-field {
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column; }
+    .main-body .information-field .top-text {
+      color: #4C4C4C;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      font-size: 70px;
+      line-height: 85px;
+      font-family: "Montserrat"; }
+    .main-body .information-field .bottom-text {
+      color: #4C4C4C;
+      font-size: 52px;
+      line-height: 70px;
+      font-family: "Montserrat"; }
+
+@media (max-width: 1368px) {
+  .main-body {
+    display: flex;
+    flex-direction: column; }
+    .main-body .search-field {
+      margin: 100px;
+      width: 100%; }
+      .main-body .search-field .input-body .input-field {
+        width: 80%;
+        border: 5px solid #CECECE; }
+      .main-body .search-field .input-body .input-background {
+        display: none; }
+    .main-body .information-field {
+      margin: 100px;
+      width: 100%; } }
+.page-background {
+  position: absolute;
+  background-color: #FFF;
+  width: 912px;
+  height: 770px;
+  top: 104px;
+  border-radius: 0 50% 50% 0;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: -1; }
+
+/*# sourceMappingURL=home-page.css.map */

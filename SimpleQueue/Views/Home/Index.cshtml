@@ -1,8 +1,30 @@
-﻿@{
+﻿@model SimpleQueue.WebUI.Models.DataTransferObjects.SearchQueueDto
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="~/css/home-page.css" asp-append-version="true" />
+
+<div class="main-body">
+    <form class="search-field" asp-controller="Queue" asp-action="Find">
+        <div class="input-body">
+            <div class="input-background"></div>
+            <input class="input-field" placeholder=@ViewLocalizer["Search Queues..."] asp-for="Name"/>
+        </div>
+        <button class="join-button">
+            @ViewLocalizer["Find"]
+        </button>
+    </form>
+
+    <div class="information-field">
+        <div class="top-text">
+            @ViewLocalizer["Streamline your waiting with SimpleQueue"]
+        </div>
+        <div class="bottom-text">
+            @ViewLocalizer["use smart queue service today"]
+        </div>
+    </div>
 </div>
+
+<div class="page-background"></div>
