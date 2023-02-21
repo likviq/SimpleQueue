@@ -1,0 +1,34 @@
+﻿@model List<SimpleQueue.WebUI.Models.ViewModels.QueueSearchResultViewModel>
+
+<link rel="stylesheet" href="~/css/get-queues-search.css" asp-append-version="true" />
+
+<div class="queues-container">
+    @foreach (var queue in Model)
+    {
+        <a class="queue-body" asp-controller="Queue" asp-action="Get" asp-route-id=@queue.Id>
+            <div class="queue-image">
+                <img src="~/images/queue/queue-image.svg">
+            </div>
+            <div class="queue-info">
+                <div class="queue-title">
+                    @queue.Title
+                </div>
+                <div class="queue-description">
+                    @queue.Description
+                </div>
+            </div>
+            <div id="status-queue-image" class="status-queue-image" 
+                style=@(queue.IsFrozen == false ? "background-color:#82FF9D":"")>
+            </div>
+        </a>
+    }
+
+    <button class="see-more-button">
+        <div class="see-more-text">
+            See More
+        </div>
+        <div class="see-more-arrow">
+            <img src="~/images/queue/more-icon.svg">
+        </div>
+    </button>
+</div>

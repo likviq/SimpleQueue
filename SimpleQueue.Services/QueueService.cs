@@ -1,5 +1,6 @@
 ﻿using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
+using SimpleQueue.Domain.RequestFeatures;
 
 namespace SimpleQueue.Services
 {
@@ -57,6 +58,11 @@ namespace SimpleQueue.Services
         {
             _repository.Queue.DeleteQueue(queue);
             _repository.Save();
+        }
+
+        public Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true)
+        {
+            return _repository.Queue.GetQueuesAsync(queueParameters, trackChanges);
         }
     }
 }

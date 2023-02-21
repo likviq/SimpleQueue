@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Entities;
 using SimpleQueue.Domain.Interfaces;
+using SimpleQueue.Domain.RequestFeatures;
 using SimpleQueue.WebUI.Models.DataTransferObjects;
 using SimpleQueue.WebUI.Models.ViewModels;
 using System.Security.Claims;
@@ -130,6 +132,33 @@ namespace SimpleQueue.WebUI.Controllers
             _logger.LogInfo("New queue was successfully created");
 
             return RedirectToAction(nameof(Index), "Home");
+        }
+
+        [HttpGet("/queues")]
+        public async Task<IActionResult> GetQueues([FromQuery] QueueParameters queueParameters)
+        {
+            if (!queueParameters.ValidTimeRange)
+            {
+                _logger.LogError($"End time of queue {queueParameters.EndTime} " +
+                    $"is less than start time {queueParameters.StartTime}");
+                return BadRequest();
+            }
+
+            var queues = await _queueService.GetQueuesAsync(queueParameters);
+            if (queues == null)
+            {
+                _logger.LogWarn($"There are no queues with {nameof(queueParameters)} parameters" +
+                    $"- {queueParameters}");
+            }
+
+            Response.Headers.Add("X-Pagination",
+                JsonConvert.SerializeObject(queues.MetaData));
+
+            var queuesViewModel = _mapper.Map<List<QueueSearchResultViewModel>>(queues);
+            _logger.LogInfo($"Founded queues have been converted to the list of object " +
+                $"{nameof(QueueSearchResultViewModel)}");
+
+            return View(queuesViewModel);
         }
     }
 }
