@@ -35,6 +35,9 @@ namespace SimpleQueue.Data.Repositories
         {
             var queues = await FindAll()
                 .FilterQueuesByTime(queueParameters.StartTime, queueParameters.EndTime)
+                .FilterQueuesByFrozen(queueParameters.IsFrozen)
+                .FilterQueuesByChat(queueParameters.IsChat)
+                .FilterQueuesByPassword(queueParameters.IsProtected)
                 .Search(queueParameters.SearchTerm)
                 .OrderBy(e => e.Title)
                 .ToListAsync();

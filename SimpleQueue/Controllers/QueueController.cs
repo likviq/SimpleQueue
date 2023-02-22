@@ -151,7 +151,7 @@ namespace SimpleQueue.WebUI.Controllers
                     $"- {queueParameters}");
             }
 
-            Response.Headers.Add("X-Pagination",
+            Response.Headers.Add("pagination",
                 JsonConvert.SerializeObject(queues.MetaData));
 
             var queuesViewModel = _mapper.Map<List<QueueSearchResultViewModel>>(queues);

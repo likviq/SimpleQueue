@@ -10,6 +10,39 @@ namespace SimpleQueue.Data.Extensions
             return queues.Where(queue => queue.StartTime >= StartTime && queue.StartTime <= EndTime);
         }
 
+        public static IQueryable<Queue> FilterQueuesByFrozen(
+            this IQueryable<Queue> queues, bool? IsFrozen)
+        {
+            if (IsFrozen is null)
+            {
+                return queues;
+            }
+
+            return queues.Where(queue => queue.IsFrozen.Equals(IsFrozen));
+        }
+
+        public static IQueryable<Queue> FilterQueuesByChat(
+            this IQueryable<Queue> queues, bool? IsChat)
+        {
+            if (IsChat is null)
+            {
+                return queues;
+            }
+
+            return queues.Where(queue => queue.Chat.Equals(IsChat));
+        }
+
+        public static IQueryable<Queue> FilterQueuesByPassword(
+            this IQueryable<Queue> queues, bool? IsPassword)
+        {
+            if (IsPassword is null)
+            {
+                return queues;
+            }
+
+            return queues.Where(queue => string.IsNullOrWhiteSpace(queue.Password).Equals(!IsPassword));
+        }
+
         public static IQueryable<Queue> Search(
             this IQueryable<Queue> queues, string searchTerm)
         {
