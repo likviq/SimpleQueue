@@ -228,7 +228,10 @@ function request<TResponse>(url: string, method: string, uri: string): Promise<T
     url = prepareRequest(url, method, uri);
 
     return fetch(url)
-        .then((response) => response.json())
+        .then(function (response){
+            console.log(response.headers.get("Content-Type"));
+            return response.json()
+        })
         .then((data) => data as TResponse);
 
 }

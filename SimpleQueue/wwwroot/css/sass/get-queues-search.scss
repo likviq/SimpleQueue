@@ -70,83 +70,91 @@ $body-font-family: 'Montserrat';
     }
 }
 
-    .queues-container {
-        max-width: 1256px;
+.queues-container {
+    max-width: 1256px;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+    padding-top: 20px;
+    margin: 50px auto;
+    color: #555555;
+    padding-bottom: 50px;
+
+    .not-found-body {
+        margin: 30px 0 0 50px;
+        color: #555555;
+        font-size: 28px;
+        font-family: $body-font-family;
+    }
+
+    .queue-body {
         display: flex;
-        flex-direction: column;
-        background: #FFFFFF;
-        box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 67px;
-        padding-top: 20px;
-        margin: 50px auto;
+        flex-direction: row;
+        margin: 36px 51px 0 58px;
+        height: 148px;
+        overflow: hidden;
+        background: #F4F4F4;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 32px;
+        text-decoration: none;
         color: #555555;
 
-        .queue-body {
-            display: flex;
-            flex-direction: row;
-            margin: 36px 51px 0 58px;
-            height: 148px;
-            overflow: hidden;
-            background: #F4F4F4;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 32px;
-            text-decoration: none;
-            color: #555555;
-
-            .queue-image {
-                height: 100px;
-                width: 100px;
-                margin: 27px 44px 21px 25px;
-            }
-
-            .queue-info {
-                display: flex;
-                flex-direction: column;
-                font-size: 24px;
-                line-height: 29px;
-                font-family: $body-font-family;
-                width: 100%;
-
-                .queue-title {
-                    margin: 27px 0;
-                }
-
-                .queue-description {
-                }
-            }
-
-            .status-queue-image {
-                background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%);
-                border-radius: 25px;
-                min-width: 50px;
-                height: 50px;
-                float: right;
-                margin: auto 49px;
-            }
+        .queue-image {
+            height: 100px;
+            width: 100px;
+            margin: 27px 44px 21px 25px;
         }
 
-        .see-more-button {
+        .queue-info {
             display: flex;
             flex-direction: column;
-            width: 268px;
-            height: 48px;
-            background: #C4C4C4;
-            border-radius: 23px;
-            border: none;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            margin: 43px auto;
-            color: #555555;
-            cursor: pointer;
+            font-size: 24px;
+            line-height: 29px;
+            font-family: $body-font-family;
+            width: 100%;
 
-            .see-more-text {
-                font-size: 24px;
-                line-height: 29px;
-                font-family: $body-font-family;
-                margin: auto;
+            .queue-title {
+                margin: 27px 0;
             }
 
-            .see-more-arrow {
-                margin: auto;
+            .queue-description {
             }
         }
+
+        .status-queue-image {
+            background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%);
+            border-radius: 25px;
+            min-width: 50px;
+            height: 50px;
+            float: right;
+            margin: auto 49px;
+        }
     }
+
+    .see-more-button {
+        display: flex;
+        flex-direction: column;
+        width: 268px;
+        height: 48px;
+        background: #C4C4C4;
+        border-radius: 23px;
+        border: none;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin: 43px auto 0 auto;
+        color: #555555;
+        cursor: pointer;
+
+        .see-more-text {
+            font-size: 24px;
+            line-height: 29px;
+            font-family: $body-font-family;
+            margin: auto;
+        }
+
+        .see-more-arrow {
+            margin: auto;
+        }
+    }
+}

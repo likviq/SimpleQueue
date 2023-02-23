@@ -22,7 +22,7 @@
         </div>
         <div class="start-time-param form-param">
             <label class="label">Start Time</label>
-            <input class="" onchange="startTime()" id="start-time-value" type="datetime-local" value=@queryStartTime />
+            <input class="" onchange="startTime()" id="start-time-value" data-date-format="MM DD YYYY" type="datetime-local" value=@queryStartTime />
             <span class="field-validation"></span>
         </div>
         <div class="end-time-param form-param">
@@ -59,9 +59,14 @@
 </div>
 
 <div class="queues-container">
+
+    <div class="not-found-body" style=@(Model.Count == 0 ? "":"display:none")>
+        No queue was found...
+    </div>
+
     @foreach (var queue in Model)
     {
-        <a class="queue-body" asp-controller="Queue" asp-action="Get" asp-route-id=@queue.Id>
+        <a class="queue-body" id=@queue.Id asp-controller="Queue" asp-action="Get" asp-route-id=@queue.Id>
             <div class="queue-image">
                 <img src="~/images/queue/queue-image.svg">
             </div>
@@ -79,7 +84,7 @@
         </a>
     }
 
-    <button class="see-more-button">
+    <button id="more-button" class="see-more-button" onclick="uploadMoreQueues()" style=@(Model.Count == 10 ? "":"display:none")>
         <div class="see-more-text">
             See More
         </div>

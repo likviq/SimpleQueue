@@ -3,11 +3,9 @@
     public class QueueParameters: RequestParameters
     {
         public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; } = DateTime.MaxValue;
+        public DateTime EndTime { get; set; } = DateTime.Now;
         public bool ValidTimeRange => StartTime <= EndTime;
-
         public string SearchTerm { get; set; }
-
         public bool? IsFrozen { get; set; }
         public bool? IsChat { get; set; }
         public bool? IsProtected { get; set; }

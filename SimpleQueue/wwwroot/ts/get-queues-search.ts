@@ -1,6 +1,9 @@
 ﻿const myHeaders = new Headers();
 console.log(myHeaders.get("pagination"));
 
+let pageNumber = 1;
+let pageSize = 10;
+
 class QueueParameters {
     StartTime: string = "";
     EndTime: string = "";
@@ -8,6 +11,8 @@ class QueueParameters {
     IsFrozen: boolean = null;
     IsChat: boolean = null;
     IsProtected: boolean = null;
+    PageNumber: number = pageNumber;
+    PageSize: number = pageSize;
 }
 
 let queueParams: QueueParameters = new QueueParameters();
@@ -103,6 +108,83 @@ const urlQueues = "https://localhost:7253/queues";
 function findQueues() {
     console.log(queueParams);
     const url = urlQueues +
-        `?StartTime=${queueParams.StartTime}&EndTime=${queueParams.EndTime}&SearchTerm=${queueParams.SearchTerm}&IsFrozen=${queueParams.IsFrozen}&IsChat=${queueParams.IsChat}&IsProtected=${queueParams.IsProtected}`;
+        `?StartTime=
+${queueParams.StartTime}&EndTime=${queueParams.EndTime}&SearchTerm=
+${queueParams.SearchTerm}&IsFrozen=${queueParams.IsFrozen}&IsChat=
+${queueParams.IsChat}&IsProtected=${queueParams.IsProtected}`;
     window.location.href = url;
+}
+
+interface Queue {
+    id: string;
+    title: string;
+    description: string;
+    isFrozen: string;
+}
+
+async function uploadMoreQueues() {
+    let queues = await findMoreQueues<Queue[]>();
+    console.log(queues);
+
+    console.log(document.querySelector(".queue-body"))
+
+    for (let i = 0; i < queues.length; i++) {
+        let elem = document.querySelector('.queue-body:last-of-type');
+
+        let clone = elem.cloneNode(true);
+
+        elem.setAttribute('href', '/queue/' + queues[i].id);
+
+        elem.getElementsByClassName('queue-title')[0]
+            .innerHTML = queues[i].title;
+
+        elem.getElementsByClassName('queue-description')[0]
+            .innerHTML = queues[i].description;
+
+        elem.before(clone);
+    }
+}
+
+function hideMoreButton() {
+    const moreButton = document.getElementById(
+        'more-button',
+    ) as HTMLInputElement | null;
+
+    moreButton.style.display = 'none';
+}
+
+function findMoreQueues<TResponse>(): Promise<TResponse> {
+    queueParams.PageNumber += 1;
+    let url = prepareUrl();
+    const encodedUrl = encodeURI(url);
+
+    return fetch(encodedUrl)
+        .then(function (response) {
+            if (response.ok) {
+                hideMoreButton();
+                console.log(response.headers.get("pagination"));
+                return response.json()
+            }
+            throw new Error(response.statusText);
+        })
+        .then((data) => data as TResponse);
+
+}
+
+const urlApiQueues = "https://localhost:7147/api/queues";
+
+function prepareUrl() {
+
+    const startTimeQuery = queueParams.StartTime == "" ? "" : `&StartTime=${queueParams.StartTime}`;
+    const endTimeQuery = queueParams.EndTime == "" ? "" : `&EndTime=${queueParams.EndTime}`;
+    const searchTermQuery = queueParams.SearchTerm == "" ? "" : `&SearchTerm=${queueParams.SearchTerm}`;
+
+    const isFrozenQuery = queueParams.IsFrozen == null ? "" : `&IsFrozen=${queueParams.IsFrozen}`;
+    const isChatQuery = queueParams.IsChat == null ? "" : `&IsChat=${queueParams.IsChat}`;
+    const isProtectedQuery = queueParams.IsProtected == null ? "" : `&IsProtected=${queueParams.IsProtected}`;
+
+    return urlApiQueues +
+        `?PageNumber=${queueParams.PageNumber}&PageSize=${queueParams.PageSize}`
+        + startTimeQuery + endTimeQuery + searchTermQuery
+        + isFrozenQuery + isChatQuery + isProtectedQuery;
 }

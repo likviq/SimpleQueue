@@ -62,7 +62,13 @@
   border-radius: 67px;
   padding-top: 20px;
   margin: 50px auto;
-  color: #555555; }
+  color: #555555;
+  padding-bottom: 50px; }
+  .queues-container .not-found-body {
+    margin: 30px 0 0 50px;
+    color: #555555;
+    font-size: 28px;
+    font-family: "Montserrat"; }
   .queues-container .queue-body {
     display: flex;
     flex-direction: row;
@@ -103,7 +109,7 @@
     border-radius: 23px;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin: 43px auto;
+    margin: 43px auto 0 auto;
     color: #555555;
     cursor: pointer; }
     .queues-container .see-more-button .see-more-text {

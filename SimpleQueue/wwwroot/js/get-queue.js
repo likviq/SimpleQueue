@@ -179,7 +179,10 @@ function cloneUserElement(queueId, userInQueueId, username) {
 function request(url, method, uri) {
     url = prepareRequest(url, method, uri);
     return fetch(url)
-        .then(function (response) { return response.json(); })
+        .then(function (response) {
+        console.log(response.headers.get("Content-Type"));
+        return response.json();
+    })
         .then(function (data) { return data; });
 }
 function afterJoin() {
