@@ -19,7 +19,7 @@ namespace SimpleQueue.Data.Migrations
                 .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.Conversation", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.Conversation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace SimpleQueue.Data.Migrations
                     b.ToTable("Conversations");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.ConversationMessage", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.ConversationMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,7 @@ namespace SimpleQueue.Data.Migrations
                     b.ToTable("ConversationMessages");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.Queue", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.Queue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,11 +98,17 @@ namespace SimpleQueue.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsFrozen")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<float?>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<float?>("Longitude")
                         .HasColumnType("float");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
@@ -122,7 +128,7 @@ namespace SimpleQueue.Data.Migrations
                     b.ToTable("Queues");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.User", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,10 +143,6 @@ namespace SimpleQueue.Data.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(21)
@@ -160,7 +162,7 @@ namespace SimpleQueue.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.UserInQueue", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.UserInQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,6 +177,9 @@ namespace SimpleQueue.Data.Migrations
                     b.Property<Guid?>("NextId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid?>("PreviousId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("QueueId")
                         .HasColumnType("char(36)");
 
@@ -185,6 +190,9 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasIndex("NextId");
 
+                    b.HasIndex("PreviousId")
+                        .IsUnique();
+
                     b.HasIndex("QueueId");
 
                     b.HasIndex("UserId");
@@ -192,15 +200,15 @@ namespace SimpleQueue.Data.Migrations
                     b.ToTable("UserInQueues");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.Conversation", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.Conversation", b =>
                 {
-                    b.HasOne("SimpleQueue.Domain.Models.User", "UserFirst")
+                    b.HasOne("SimpleQueue.Domain.Entities.User", "UserFirst")
                         .WithMany()
                         .HasForeignKey("UserFirstId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SimpleQueue.Domain.Models.User", "UserSecond")
+                    b.HasOne("SimpleQueue.Domain.Entities.User", "UserSecond")
                         .WithMany()
                         .HasForeignKey("UserSecondId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -211,15 +219,15 @@ namespace SimpleQueue.Data.Migrations
                     b.Navigation("UserSecond");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.ConversationMessage", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.ConversationMessage", b =>
                 {
-                    b.HasOne("SimpleQueue.Domain.Models.Conversation", "Conversation")
+                    b.HasOne("SimpleQueue.Domain.Entities.Conversation", "Conversation")
                         .WithMany()
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SimpleQueue.Domain.Models.User", "SenderUser")
+                    b.HasOne("SimpleQueue.Domain.Entities.User", "SenderUser")
                         .WithMany()
                         .HasForeignKey("SenderUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -230,19 +238,23 @@ namespace SimpleQueue.Data.Migrations
                     b.Navigation("SenderUser");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.UserInQueue", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.UserInQueue", b =>
                 {
-                    b.HasOne("SimpleQueue.Domain.Models.UserInQueue", "Next")
+                    b.HasOne("SimpleQueue.Domain.Entities.UserInQueue", "Next")
                         .WithMany()
                         .HasForeignKey("NextId");
 
-                    b.HasOne("SimpleQueue.Domain.Models.Queue", "Queue")
+                    b.HasOne("SimpleQueue.Domain.Entities.UserInQueue", "Previous")
+                        .WithOne()
+                        .HasForeignKey("SimpleQueue.Domain.Entities.UserInQueue", "PreviousId");
+
+                    b.HasOne("SimpleQueue.Domain.Entities.Queue", "Queue")
                         .WithMany("UserInQueues")
                         .HasForeignKey("QueueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SimpleQueue.Domain.Models.User", "User")
+                    b.HasOne("SimpleQueue.Domain.Entities.User", "User")
                         .WithMany("UserInQueues")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -250,17 +262,19 @@ namespace SimpleQueue.Data.Migrations
 
                     b.Navigation("Next");
 
+                    b.Navigation("Previous");
+
                     b.Navigation("Queue");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.Queue", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.Queue", b =>
                 {
                     b.Navigation("UserInQueues");
                 });
 
-            modelBuilder.Entity("SimpleQueue.Domain.Models.User", b =>
+            modelBuilder.Entity("SimpleQueue.Domain.Entities.User", b =>
                 {
                     b.Navigation("UserInQueues");
                 });

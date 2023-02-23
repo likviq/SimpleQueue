@@ -10,6 +10,7 @@ namespace SimpleQueue.Domain.Interfaces
     {
         IUserRepository User { get; }
         IQueueRepository Queue { get; }
-        Task SaveAsync();
+        IUserInQueueRepository UserInQueue { get; }
+        void Save();
     }
 }

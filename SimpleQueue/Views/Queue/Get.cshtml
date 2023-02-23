@@ -3,7 +3,19 @@
     ViewData["Title"] = "Queue";
 }
 
+@{
+    var currentUserInQueueId = "";
+
+    foreach (var user in Model.Users) {
+        if( user.Id == Model.YourId){
+            currentUserInQueueId = user.IdInQueue.ToString();
+        }
+    }
+}
+
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
+
+<input type="hidden" id="queue-id" value="@Model.Id" />
 
 <div class="main-body">
     <div class="queue-info">
@@ -21,7 +33,8 @@
             </div>
             <div class="queue-info-right-part">
                 <img class="edit-queue-image" src="~/images/queue/edit-icon.svg">
-                <div class="status-queue-image"></div>
+                <div id="status-queue-image" class="status-queue-image" 
+                style=@(Model.IsFrozen == false ? "background-color:#82FF9D":"")></div>
             </div>
         </div>
         
@@ -30,13 +43,13 @@
         <div class="user-in-queue-container">
             @foreach (var user in Model.Users)
             {
-                <div class="user-position" id="user-@user.Id">
+                <div class="user-position" id="user-@user.IdInQueue">
                     <div class="user-info">
                         <div class="user-name">
                             @user.Username
                         </div>
-                        <div class="delete-user">
-                            <input onclick="deleteUserFromQueue('@user.Id')" id="trash-image-@user.Id" type="image" src="~/images/queue/trash-icon.svg" />
+                        <div class="delete-user" style=@(Model.OwnerId == Model.YourId ? "":"display:none")>
+                            <input onclick="leaveQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
                         </div>
                     </div>
                 </div>
@@ -45,21 +58,62 @@
         <div class="queue-controll-panel">
             <div class="controll-buttons">
                 <div class="people-in-queue controll-object">
-                    <div class="number-of-people">@Model.Users.Count()</div>
+                    <div id="admin-number" class="number-of-people">@Model.Users.Count()</div>
                     <div class="in-queue">In Queue</div>
                 </div>
-                <button class="next-button controll-object">
-                    <div class="next-text">Next</div>
-                </button>
-                <button class="deactivate-button controll-object">
-                    <div class="deactivate-text">Deactivate</div>
-                </button>
-                <button class="end-button controll-object">
-                    <div class="end-text">End</div>
-                </button>
+                @if(User.Identity.IsAuthenticated && Model.YourId == Model.OwnerId){
+                    <button class="next-button controll-object"
+                    onclick="nextUser('@Model.Id')">
+                        <div class="next-text">Next</div>
+                    </button>
+                    <button class="deactivate-button controll-object"
+                        id="freeze-button"
+                        onclick="freezeQueue('@Model.Id')" 
+                        style=@(Model.IsFrozen == false ? "":"display:none")>
+                        <img class="freeze-icon" src="~/images/queue/freeze-icon-2.png"/>
+                        <div class="deactivate-text">Freeze</div>
+                    </button>
+                    <button class="deactivate-button controll-object" 
+                        id="unfreeze-button"    
+                        onclick="freezeQueue('@Model.Id')" 
+                        style=@(Model.IsFrozen == false ? "display:none":"")>
+                        <img class="freeze-icon" src="~/images/queue/unfreeze-icon.png"/>
+                        <div class="deactivate-text">UnFreeze</div>
+                    </button>
+                }
+                else{
+                    <div id="your-position-is-not-null" class="position-in-queue people-in-queue controll-object"
+                    style=@(Model.YourPosition != null ? "":"display:none")>
+                        <div class="position-user">@Model.YourPosition</div>
+                        <div class="next-text">You</div>
+                    </div>
+                    <button id="leave-queue-button" class="deactivate-button controll-object"
+                    onclick="leaveQueue('@Model.Id', '@currentUserInQueueId')"
+                    style=@(Model.YourPosition != null ? "":"display:none")>
+                        <div class="deactivate-text">Leave</div>
+                    </button>
+
+                    <div id="your-position-is-null" class="position-in-queue people-in-queue controll-object"
+                    style=@(Model.YourPosition == null ? "":"display:none")>
+                        <div class="position-user"></div>
+                        <div class="next-text"></div>
+                    </div>
+                    <button id="join-queue-button" class="deactivate-button controll-object"
+                    onclick="enterQueue('@Model.Id')"
+                    style=@(Model.YourPosition == null ? "":"display:none")>
+                        <div class="deactivate-text">Enter</div>
+                    </button>
+                    
+                }
+                <button class="end-button controll-object"
+                    onclick="clicker()">
+                    <div id="clicker-value" class="clicker-number">0</div>
+                    <div class="end-text">Click</div>
+                </button>               
             </div>
         </div>
     </div>
 </div>
 
-<script src="~/js/get-queue.js" asp-append-version="true"></script>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/get-queue.js"></script>

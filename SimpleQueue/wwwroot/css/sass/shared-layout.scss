@@ -21,34 +21,37 @@ body {
                 display: flex;
                 justify-content: space-around;
 
-                li {
-                    margin: auto;
+                .menu-elements {
+                    margin: 20px auto;
                     float: left;
-                    width: 100%;
 
                     a {
+                        border-radius: 15px;
                         display: block;
                         color: white;
                         text-align: center;
-                        padding: 14px 16px;
+                        padding: 14px 36px;
                         text-decoration: none;
+                        font-size: 22px;
+                        line-height: 27px;
                         display: flex;
                         align-items: center;
-                        justify-content: center;
                         position: relative;
+                        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        border: 4px solid #83E4C1;
 
                         img {
-                            margin-left: 137px;
+                            margin-left: 12px;
                             width: 40px;
                             height: auto;
                             display: block;
-                            position: absolute;
                             float: right;
                         }
                     }
 
                     a:hover {
-                        background-color: bisque;
+                        border: 4px solid white;
+                        color: #555555;
                     }
                 }
 
@@ -62,11 +65,41 @@ body {
                         min-width: 160px;
                         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
                         z-index: 1;
+                        right: 10px;
+                        border-radius: 15px;
+                        flex-direction: row;
                     }
                 }
 
-                .has-subnav:hover .sub-menu {
-                    display: block;
+                .has-subnav:hover {
+                    .sub-menu {
+                        display: flex;
+                        flex-direction: column;
+
+                        li a {
+                            padding: 14px 16px;
+                            min-width: 200px;
+                            margin: 2px;
+                            border-radius: 15px;
+                            display: block;
+                            color: white;
+                            text-align: center;
+                            padding: 14px 16px;
+                            text-decoration: none;
+                            font-size: 22px;
+                            line-height: 27px;
+                            display: flex;
+                            align-items: center;
+                            position: relative;
+                            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                            border: 4px solid #83E4C1;
+                        }
+
+                        a:hover {
+                            border: 4px solid white;
+                            color: #555555;
+                        }
+                    }
                 }
             }
         }

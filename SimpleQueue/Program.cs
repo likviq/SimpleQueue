@@ -1,15 +1,37 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NLog.Web;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 using SimpleQueue.WebUI.Automapper;
+using SimpleQueue.WebUI.Hubs;
 using SimpleQueue.WebUI.Middlewares;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(config =>
+{
+    config.DefaultScheme = "Cookie";
+    config.DefaultChallengeScheme = "oidc";
+})
+    .AddCookie("Cookie")
+    .AddOpenIdConnect("oidc", config =>
+    {
+        config.Authority = "https://localhost:7210";
+        config.ClientId = "client_id_mvc";
+        config.ClientSecret = "client_secret_mvc";
+        config.SaveTokens = true;
+        config.ResponseType = "code";
+        config.SignedOutCallbackPath = "/Home/Index";
+
+        config.Scope.Add(OpenIdConnectScope.OpenId);
+
+        config.Scope.Add("simplequeue-webapi");
+    });
 
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
@@ -21,8 +43,11 @@ builder.Host.UseNLog();
 builder.Services.AddTransient<ExceptionHandlingException>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
+builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
+
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {
@@ -60,12 +85,18 @@ app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
 app.UseMiddleware<ExceptionHandlingException>();
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.MapHub<QueueHub>("/hub/queue");
+
 app.UseRouting();
-app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+
+app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.MapControllerRoute(
     name: "default",

@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
+    "types": [ "node" ],
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
+    "module": "es6",
+    "moduleResolution": "Node",
     "target": "es5",
     "outDir": "../js"
   },

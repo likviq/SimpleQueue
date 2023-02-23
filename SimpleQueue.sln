@@ -9,7 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.Domain", "Simpl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.Data", "SimpleQueue.Data\SimpleQueue.Data.csproj", "{899A9794-849F-4E58-A830-18FF412B19B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleQueue.Services", "SimpleQueue.Services\SimpleQueue.Services.csproj", "{C14C1E97-EB2B-4CB3-9606-1CFAD1CE5281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.Services", "SimpleQueue.Services\SimpleQueue.Services.csproj", "{C14C1E97-EB2B-4CB3-9606-1CFAD1CE5281}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.WebUI.Tests", "SimpleQueue.WebUI.Tests\SimpleQueue.WebUI.Tests.csproj", "{91318CAD-6A4C-45D9-B884-1777CDE22E12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.Services.Tests", "SimpleQueue.Services.Tests\SimpleQueue.Services.Tests.csproj", "{597C8216-3522-4174-A9DC-EC3305E4F82E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleQueue.IdentityServer", "SimpleQueue.IdentityServer\SimpleQueue.IdentityServer.csproj", "{5D38786E-0C8C-40A7-8024-F504247D8D77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleQueue.WebApi", "SimpleQueue.WebApi\SimpleQueue.WebApi.csproj", "{7FE6345B-9375-40D8-9CAE-95F9B1165932}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +41,22 @@ Global
 		{C14C1E97-EB2B-4CB3-9606-1CFAD1CE5281}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C14C1E97-EB2B-4CB3-9606-1CFAD1CE5281}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C14C1E97-EB2B-4CB3-9606-1CFAD1CE5281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91318CAD-6A4C-45D9-B884-1777CDE22E12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91318CAD-6A4C-45D9-B884-1777CDE22E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91318CAD-6A4C-45D9-B884-1777CDE22E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91318CAD-6A4C-45D9-B884-1777CDE22E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597C8216-3522-4174-A9DC-EC3305E4F82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597C8216-3522-4174-A9DC-EC3305E4F82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597C8216-3522-4174-A9DC-EC3305E4F82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597C8216-3522-4174-A9DC-EC3305E4F82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D38786E-0C8C-40A7-8024-F504247D8D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D38786E-0C8C-40A7-8024-F504247D8D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D38786E-0C8C-40A7-8024-F504247D8D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D38786E-0C8C-40A7-8024-F504247D8D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FE6345B-9375-40D8-9CAE-95F9B1165932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE6345B-9375-40D8-9CAE-95F9B1165932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE6345B-9375-40D8-9CAE-95F9B1165932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE6345B-9375-40D8-9CAE-95F9B1165932}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

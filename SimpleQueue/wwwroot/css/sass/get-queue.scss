@@ -51,7 +51,7 @@ $body-font-family: 'Montserrat';
                 }
 
                 .status-queue-image {
-                    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%), #82FF9D;
+                    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%);
                     border-radius: 25px;
                     width: 50px;
                     height: 50px;
@@ -135,6 +135,7 @@ $body-font-family: 'Montserrat';
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    text-align: center;
                     flex-direction: column;
 
                     .number-of-people {
@@ -149,6 +150,8 @@ $body-font-family: 'Montserrat';
                 }
 
                 .next-button {
+                    background-color: #82FF9D;
+
                     .next-text {
                         font-size: 64px;
                         line-height: 78px;
@@ -160,12 +163,53 @@ $body-font-family: 'Montserrat';
                         font-size: 37px;
                         line-height: 44px;
                     }
+
+                    .freeze-icon {
+                        max-width: 100px;
+                        height: auto;
+                    }
+                }
+
+                #unfreeze-button {
+                    background-color: #82FF9D;
+                }
+
+                #freeze-button {
+                    background-color: #A4DEF9;
+                }
+
+                #leave-queue-button {
+                    background-color: #E87C64;
+                    color: white;
+                }
+
+                #join-queue-button {
+                    background-color: #82FF9D;
+                    color: white;
+                }
+
+                .position-in-queue {
+
+                    .position-user {
+                        font-size: 96px;
+                        line-height: 120px;
+                    }
+
+                    .next-text {
+                        font-size: 36px;
+                        line-height: 44px;
+                    }
                 }
 
                 .end-button {
+                    .clicker-number {
+                        font-size: 37px;
+                        line-height: 44px;
+                    }
+
                     .end-text {
-                        font-size: 64px;
-                        line-height: 78px;
+                        font-size: 44px;
+                        line-height: 66px;
                     }
                 }
             }
@@ -204,6 +248,19 @@ $body-font-family: 'Montserrat';
                             }
                         }
 
+                        .position-in-queue {
+
+                            .position-user {
+                                font-size: 72px;
+                                line-height: 96px;
+                            }
+
+                            .next-text {
+                                font-size: 30px;
+                                line-height: 44px;
+                            }
+                        }
+
                         .next-button .next-text {
                             font-size: 52px;
                         }
@@ -213,7 +270,7 @@ $body-font-family: 'Montserrat';
                         }
 
                         .end-button .end-text {
-                            font-size: 53px;
+                            font-size: 40px;
                         }
 
                         .controll-object {

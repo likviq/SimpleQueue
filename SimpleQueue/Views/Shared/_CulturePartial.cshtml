@@ -10,10 +10,13 @@
         ? "~/" 
         : $"~{Context.Request.Path.Value}{Context.Request.QueryString}";
 }
+
+<link rel="stylesheet" href="~/css/localization.css" asp-append-version="true" />
+
 <div>
     <form asp-controller="Culture" asp-action="SetCulture" asp-route-returnUrl="@returnUrl" 
           class="form-horizontal nav-link text-dark">
-          <select name="culture" 
+          <select class="language-variants" name="culture" 
                 onchange="this.form.submit();" 
                 asp-for="@requestCulture.RequestCulture.UICulture.Name" 
                 asp-items="cultureItems">

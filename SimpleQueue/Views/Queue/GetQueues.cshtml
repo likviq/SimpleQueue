@@ -1,0 +1,109 @@
+﻿@using static SimpleQueue.Domain.RequestFeatures.QueueParameters;
+@using SimpleQueue.Domain.RequestFeatures;
+@model List<SimpleQueue.WebUI.Models.ViewModels.QueueSearchResultViewModel>
+
+@{
+
+    var querySearch = Context.Request.Query["SearchTerm"];
+    var queryStartTime = Context.Request.Query["StartTime"];
+    var queryEndTime = Context.Request.Query["EndTime"];
+
+    var queryIsFrozen = Context.Request.Query["IsFrozen"];
+    var queryIsChat = Context.Request.Query["IsChat"];
+    var queryIsProtected = Context.Request.Query["IsProtected"];
+}
+
+<link rel="stylesheet" href="~/css/get-queues-search.css" asp-append-version="true" />
+
+<input type="hidden" id="is-frozen" value="@queryIsFrozen" />
+<input type="hidden" id="is-chat" value="@queryIsChat" />
+<input type="hidden" id="is-protected" value="@queryIsProtected" />
+
+<div class="search-parameters">
+    <div class="group-params">
+        <div class="search-param form-param">
+            <label class="label">Search</label>
+            <input class="" oninput="search()" id="search-value" type="text" asp-route-searchTerm="@querySearch" value=@querySearch />
+            <span class="field-validation"></span>
+        </div>
+        <div class="start-time-param form-param">
+            <label class="label">Start Time</label>
+            <input class="" onchange="startTime()" id="start-time-value" data-date-format="MM DD YYYY" type="datetime-local" value=@queryStartTime />
+            <span class="field-validation"></span>
+        </div>
+        <div class="end-time-param form-param">
+            <label class="label">End Time</label>
+            <input class="" onchange="endTime()" id="end-time-value" type="datetime-local" value=@queryEndTime />
+            <span class="field-validation"></span>
+        </div>
+    </div>
+    <div class="group-params">
+        <div class="search-param form-param">
+            <label class="label">Queue Status</label>
+            <select id="freeze-value" onchange="freeze()" asp-items="Html.GetEnumSelectList<Frozen>()">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="start-time-param form-param">
+            <label class="label">Queue Chat</label>
+            <select id="chat-value" onchange="chat()" asp-items="Html.GetEnumSelectList<Chat>()">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="end-time-param form-param">
+            <label class="label">Privacy Status</label>
+            <select id="privacy-value" onchange="privacy()" asp-items="Html.GetEnumSelectList<Privacy>()">
+                <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="end-time-param form-param">
+            <label class="label">Sort By</label>
+            <select id="sort-by-value" onchange="sortBy()" asp-items="Html.GetEnumSelectList<SortBy>()">
+                
+            </select>
+        </div>
+    </div>
+    <div class="group-params">
+        <button class="find-button" onclick="findQueues()">
+            Find
+        </button>
+    </div>
+</div>
+
+<div class="queues-container">
+
+    <div class="not-found-body" style=@(Model.Count == 0 ? "":"display:none")>
+        No queue was found...
+    </div>
+
+    @foreach (var queue in Model)
+    {
+        <a class="queue-body" id=@queue.Id asp-controller="Queue" asp-action="Get" asp-route-id=@queue.Id>
+            <div class="queue-image">
+                <img src="~/images/queue/queue-image.svg">
+            </div>
+            <div class="queue-info">
+                <div class="queue-title">
+                    @queue.Title
+                </div>
+                <div class="queue-description">
+                    @queue.Description
+                </div>
+            </div>
+            <div id="status-queue-image" class="status-queue-image" 
+                style=@(queue.IsFrozen == false ? "background-color:#82FF9D":"")>
+            </div>
+        </a>
+    }
+
+    <button id="more-button" class="see-more-button" onclick="uploadMoreQueues()" style=@(Model.Count == 10 ? "":"display:none")>
+        <div class="see-more-text">
+            See More
+        </div>
+        <div class="see-more-arrow">
+            <img src="~/images/queue/more-icon.svg">
+        </div>
+    </button>
+</div>
+
+<script src="~/js/get-queues-search.js"></script>

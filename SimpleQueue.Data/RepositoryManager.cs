@@ -8,6 +8,7 @@ namespace SimpleQueue.Data
         private readonly SimpleQueueDBContext _context;
         private IUserRepository _userRepository;
         private IQueueRepository _queueRepository;
+        private IUserInQueueRepository _userInQueueRepository;
 
         public RepositoryManager(SimpleQueueDBContext context)
         {
@@ -34,6 +35,16 @@ namespace SimpleQueue.Data
             }
         }
 
-        public async Task SaveAsync() => await _context.SaveChangesAsync();
+        public IUserInQueueRepository UserInQueue
+        {
+            get
+            {
+                if (_userInQueueRepository == null)
+                    _userInQueueRepository = new UserInQueueRepository(_context);
+                return _userInQueueRepository;
+            }
+        }
+
+        public void Save() => _context.SaveChanges();
     }
 }

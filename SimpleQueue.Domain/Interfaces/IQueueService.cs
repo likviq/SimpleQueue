@@ -1,4 +1,5 @@
 ﻿using SimpleQueue.Domain.Entities;
+using SimpleQueue.Domain.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,12 @@ namespace SimpleQueue.Domain.Interfaces
     {
         Task CreateQueue(Queue queue);
         Task<Queue> GetQueue(Guid id);
+        Task<List<Queue>> GetAllOwnerQueues(Guid userId);
+        Task<List<Queue>> GetAllParticipantQueues(Guid userId);
+        Task FreezeQueue(Guid id);
+        Task<UserInQueue?> NextParticipant(Guid id);
+        void DeleteParticipant(UserInQueue participant);
+        void DeleteQueue(Queue queue);
+        Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true);
     }
 }
