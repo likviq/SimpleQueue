@@ -27,7 +27,8 @@
   .main-body .all-queues-container {
     background-color: white;
     height: 1080px;
-    padding-top: 22px; }
+    padding-top: 22px;
+    overflow-y: scroll; }
     .main-body .all-queues-container a {
       color: #555555;
       text-decoration: none; }

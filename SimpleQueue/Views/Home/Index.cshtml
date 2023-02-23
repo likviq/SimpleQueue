@@ -1,4 +1,4 @@
-﻿@model SimpleQueue.WebUI.Models.DataTransferObjects.SearchQueueDto
+﻿@model SimpleQueue.Domain.RequestFeatures.QueueParameters
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="~/css/home-page.css" asp-append-version="true" />
 
 <div class="main-body">
-    <form class="search-field" asp-controller="Queue" asp-action="Find">
+    <form class="search-field" asp-controller="Queue" asp-action="GetQueues" method="get">
         <div class="input-body">
             <div class="input-background"></div>
-            <input class="input-field" placeholder=@ViewLocalizer["Search Queues..."] asp-for="Name"/>
+            <input class="input-field" placeholder=@ViewLocalizer["Search Queues..."] asp-for="SearchTerm"/>
         </div>
         <button class="join-button">
             @ViewLocalizer["Find"]

@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+.search-parameters {
+  max-width: 1240px;
+  margin-bottom: 17px;
+  font-family: "Montserrat";
+  margin: 50px auto; }
+  .search-parameters .group-params {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px; }
+    .search-parameters .group-params .form-param {
+      width: 285px;
+      float: left; }
+      .search-parameters .group-params .form-param label {
+        font-size: 19px;
+        margin-bottom: 9px;
+        display: block;
+        color: #555555; }
+      .search-parameters .group-params .form-param input {
+        font-size: 17px;
+        border: 2px solid #ccc;
+        display: block;
+        width: 100%;
+        height: 40px;
+        border-radius: 20px;
+        font-family: "Montserrat";
+        color: #555555;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); }
+      .search-parameters .group-params .form-param select {
+        font-size: 17px;
+        border: 2px solid #ccc;
+        display: block;
+        width: 100%;
+        height: 40px;
+        border-radius: 20px;
+        font-family: "Montserrat";
+        color: #555555;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); }
+        .search-parameters .group-params .form-param select option {
+          color: #555555;
+          background: #FFF;
+          font-family: sans-serif;
+          font-size: 17px; }
+    .search-parameters .group-params .find-button {
+      width: 132px;
+      height: 40px;
+      background: #EDB734;
+      font-size: 19px;
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 22px;
+      margin: 4px auto 0 auto;
+      cursor: pointer; }
+
+.queues-container {
+  max-width: 1256px;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 67px;
+  padding-top: 20px;
+  margin: 50px auto;
+  color: #555555;
+  padding-bottom: 50px; }
+  .queues-container .not-found-body {
+    margin: 30px 0 0 50px;
+    color: #555555;
+    font-size: 28px;
+    font-family: "Montserrat"; }
+  .queues-container .queue-body {
+    display: flex;
+    flex-direction: row;
+    margin: 36px 51px 0 58px;
+    height: 148px;
+    overflow: hidden;
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 32px;
+    text-decoration: none;
+    color: #555555; }
+    .queues-container .queue-body .queue-image {
+      height: 100px;
+      width: 100px;
+      margin: 27px 44px 21px 25px; }
+    .queues-container .queue-body .queue-info {
+      display: flex;
+      flex-direction: column;
+      font-size: 24px;
+      line-height: 29px;
+      font-family: "Montserrat";
+      width: 100%; }
+      .queues-container .queue-body .queue-info .queue-title {
+        margin: 27px 0; }
+    .queues-container .queue-body .status-queue-image {
+      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%);
+      border-radius: 25px;
+      min-width: 50px;
+      height: 50px;
+      float: right;
+      margin: auto 49px; }
+  .queues-container .see-more-button {
+    display: flex;
+    flex-direction: column;
+    width: 268px;
+    height: 48px;
+    background: #C4C4C4;
+    border-radius: 23px;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin: 43px auto 0 auto;
+    color: #555555;
+    cursor: pointer; }
+    .queues-container .see-more-button .see-more-text {
+      font-size: 24px;
+      line-height: 29px;
+      font-family: "Montserrat";
+      margin: auto; }
+    .queues-container .see-more-button .see-more-arrow {
+      margin: auto; }
+
+/*# sourceMappingURL=get-queues-search.css.map */

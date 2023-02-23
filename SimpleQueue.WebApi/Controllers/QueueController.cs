@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SimpleQueue.Domain.Interfaces;
+using SimpleQueue.Domain.RequestFeatures;
+using SimpleQueue.WebApi.Models.ViewModels;
 using System.Security.Claims;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SimpleQueue.WebApi.Controllers
 {
@@ -11,11 +13,13 @@ namespace SimpleQueue.WebApi.Controllers
     [ApiController]
     public class QueueController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IQueueService _queueService;
         private readonly ILogger<QueueController> _logger;
         
-        public QueueController(IQueueService queueService, ILogger<QueueController> logger)
+        public QueueController(IMapper mapper, IQueueService queueService, ILogger<QueueController> logger)
         {
+            _mapper = mapper;
             _queueService = queueService;
             _logger = logger;
         }
@@ -127,6 +131,33 @@ namespace SimpleQueue.WebApi.Controllers
                 _logger.LogError($"Unable to delete the queue due to an unexpected error - {ex.Message}");
                 return BadRequest();
             }   
+        }
+
+        [HttpGet("queues")]
+        public async Task<IActionResult> GetQueues([FromQuery] QueueParameters queueParameters)
+        {
+            if (!queueParameters.ValidTimeRange)
+            {
+                _logger.LogError($"End time of queue {queueParameters.EndTime} " +
+                    $"is less than start time {queueParameters.StartTime}");
+                return BadRequest();
+            }
+
+            var queues = await _queueService.GetQueuesAsync(queueParameters);
+            if (queues == null)
+            {
+                _logger.LogWarning($"There are no queues with {nameof(queueParameters)} parameters" +
+                    $"- {queueParameters}");
+            }
+
+            Response.Headers.Add("pagination",
+                JsonConvert.SerializeObject(queues.MetaData));
+
+            var queuesViewModel = _mapper.Map<List<QueueSearchResultViewModel>>(queues);
+            _logger.LogInformation($"Founded queues have been converted to the list of object " +
+                $"{nameof(QueueSearchResultViewModel)}");
+
+            return Ok(queuesViewModel);
         }
     }
 }

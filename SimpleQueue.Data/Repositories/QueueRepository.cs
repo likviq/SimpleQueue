@@ -1,7 +1,8 @@
-﻿using SimpleQueue.Data;
-using SimpleQueue.Domain.Interfaces;
+﻿using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using SimpleQueue.Domain.RequestFeatures;
+using SimpleQueue.Data.Extensions;
 
 namespace SimpleQueue.Data.Repositories
 {
@@ -29,5 +30,20 @@ namespace SimpleQueue.Data.Repositories
             .ToListAsync();
 
         public void DeleteQueue(Queue queue) => Delete(queue);
+
+        public async Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true)
+        {
+            var queues = await FindAll().Include(queue => queue.UserInQueues)
+                .FilterQueuesByTime(queueParameters.StartTime, queueParameters.EndTime)
+                .FilterQueuesByFrozen(queueParameters.IsFrozen)
+                .FilterQueuesByChat(queueParameters.IsChat)
+                .FilterQueuesByPassword(queueParameters.IsProtected)
+                .Search(queueParameters.SearchTerm)
+                .SortBy(queueParameters.SortBy)
+                .ToListAsync();
+
+            return PagedList<Queue>.ToPagedList(
+                queues, queueParameters.PageNumber, queueParameters.PageSize);
+        }
     }
 }

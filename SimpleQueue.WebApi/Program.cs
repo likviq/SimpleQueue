@@ -37,6 +37,18 @@ builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 
 builder.Services.AddAutoMapper(typeof(MappingUserProfile));
+builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
+
+var corsName = "WebUI";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsName,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:7253");
+                      });
+});
 
 builder.Services.AddDbContext<SimpleQueueDBContext>(options =>
 {
@@ -54,6 +66,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+app.UseCors(corsName);
 
 app.UseAuthentication();
 
