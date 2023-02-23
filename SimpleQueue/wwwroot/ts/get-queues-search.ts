@@ -4,6 +4,46 @@ console.log(myHeaders.get("pagination"));
 let pageNumber = 1;
 let pageSize = 10;
 
+setSelect();
+
+function setSelect() {
+    const isFrozenValue = document.getElementById(
+        'is-frozen',
+    ) as HTMLInputElement | null;
+
+    let isFrozenSelect = document.getElementById(
+        'freeze-value',
+    ) as HTMLInputElement | null;
+
+    isFrozenSelect.value = stringToString(isFrozenValue.value);
+
+    const isChatValue = document.getElementById(
+        'is-chat',
+    ) as HTMLInputElement | null;
+
+    let isChatSelect = document.getElementById(
+        'chat-value',
+    ) as HTMLInputElement | null;
+
+    isChatSelect.value = stringToString(isChatValue.value);
+
+    const isPrivacyValue = document.getElementById(
+        'is-protected',
+    ) as HTMLInputElement | null;
+
+    let isPrivacySelect = document.getElementById(
+        'privacy-value',
+    ) as HTMLInputElement | null;
+
+    isPrivacySelect.value = stringToString(isPrivacyValue.value);
+}
+
+function stringToString(value: string) {
+    if (value == "false") return "0";
+    if (value == "true") return "1";
+    else return ""
+}
+
 class QueueParameters {
     StartTime: string = "";
     EndTime: string = "";
@@ -11,6 +51,7 @@ class QueueParameters {
     IsFrozen: boolean = null;
     IsChat: boolean = null;
     IsProtected: boolean = null;
+    SortBy: number = null;
     PageNumber: number = pageNumber;
     PageSize: number = pageSize;
 }
@@ -33,6 +74,27 @@ function setQueueParam() {
         'end-time-value',
     ) as HTMLInputElement | null;
     queueParams.EndTime = endTimeValue.value;
+
+    const isFrozenValue = document.getElementById(
+        'is-frozen',
+    ) as HTMLInputElement | null;
+    queueParams.IsFrozen = booleanValue(isFrozenValue.value);
+
+    const isChatValue = document.getElementById(
+        'is-chat',
+    ) as HTMLInputElement | null;
+    queueParams.IsChat = booleanValue(isChatValue.value);
+
+    const isPrivacyValue = document.getElementById(
+        'is-protected',
+    ) as HTMLInputElement | null;
+    queueParams.IsProtected = booleanValue(isPrivacyValue.value)
+}
+
+function booleanValue(value: string) {
+    if (value == "false") return false;
+    if (value == "true") return true;
+    else return null
 }
 
 function search() {
@@ -72,7 +134,7 @@ function freeze() {
 
     queueParams.IsFrozen = getBooleanValue(freezeValue.value);
 
-    console.log(queueParams.IsFrozen);
+    console.log(queueParams);
 }
 
 function chat() {
@@ -95,6 +157,16 @@ function privacy() {
     console.log(queueParams.IsProtected);
 }
 
+function sortBy() {
+    const privacyValue = document.getElementById(
+        'sort-by-value',
+    ) as HTMLInputElement | null;
+
+    queueParams.SortBy = Number(privacyValue.value);
+
+    console.log(queueParams.SortBy);
+}
+
 function getBooleanValue(value: string) {
     if (value == "") {
         return null;
@@ -111,7 +183,7 @@ function findQueues() {
         `?StartTime=
 ${queueParams.StartTime}&EndTime=${queueParams.EndTime}&SearchTerm=
 ${queueParams.SearchTerm}&IsFrozen=${queueParams.IsFrozen}&IsChat=
-${queueParams.IsChat}&IsProtected=${queueParams.IsProtected}`;
+${queueParams.IsChat}&IsProtected=${queueParams.IsProtected}&SortBy=${queueParams.SortBy}`;
     window.location.href = url;
 }
 
@@ -183,8 +255,11 @@ function prepareUrl() {
     const isChatQuery = queueParams.IsChat == null ? "" : `&IsChat=${queueParams.IsChat}`;
     const isProtectedQuery = queueParams.IsProtected == null ? "" : `&IsProtected=${queueParams.IsProtected}`;
 
+    const sortByQuery = queueParams.SortBy == null ? "" : `&SortBy=${queueParams.SortBy}`;
+
     return urlApiQueues +
         `?PageNumber=${queueParams.PageNumber}&PageSize=${queueParams.PageSize}`
         + startTimeQuery + endTimeQuery + searchTermQuery
-        + isFrozenQuery + isChatQuery + isProtectedQuery;
+        + isFrozenQuery + isChatQuery + isProtectedQuery
+        + sortByQuery;
 }

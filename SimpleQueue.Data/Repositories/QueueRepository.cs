@@ -33,13 +33,13 @@ namespace SimpleQueue.Data.Repositories
 
         public async Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true)
         {
-            var queues = await FindAll()
+            var queues = await FindAll().Include(queue => queue.UserInQueues)
                 .FilterQueuesByTime(queueParameters.StartTime, queueParameters.EndTime)
                 .FilterQueuesByFrozen(queueParameters.IsFrozen)
                 .FilterQueuesByChat(queueParameters.IsChat)
                 .FilterQueuesByPassword(queueParameters.IsProtected)
                 .Search(queueParameters.SearchTerm)
-                .OrderBy(e => e.Title)
+                .SortBy(queueParameters.SortBy)
                 .ToListAsync();
 
             return PagedList<Queue>.ToPagedList(

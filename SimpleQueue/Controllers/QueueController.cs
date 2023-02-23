@@ -146,6 +146,7 @@ namespace SimpleQueue.WebUI.Controllers
             var isFrozenQuery = queueParameters.IsFrozen == null ? "" : $"&IsFrozen={queueParameters.IsFrozen}";
             var isChatQuery = queueParameters.IsChat == null ? "" : $"&IsChat={queueParameters.IsChat}";
             var isProtectedQuery = queueParameters.IsProtected == null ? "" : $"&IsProtected={queueParameters.IsProtected}";
+            var sortByQuery = queueParameters.SortBy == null ? "" : $"&SortBy={queueParameters.SortBy}";
 
             HttpRequestMessage request = new HttpRequestMessage
             {
@@ -154,7 +155,7 @@ namespace SimpleQueue.WebUI.Controllers
                 $"?SearchTerm={queueParameters.SearchTerm}" +
                 $"&StartTime={queueParameters.StartTime}" +
                 $"&EndTime={queueParameters.EndTime}" +
-                isFrozenQuery + isChatQuery + isProtectedQuery)
+                isFrozenQuery + isChatQuery + isProtectedQuery + sortByQuery)
             };
 
             HttpResponseMessage response = await client.SendAsync(request);

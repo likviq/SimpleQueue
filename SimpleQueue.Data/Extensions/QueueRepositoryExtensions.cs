@@ -55,5 +55,20 @@ namespace SimpleQueue.Data.Extensions
             return queues.Where(queue => (queue.Title + queue.Description)
                 .ToLower().Contains(lowerCaseTerm));
         }
+
+        public static IQueryable<Queue> SortBy(
+            this IQueryable<Queue> queues, int? sortByParameter)
+        {
+            switch (sortByParameter)
+            {
+                case 0: return queues;
+                case 1: return queues.OrderBy(q => q.CreatedTime);
+                case 2: return queues.OrderByDescending(q => q.CreatedTime);
+                case 3: return queues.OrderByDescending(q => q.UserInQueues.Count);
+                case 4: return queues.OrderBy(q => q.UserInQueues.Count);
+            }
+
+            return queues;
+        }
     }
 }

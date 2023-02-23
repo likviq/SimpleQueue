@@ -38,6 +38,26 @@ var myHeaders = new Headers();
 console.log(myHeaders.get("pagination"));
 var pageNumber = 1;
 var pageSize = 10;
+setSelect();
+function setSelect() {
+    var isFrozenValue = document.getElementById('is-frozen');
+    var isFrozenSelect = document.getElementById('freeze-value');
+    isFrozenSelect.value = stringToString(isFrozenValue.value);
+    var isChatValue = document.getElementById('is-chat');
+    var isChatSelect = document.getElementById('chat-value');
+    isChatSelect.value = stringToString(isChatValue.value);
+    var isPrivacyValue = document.getElementById('is-protected');
+    var isPrivacySelect = document.getElementById('privacy-value');
+    isPrivacySelect.value = stringToString(isPrivacyValue.value);
+}
+function stringToString(value) {
+    if (value == "false")
+        return "0";
+    if (value == "true")
+        return "1";
+    else
+        return "";
+}
 var QueueParameters = /** @class */ (function () {
     function QueueParameters() {
         this.StartTime = "";
@@ -46,6 +66,7 @@ var QueueParameters = /** @class */ (function () {
         this.IsFrozen = null;
         this.IsChat = null;
         this.IsProtected = null;
+        this.SortBy = null;
         this.PageNumber = pageNumber;
         this.PageSize = pageSize;
     }
@@ -60,6 +81,20 @@ function setQueueParam() {
     queueParams.StartTime = startTimeValue.value;
     var endTimeValue = document.getElementById('end-time-value');
     queueParams.EndTime = endTimeValue.value;
+    var isFrozenValue = document.getElementById('is-frozen');
+    queueParams.IsFrozen = booleanValue(isFrozenValue.value);
+    var isChatValue = document.getElementById('is-chat');
+    queueParams.IsChat = booleanValue(isChatValue.value);
+    var isPrivacyValue = document.getElementById('is-protected');
+    queueParams.IsProtected = booleanValue(isPrivacyValue.value);
+}
+function booleanValue(value) {
+    if (value == "false")
+        return false;
+    if (value == "true")
+        return true;
+    else
+        return null;
 }
 function search() {
     var searchValue = document.getElementById('search-value');
@@ -79,7 +114,7 @@ function endTime() {
 function freeze() {
     var freezeValue = document.getElementById('freeze-value');
     queueParams.IsFrozen = getBooleanValue(freezeValue.value);
-    console.log(queueParams.IsFrozen);
+    console.log(queueParams);
 }
 function chat() {
     var chatValue = document.getElementById('chat-value');
@@ -91,6 +126,11 @@ function privacy() {
     queueParams.IsProtected = getBooleanValue(privacyValue.value);
     console.log(queueParams.IsProtected);
 }
+function sortBy() {
+    var privacyValue = document.getElementById('sort-by-value');
+    queueParams.SortBy = Number(privacyValue.value);
+    console.log(queueParams.SortBy);
+}
 function getBooleanValue(value) {
     if (value == "") {
         return null;
@@ -101,7 +141,7 @@ var urlQueues = "https://localhost:7253/queues";
 function findQueues() {
     console.log(queueParams);
     var url = urlQueues +
-        "?StartTime=\n".concat(queueParams.StartTime, "&EndTime=").concat(queueParams.EndTime, "&SearchTerm=\n").concat(queueParams.SearchTerm, "&IsFrozen=").concat(queueParams.IsFrozen, "&IsChat=\n").concat(queueParams.IsChat, "&IsProtected=").concat(queueParams.IsProtected);
+        "?StartTime=\n".concat(queueParams.StartTime, "&EndTime=").concat(queueParams.EndTime, "&SearchTerm=\n").concat(queueParams.SearchTerm, "&IsFrozen=").concat(queueParams.IsFrozen, "&IsChat=\n").concat(queueParams.IsChat, "&IsProtected=").concat(queueParams.IsProtected, "&SortBy=").concat(queueParams.SortBy);
     window.location.href = url;
 }
 function uploadMoreQueues() {
@@ -156,9 +196,11 @@ function prepareUrl() {
     var isFrozenQuery = queueParams.IsFrozen == null ? "" : "&IsFrozen=".concat(queueParams.IsFrozen);
     var isChatQuery = queueParams.IsChat == null ? "" : "&IsChat=".concat(queueParams.IsChat);
     var isProtectedQuery = queueParams.IsProtected == null ? "" : "&IsProtected=".concat(queueParams.IsProtected);
+    var sortByQuery = queueParams.SortBy == null ? "" : "&SortBy=".concat(queueParams.SortBy);
     return urlApiQueues +
         "?PageNumber=".concat(queueParams.PageNumber, "&PageSize=").concat(queueParams.PageSize)
         + startTimeQuery + endTimeQuery + searchTermQuery
-        + isFrozenQuery + isChatQuery + isProtectedQuery;
+        + isFrozenQuery + isChatQuery + isProtectedQuery
+        + sortByQuery;
 }
 //# sourceMappingURL=get-queues-search.js.map

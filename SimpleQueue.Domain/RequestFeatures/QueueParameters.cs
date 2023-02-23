@@ -9,6 +9,7 @@
         public bool? IsFrozen { get; set; }
         public bool? IsChat { get; set; }
         public bool? IsProtected { get; set; }
+        public int? SortBy { get; set; }
     }
 
     public enum Frozen
@@ -27,5 +28,14 @@
     {
         Password = 1,
         NoPassword = 0
+    }
+
+    public enum SortBy
+    {
+        Recommended = 0,
+        Newest = 1,
+        Oldest = 2,
+        Popularity = 3,
+        Insignificance = 4
     }
 }

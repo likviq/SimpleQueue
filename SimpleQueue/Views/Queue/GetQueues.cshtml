@@ -9,9 +9,15 @@
     var queryEndTime = Context.Request.Query["EndTime"];
 
     var queryIsFrozen = Context.Request.Query["IsFrozen"];
+    var queryIsChat = Context.Request.Query["IsChat"];
+    var queryIsProtected = Context.Request.Query["IsProtected"];
 }
 
 <link rel="stylesheet" href="~/css/get-queues-search.css" asp-append-version="true" />
+
+<input type="hidden" id="is-frozen" value="@queryIsFrozen" />
+<input type="hidden" id="is-chat" value="@queryIsChat" />
+<input type="hidden" id="is-protected" value="@queryIsProtected" />
 
 <div class="search-parameters">
     <div class="group-params">
@@ -34,7 +40,7 @@
     <div class="group-params">
         <div class="search-param form-param">
             <label class="label">Queue Status</label>
-            <select value=@queryIsFrozen id="freeze-value" onchange="freeze()" asp-items="Html.GetEnumSelectList<Frozen>()">
+            <select id="freeze-value" onchange="freeze()" asp-items="Html.GetEnumSelectList<Frozen>()">
                 <option selected="selected" value="">All</option>
             </select>
         </div>
@@ -48,6 +54,12 @@
             <label class="label">Privacy Status</label>
             <select id="privacy-value" onchange="privacy()" asp-items="Html.GetEnumSelectList<Privacy>()">
                 <option selected="selected" value="">All</option>
+            </select>
+        </div>
+        <div class="end-time-param form-param">
+            <label class="label">Sort By</label>
+            <select id="sort-by-value" onchange="sortBy()" asp-items="Html.GetEnumSelectList<SortBy>()">
+                
             </select>
         </div>
     </div>
