@@ -62,8 +62,8 @@ namespace SimpleQueue.Data.Extensions
             switch (sortByParameter)
             {
                 case 0: return queues;
-                case 1: return queues.OrderBy(q => q.CreatedTime);
-                case 2: return queues.OrderByDescending(q => q.CreatedTime);
+                case 1: return queues.OrderByDescending(q => q.CreatedTime);
+                case 2: return queues.OrderBy(q => q.CreatedTime);
                 case 3: return queues.OrderByDescending(q => q.UserInQueues.Count);
                 case 4: return queues.OrderBy(q => q.UserInQueues.Count);
             }
