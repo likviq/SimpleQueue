@@ -52,8 +52,10 @@ namespace SimpleQueue.Data.Extensions
             }
             
             var lowerCaseTerm = searchTerm.Trim().ToLower();
+
             return queues.Where(queue => (queue.Title + queue.Description)
-                .ToLower().Contains(lowerCaseTerm));
+                .ToLower().Contains(lowerCaseTerm) || queue.QueueTags
+                .Any(x => x.Tag.TagTitle.ToLower().Contains(lowerCaseTerm)));
         }
 
         public static IQueryable<Queue> SortBy(

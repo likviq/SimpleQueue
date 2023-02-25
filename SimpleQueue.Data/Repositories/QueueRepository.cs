@@ -34,7 +34,10 @@ namespace SimpleQueue.Data.Repositories
 
         public async Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true)
         {
-            var queues = await FindAll().Include(queue => queue.UserInQueues)
+            var queues = await FindAll()
+                .Include(queue => queue.UserInQueues)
+                .Include(queue => queue.QueueTags)
+                .ThenInclude(queueTag => queueTag.Tag)
                 .FilterQueuesByTime(queueParameters.StartTime, queueParameters.EndTime)
                 .FilterQueuesByFrozen(queueParameters.IsFrozen)
                 .FilterQueuesByChat(queueParameters.IsChat)
