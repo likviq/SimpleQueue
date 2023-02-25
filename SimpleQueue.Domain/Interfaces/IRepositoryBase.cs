@@ -7,6 +7,7 @@ namespace SimpleQueue.Domain.Interfaces
         IQueryable<T> FindAll(bool trackChanges);
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
         void Create(T entity);
+        void CreateMany(List<T> entities);
         void Update(T entity);
         void Delete(T entity);
     }

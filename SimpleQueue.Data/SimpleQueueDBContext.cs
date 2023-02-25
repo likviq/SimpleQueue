@@ -16,6 +16,8 @@ namespace SimpleQueue.Data
         public DbSet<UserInQueue> UserInQueues { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<ConversationMessage> ConversationMessages { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<QueueTag> QueueTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +30,10 @@ namespace SimpleQueue.Data
             new ConversationEntityConfiguration().Configure(modelBuilder.Entity<Conversation>());
 
             new ConversationMessageEntityConfiguration().Configure(modelBuilder.Entity<ConversationMessage>());
+
+            new TagEntityConfiguration().Configure(modelBuilder.Entity<Tag>());
+
+            new QueueTagEntityConfiguration().Configure(modelBuilder.Entity<QueueTag>());
         }
     }
 }

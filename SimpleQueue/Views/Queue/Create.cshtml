@@ -35,6 +35,17 @@
                     </textarea>
                 </div>
 
+                <label class="label">Tags</label>
+                <div class="tag-group">
+                    <div class="tag-body">
+                        <input id="tag" class="tag-input" type="text" asp-for="TagsDto" placeholder="tag..."/>
+                        <button class="delete-button" type="button" onclick="deleteTag(this)">x</button>
+                    </div>
+                    <button class="add-button" type="button" onclick="addTag()">
+                        +
+                    </button>
+                </div>
+
                 <div class="form-wrapper">
                     <label class="label" asp-for="Password">Password</label>
                     <input id="password-value" type="text" asp-for="Password" placeholder="Password" disabled />

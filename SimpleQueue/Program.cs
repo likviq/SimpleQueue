@@ -7,6 +7,7 @@ using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 using SimpleQueue.WebUI.Automapper;
+using SimpleQueue.WebUI.AutoMapper;
 using SimpleQueue.WebUI.Hubs;
 using SimpleQueue.WebUI.Middlewares;
 using System.Globalization;
@@ -44,8 +45,11 @@ builder.Services.AddTransient<ExceptionHandlingException>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
+builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IQueueTagService, QueueTagService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
+builder.Services.AddAutoMapper(typeof(MappingTagProfile));
 
 builder.Services.AddSignalR();
 

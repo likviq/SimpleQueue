@@ -21,16 +21,22 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly IMapper _mapper;
         private readonly IQueueService _queueService;
         private readonly IUserInQueueService _userInQueueService;
+        private readonly ITagService _tagService;
+        private readonly IQueueTagService _queueTagService;
         private readonly ILoggerManager _logger;
         public QueueController(
             IMapper mapper, 
             IQueueService queueService, 
-            IUserInQueueService userInQueueService, 
+            IUserInQueueService userInQueueService,
+            ITagService tagService,
+            IQueueTagService queueTagService,
             ILoggerManager logger)
         {
             _mapper = mapper;
             _queueService = queueService;
             _userInQueueService = userInQueueService;
+            _tagService = tagService;
+            _queueTagService = queueTagService;
             _logger = logger;
         }
 
@@ -125,6 +131,17 @@ namespace SimpleQueue.WebUI.Controllers
 
             var queue = _mapper.Map<Queue>(createQueueDto);
             _logger.LogInfo($"{nameof(CreateQueueDto)} object has been converted to the {nameof(Queue)} entity");
+
+            var tagsDto = createQueueDto.TagsDto;
+            if (tagsDto != null)
+            {
+                var tags = _mapper.Map<List<Tag>>(tagsDto);
+                await _tagService.CreateTags(tags);
+
+                var queueTags = await _queueTagService.InitializeTags(tags);
+
+                queue.QueueTags = queueTags;
+            }
 
             var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             queue.OwnerId = new Guid(userId);

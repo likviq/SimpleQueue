@@ -11,6 +11,7 @@ namespace SimpleQueue.Domain.Interfaces
         IUserRepository User { get; }
         IQueueRepository Queue { get; }
         IUserInQueueRepository UserInQueue { get; }
+        ITagRepository Tag { get; }
         void Save();
     }
 }

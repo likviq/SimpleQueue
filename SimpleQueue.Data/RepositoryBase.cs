@@ -28,6 +28,7 @@ namespace SimpleQueue.Data
             .Where(expression);
 
         public void Create(T entity) => _context.Set<T>().Add(entity);
+        public void CreateMany(List<T> entities) => _context.Set<T>().AddRange(entities);
         public void Update(T entity) => _context.Set<T>().Update(entity);
         public void Delete(T entity) => _context.Set<T>().Remove(entity);
     }
