@@ -14,5 +14,6 @@
         public DateTime StartTime { get; set; }
         public Guid OwnerId { get; set; }
         public List<UserInQueue> UserInQueues { get; set; } = new List<UserInQueue>();
+        public List<QueueTag> QueueTags { get; set; } = new List<QueueTag>();
     }
 }
