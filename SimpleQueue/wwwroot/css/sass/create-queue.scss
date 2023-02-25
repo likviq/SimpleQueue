@@ -21,6 +21,58 @@ body {
         h3 {
         }
 
+        .tag-group {
+            height: 76px;
+            width: 100%;
+
+            .tag-body {
+                display: flex;
+                float: left;
+                margin: 15px 10px;
+
+                .tag-input {
+                    font-size: 17px;
+                    padding: 0 15px;
+                    border: 2px solid yellow;
+                    display: block;
+                    max-width: 100px;
+                    height: 30px;
+                    border-radius: 20px;
+                    font-family: "Montserrat";
+                    color: #555555;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                }
+
+                .delete-button {
+                    margin: auto 10px auto 5px;
+                    border: none;
+                    border-radius: 50%;
+                    background-color: #E87C64;
+                    width: 27px;
+                    height: 27px;
+                    font-size: 17px;
+                    font-family: "Montserrat";
+                    color: white;
+                    cursor: pointer;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                }
+            }
+
+            .add-button {
+                margin: 18px 0;
+                border: 2px solid #83E4C1;
+                border-radius: 50%;
+                background-color: #82FF9D;
+                width: 27px;
+                height: 27px;
+                font-size: 17px;
+                font-family: "Montserrat";
+                color: #555555;
+                cursor: pointer;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            }
+        }
+
         .form-group {
             display: flex;
             justify-content: space-between;
