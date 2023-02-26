@@ -132,6 +132,18 @@ namespace SimpleQueue.WebUI.Controllers
             var queue = _mapper.Map<Queue>(createQueueDto);
             _logger.LogInfo($"{nameof(CreateQueueDto)} object has been converted to the {nameof(Queue)} entity");
 
+            if (createQueueDto.IsDelayed)
+            {
+                var fromTime = createQueueDto.DelayedTimeFrom;
+                var toTime = createQueueDto.DelayedTimeTo;
+                var duration = createQueueDto.DurationPerParticipant;
+
+                var delayedPlaces = _userInQueueService.CreateDelayedPlaces(
+                    (DateTime)fromTime, (DateTime)toTime, (int)duration);
+
+                queue.UserInQueues = delayedPlaces;
+            }
+
             var tagsDto = createQueueDto.TagsDto;
             if (tagsDto != null)
             {

@@ -101,5 +101,24 @@ namespace SimpleQueue.Services
 
             _repository.Save();
         }
+
+        public List<UserInQueue> CreateDelayedPlaces(
+            DateTime from, DateTime to, int durationInMinutes)
+        {
+            var delayedPlaces = new List<UserInQueue>();
+
+            while(from < to)
+            {
+                var delayedPlace = new UserInQueue()
+                {
+                    DestinationTime = from
+                };
+                delayedPlaces.Add(delayedPlace);
+
+                from = from.AddMinutes(durationInMinutes);
+            }
+
+            return delayedPlaces;
+        }
     }
 }

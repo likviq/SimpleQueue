@@ -11,5 +11,6 @@ namespace SimpleQueue.Domain.Interfaces
         Task<int?> UserPositionInQueue(Guid userId, Guid queueId);
         Task<UserInQueue> InitializeUserInQueue(Guid userId, Guid queueId);
         void MoveUserInQueueAfter(UserInQueue userInQueue, UserInQueue targetUserInQueue);
+        List<UserInQueue> CreateDelayedPlaces(DateTime from, DateTime to, int durationInMinutes);
     }
 }
