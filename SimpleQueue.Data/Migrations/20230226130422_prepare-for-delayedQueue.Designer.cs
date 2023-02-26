@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleQueue.Data;
 
@@ -10,9 +11,10 @@ using SimpleQueue.Data;
 namespace SimpleQueue.Data.Migrations
 {
     [DbContext(typeof(SimpleQueueDBContext))]
-    partial class SimpleQueueDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230226130422_prepare-for-delayedQueue")]
+    partial class preparefordelayedQueue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,18 +170,6 @@ namespace SimpleQueue.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QueueType");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b62c54da-5e3a-4bc2-b05c-9494ffe8ece8"),
-                            Name = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("640274a8-159b-43ff-9cb4-ad83191af2d1"),
-                            Name = 1
-                        });
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Entities.Tag", b =>

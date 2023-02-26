@@ -34,6 +34,8 @@ namespace SimpleQueue.Data
             new TagEntityConfiguration().Configure(modelBuilder.Entity<Tag>());
 
             new QueueTagEntityConfiguration().Configure(modelBuilder.Entity<QueueTag>());
+
+            new QueueTypeEntityConfiguration().Configure(modelBuilder.Entity<QueueType>());
         }
     }
 }

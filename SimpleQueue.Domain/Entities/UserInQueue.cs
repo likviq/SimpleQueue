@@ -8,6 +8,7 @@
         public Guid UserId { get; set; }
         public User? User { get; set; }
         public DateTime JoinTime { get; set; }
+        public DateTime DestinationTime { get; set; }
         public Guid? NextId { get; set; }
         public UserInQueue? Next { get; set; }
         public Guid? PreviousId { get; set; }
