@@ -63,14 +63,12 @@ body {
         width: 28%; }
     .form-back form .form-group-checkbox {
       display: flex;
-      margin-bottom: 17px; }
-      .form-back form .form-group-checkbox .checkbox {
-        position: relative;
-        margin-right: 30%; }
-        .form-back form .form-group-checkbox .checkbox label {
+      margin-bottom: 17px;
+      justify-content: space-around; }
+      .form-back form .form-group-checkbox .checkbox label {
+        cursor: pointer; }
+        .form-back form .form-group-checkbox .checkbox label input {
           cursor: pointer; }
-          .form-back form .form-group-checkbox .checkbox label input {
-            cursor: pointer; }
     .form-back form .form-wrapper {
       margin-bottom: 17px; }
       .form-back form .form-wrapper label {
@@ -106,7 +104,8 @@ body {
       .form-back form .form-wrapper .btn-primary {
         background-color: #82FF9D;
         width: 300px;
-        margin: auto; }
+        margin: auto;
+        margin-top: 20px; }
 
 .white-left-back {
   position: absolute;

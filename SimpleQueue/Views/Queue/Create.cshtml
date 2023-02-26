@@ -63,6 +63,26 @@
                             <span class="checkmark2"></span>
                         </label>
                     </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" onchange="changeQueueType()" class="delayed-queue"> Delayed Queue
+                            <span class="checkmark3"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label class="label" asp-for="DelayedTimeFrom">Active time from</label>
+                        <input id="from-time" type="datetime-local" asp-for="DelayedTimeFrom" disabled />
+                    </div>
+                    <div class="form-wrapper">
+                        <label class="label" asp-for="DelayedTimeTo">Active time to</label>
+                        <input id="to-time" type="datetime-local" asp-for="DelayedTimeTo" disabled />
+                    </div>
+                    <div class="form-wrapper">
+                        <label class="label" asp-for="DurationPerParticipant">Time per participant</label>
+                        <input id="duration-time" type="text" asp-for="DurationPerParticipant" disabled />
+                    </div>
                 </div>
                 <div class="form-wrapper">
                     <input type="submit" value="Create queue" class="btn btn-primary">
