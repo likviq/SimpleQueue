@@ -47,6 +47,7 @@ builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IQueueTagService, QueueTagService>();
+builder.Services.AddScoped<IQueueTypeService, QueueTypeService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 builder.Services.AddAutoMapper(typeof(MappingTagProfile));

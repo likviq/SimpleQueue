@@ -24,6 +24,8 @@ namespace SimpleQueue.WebUI.Automapper
                 opt => opt.MapFrom(x => x.User.Surname))
                 .ForMember(c => c.JoinTime,
                 opt => opt.MapFrom(x => x.JoinTime))
+                .ForMember(c => c.DestinationTime,
+                opt => opt.MapFrom(x => x.DestinationTime))
                 .ForMember(c => c.IdInQueue,
                 opt => opt.MapFrom(x => x.Id))
                 .ForMember(c => c.NextIdInQueue,
@@ -31,7 +33,9 @@ namespace SimpleQueue.WebUI.Automapper
 
             CreateMap<Queue, GetQueueViewModel>()
                 .ForMember(view => view.Users,
-                opt => opt.MapFrom(queue => queue.UserInQueues));
+                opt => opt.MapFrom(queue => queue.UserInQueues))
+                .ForMember(view => view.Type,
+                opt => opt.MapFrom(queue => queue.QueueType.Name));
 
             CreateMap<Queue, BriefQueueInfoViewModel>()
                 .ForMember(view => view.IsStarted,

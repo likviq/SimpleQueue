@@ -1,6 +1,12 @@
 ﻿@model SimpleQueue.WebUI.Models.ViewModels.GetQueueViewModel
+@using SimpleQueue.Domain.Entities;
 @{
     ViewData["Title"] = "Queue";
+    
+    var isDelayed = false;
+    if (TypeName.Delayed == Model.Type) {
+        isDelayed = true;
+    }
 }
 
 @{
@@ -16,7 +22,7 @@
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
 
 <input type="hidden" id="queue-id" value="@Model.Id" />
-
+@isDelayed
 <div class="main-body">
     <div class="queue-info">
         <div class="queue-image-container">
@@ -43,16 +49,33 @@
         <div class="user-in-queue-container">
             @foreach (var user in Model.Users)
             {
-                <div class="user-position" id="user-@user.IdInQueue">
-                    <div class="user-info">
-                        <div class="user-name">
-                            @user.Username
-                        </div>
-                        <div class="delete-user" style=@(Model.OwnerId == Model.YourId ? "":"display:none")>
-                            <input onclick="leaveQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
+                @if (isDelayed) {
+                    <div class="user-join-button" 
+                    @(user.Id == null || user.Id == Guid.Empty ? "onclick=enterDelayedQueue()": "")
+                    style=@(user.Id == null || user.Id == Guid.Empty ? "cursor:pointer":"")>
+                        <div class="user-info">
+                            <div class="user-name">
+                                @user.Username
+                            </div>
+                            <div class="destination-time">
+                                @user.DestinationTime
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else {
+                    <div class="user-position" id="user-@user.IdInQueue">
+                        <div class="user-info">
+                            <div class="user-name">
+                                @user.Username
+                            </div>
+                            <div class="delete-user" style=@(Model.OwnerId == Model.YourId ? "":"display:none")>
+                                <input onclick="leaveQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                
             }
         </div>
         <div class="queue-controll-panel">

@@ -11,6 +11,10 @@ namespace SimpleQueue.WebApi.AutoMapper
             CreateMap<UserInQueue, UserInQueueViewModel>()
                 .ForMember(c => c.UserInQueueId,
                 opt => opt.MapFrom(x => x.Id));
+
+            CreateMap<UserInQueue, UserInDelayedQueueViewModel>()
+                .ForMember(c => c.UserInQueueId,
+                opt => opt.MapFrom(x => x.Id));
         }
     }
 }
