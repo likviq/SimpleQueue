@@ -28,9 +28,14 @@ $body-font-family: 'Montserrat';
                 width: 0;
                 height: 0;
             }
-            path {
 
+            path {
             }
         }
+    }
+
+    .link {
+        text-decoration: none;
+        color: blueviolet;
     }
 }

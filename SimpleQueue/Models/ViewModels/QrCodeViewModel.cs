@@ -5,5 +5,6 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public string SvgImage { get; set; }
+        public string QueueLink { get; set; }
     }
 }

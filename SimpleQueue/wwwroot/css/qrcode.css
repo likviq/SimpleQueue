@@ -15,5 +15,8 @@
     fill: none;
     width: 0;
     height: 0; }
+  .main-container .link {
+    text-decoration: none;
+    color: blueviolet; }
 
 /*# sourceMappingURL=qrcode.css.map */

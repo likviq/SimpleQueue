@@ -220,11 +220,13 @@ namespace SimpleQueue.WebUI.Controllers
 
             string baseUrl = string.Format("{0}://{1}",
                        HttpContext.Request.Scheme, HttpContext.Request.Host);
+            string complexUrl = baseUrl + "/queue/" + id;
 
-            var svgImage = await _qrCodeGenerator.GenerateQrCode(baseUrl + "/queue/" + id);
+            var svgImage = await _qrCodeGenerator.GenerateQrCode(complexUrl);
 
             queueViewModel.SvgImage = svgImage;
-            
+            queueViewModel.QueueLink = complexUrl;
+
             return View(queueViewModel);
         }
     }
