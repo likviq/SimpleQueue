@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SimpleQueue.Data\SimpleQueue.Data.csproj" />
     <ProjectReference Include="..\SimpleQueue.Domain\SimpleQueue.Domain.csproj" />
+    <ProjectReference Include="..\SimpleQueue.Infrustructure\SimpleQueue.Infrastructure.csproj" />
     <ProjectReference Include="..\SimpleQueue.Services\SimpleQueue.Services.csproj" />
   </ItemGroup>
 

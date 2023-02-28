@@ -1,0 +1,36 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+$body-font-family: 'Montserrat';
+
+.main-container {
+    font-family: $body-font-family;
+
+    .queue-info {
+        margin: 50px 0 0 50px;
+
+        .queue-title {
+            font-size: 40px;
+            line-height: 48px;
+            margin-bottom: 15px;
+        }
+
+        .queue-description {
+            font-size: 30px;
+            line-height: 45px;
+            margin-bottom: 15px;
+        }
+    }
+
+    .qrcode {
+        svg {
+
+            rect {
+                fill: none;
+                width: 0;
+                height: 0;
+            }
+            path {
+
+            }
+        }
+    }
+}
