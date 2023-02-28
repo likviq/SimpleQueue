@@ -125,6 +125,52 @@ namespace SimpleQueue.WebApi.Controllers
         }
 
         [Authorize]
+        [HttpPost("queue/{queueId}/participant/{userInQueueId}/delayed")]
+        public async Task<IActionResult> EnterQueue(Guid queueId, Guid userInQueueId)
+        {
+            try
+            {
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+                var queue = await _queueService.GetQueue(queueId);
+                if (queue == null)
+                {
+                    _logger.LogWarning($"Queue with id - {queueId} not found");
+                    return NotFound();
+                }
+
+                var isUserInQueue = _userInQueueService.IsDestinationInQueue(queueId, userInQueueId);
+                if (!isUserInQueue)
+                {
+                    _logger.LogWarning($"Place with participant id - {userInQueueId} " +
+                        $"in queue with id - {queueId} is already taken or doesn't exist");
+                    return UnprocessableEntity();
+                }
+
+                var userWithDestination = await _userInQueueService.SetUserWithDestination(
+                    userId, userInQueueId);
+                _logger.LogInformation($"User with id - {userId} has been added to the queue with " +
+                    $"id - {queueId}");
+
+                var userInDelayedQueueViewModel = _mapper
+                    .Map<UserInDelayedQueueViewModel>(userWithDestination);
+                _logger.LogInformation($"{nameof(UserInDelayedQueueViewModel)} object successfully " +
+                    $"created from {nameof(UserInQueue)}");
+
+                _logger.LogInformation($"Method {nameof(EnterQueue)} from the controller " +
+                    $"{nameof(UserInQueueController)} completed successfully");
+
+                return Ok(userInDelayedQueueViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Method {nameof(EnterQueue)} from the controller " +
+                    $"{nameof(UserInQueueController)} was broken due to an error: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}/after/{targetUserInQueueId}")]
         public async Task<IActionResult> ChangePosition(Guid queueId, Guid userInQueueId, Guid targetUserInQueueId)
         {

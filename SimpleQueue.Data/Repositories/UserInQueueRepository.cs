@@ -29,6 +29,12 @@ namespace SimpleQueue.Data.Repositories
             FindByCondition(x => x.UserId.Equals(userId) && x.QueueId.Equals(queueId))
             .FirstOrDefault() != null;
 
+        public bool IsDestinationInQueue(Guid queueId, Guid userInQueueId) =>
+            FindByCondition(participant => participant.QueueId.Equals(queueId)
+            && participant.Id.Equals(userInQueueId)
+            && participant.UserId.Equals(null))
+            .FirstOrDefault() != null;
+
         public async Task<UserInQueue?> LastParticipantInQueue(Guid queueId) =>
             await FindByCondition(x => x.NextId == null && x.QueueId.Equals(queueId))
             .FirstOrDefaultAsync();

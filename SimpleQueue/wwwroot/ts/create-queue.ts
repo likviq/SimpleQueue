@@ -10,6 +10,28 @@
     passwordInput.disabled = !checkbox?.checked
 }
 
+function changeQueueType() {
+    const checkboxDelayedQueue = document.getElementsByClassName(
+        'delayed-queue',
+    )[0] as HTMLInputElement | null;
+
+    const ActiveTimeFromInput = document.getElementById(
+        'from-time',
+    ) as HTMLInputElement | null;
+
+    const ActiveTimeToInput = document.getElementById(
+        'to-time',
+    ) as HTMLInputElement | null;
+
+    const DurationTimeInput = document.getElementById(
+        'duration-time',
+    ) as HTMLInputElement | null;
+
+    ActiveTimeFromInput.disabled = !checkboxDelayedQueue?.checked
+    ActiveTimeToInput.disabled = !checkboxDelayedQueue?.checked
+    DurationTimeInput.disabled = !checkboxDelayedQueue?.checked
+}
+
 function addTag() {
     let elem = document.querySelector('.tag-body:last-of-type');
 

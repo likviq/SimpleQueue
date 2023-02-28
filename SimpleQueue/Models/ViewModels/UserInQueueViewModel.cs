@@ -7,6 +7,7 @@
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime JoinTime { get; set; }
+        public DateTime? DestinationTime { get; set; }
         public Guid IdInQueue { get; set; }
         public Guid? NextIdInQueue { get; set; }
     }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleQueue.Data;
 
@@ -10,9 +11,10 @@ using SimpleQueue.Data;
 namespace SimpleQueue.Data.Migrations
 {
     [DbContext(typeof(SimpleQueueDBContext))]
-    partial class SimpleQueueDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230226130422_prepare-for-delayedQueue")]
+    partial class preparefordelayedQueue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,18 +170,6 @@ namespace SimpleQueue.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QueueType");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("2550a9b8-55c5-499d-82db-0f151ff291c5"),
-                            Name = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("4a0ede84-0d59-4a97-9a82-96d8e386c730"),
-                            Name = 1
-                        });
                 });
 
             modelBuilder.Entity("SimpleQueue.Domain.Entities.Tag", b =>
@@ -240,7 +230,7 @@ namespace SimpleQueue.Data.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("UserInQueueId");
 
-                    b.Property<DateTime?>("DestinationTime")
+                    b.Property<DateTime>("DestinationTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("JoinTime")
@@ -257,7 +247,7 @@ namespace SimpleQueue.Data.Migrations
                     b.Property<Guid>("QueueId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -358,7 +348,9 @@ namespace SimpleQueue.Data.Migrations
 
                     b.HasOne("SimpleQueue.Domain.Entities.User", "User")
                         .WithMany("UserInQueues")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Next");
 

@@ -5,6 +5,8 @@
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public Guid? QueueTypeId { get; set; }
+        public QueueType? QueueType { get; set; }
         public float? Latitude { get; set; }
         public float? Longitude { get; set; }
         public string? Password { get; set; }

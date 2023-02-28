@@ -23,6 +23,7 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly IUserInQueueService _userInQueueService;
         private readonly ITagService _tagService;
         private readonly IQueueTagService _queueTagService;
+        private readonly IQueueTypeService _queueTypeService;
         private readonly ILoggerManager _logger;
         public QueueController(
             IMapper mapper, 
@@ -30,6 +31,7 @@ namespace SimpleQueue.WebUI.Controllers
             IUserInQueueService userInQueueService,
             ITagService tagService,
             IQueueTagService queueTagService,
+            IQueueTypeService queueTypeService,
             ILoggerManager logger)
         {
             _mapper = mapper;
@@ -37,6 +39,7 @@ namespace SimpleQueue.WebUI.Controllers
             _userInQueueService = userInQueueService;
             _tagService = tagService;
             _queueTagService = queueTagService;
+            _queueTypeService = queueTypeService;
             _logger = logger;
         }
 
@@ -131,6 +134,24 @@ namespace SimpleQueue.WebUI.Controllers
 
             var queue = _mapper.Map<Queue>(createQueueDto);
             _logger.LogInfo($"{nameof(CreateQueueDto)} object has been converted to the {nameof(Queue)} entity");
+
+            var queueType = await _queueTypeService.GetQueueType(TypeName.Fast);
+
+            if (createQueueDto.IsDelayed)
+            {
+                var fromTime = createQueueDto.DelayedTimeFrom;
+                var toTime = createQueueDto.DelayedTimeTo;
+                var duration = createQueueDto.DurationPerParticipant;
+
+                var delayedPlaces = _userInQueueService.CreateDelayedPlaces(
+                    (DateTime)fromTime, (DateTime)toTime, (int)duration);
+
+                queue.UserInQueues = delayedPlaces;
+
+                queueType = await _queueTypeService.GetQueueType(TypeName.Delayed);
+            }
+
+            queue.QueueType = queueType;
 
             var tagsDto = createQueueDto.TagsDto;
             if (tagsDto != null)

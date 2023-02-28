@@ -29,7 +29,7 @@ namespace SimpleQueue.WebUI.Tests.Controllers
 
         public QueueControllerTests()
         {
-            
+
             _mockMapper = new Mock<IMapper>();
             _mockQueueService = new Mock<IQueueService>();
             _mockLogger = new Mock<ILoggerManager>();
@@ -55,7 +55,7 @@ namespace SimpleQueue.WebUI.Tests.Controllers
                 .Returns(It.IsAny<Queue>());
 
             _mockQueueService.Setup(option => option.CreateQueue(It.IsAny<Queue>()));
-            
+
             var result = await _controller.CreateAsync(queueDto);
 
             Assert.IsType<RedirectToActionResult>(result);

@@ -14,14 +14,29 @@ namespace SimpleQueue.WebUI.Hubs
             await Clients.Group(groupName).SendAsync("nextUser", username);
         }
 
+        public async Task NextUserDelayed(string groupName, string idElement)
+        {
+            await Clients.Group(groupName).SendAsync("nextUserDelayed", idElement);
+        }
+
         public async Task EnterQueue(string groupName, string queueId, string userInQueueId, string username)
         {
             await Clients.Group(groupName).SendAsync("enterQueue", queueId, userInQueueId, username);
         }
 
+        public async Task EnterDelayedQueue(string groupName, string userInQueueId, string username)
+        {
+            await Clients.Group(groupName).SendAsync("enterDelayedQueue", userInQueueId, username);
+        }
+
         public async Task LeaveQueue(string groupName, string queueId, string userInQueueId, int userPreviousPosition)
         {
             await Clients.Group(groupName).SendAsync("leaveQueue", queueId, userInQueueId, userPreviousPosition);
+        }
+
+        public async Task LeaveDelayedQueue(string groupName, string queueId, string userInQueueId)
+        {
+            await Clients.Group(groupName).SendAsync("leaveDelayedQueue", queueId, userInQueueId);
         }
 
         public async Task FreezeQueue(string groupName)

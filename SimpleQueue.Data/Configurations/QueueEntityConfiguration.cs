@@ -50,6 +50,11 @@ namespace SimpleQueue.Data.Configurations
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .IsRequired();
+
+            builder
+                .HasOne<QueueType>(s => s.QueueType)
+                .WithMany(g => g.Queues)
+                .HasForeignKey(s => s.QueueTypeId);
         }
     }
 }

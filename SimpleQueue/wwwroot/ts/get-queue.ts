@@ -24,6 +24,8 @@ connection.on("nextUser", function (username) {
 
     decreaseAmountOfParticipant();
 
+    decreaseUserPosition();
+
     const usernameElem = document.getElementsByClassName('user-profile')[0] as HTMLDivElement;
     const currentUsername = usernameElem.textContent.replace(/ /g, '').trim();
 
@@ -34,11 +36,32 @@ connection.on("nextUser", function (username) {
     }
 });
 
+connection.on("nextUserDelayed", function (idElement) {
+    const firstParticipant = document.getElementById(idElement) as HTMLDivElement;
+    firstParticipant.remove();
+
+    decreaseAmountOfParticipant();
+
+    var username = firstParticipant.getElementsByClassName('user-name')[0]
+        .getElementsByTagName('div')[0].textContent;
+
+    if (username == "Available") {
+        decreaseAvailablePlaces();
+    }
+});
+
 connection.on("enterQueue", function (queueId, userInQueueId, username) {
     
     cloneUserElement(queueId, userInQueueId, username);
 
     increaseAmountOfParticipant();
+});
+
+connection.on("enterDelayedQueue", function (userInQueueId, username) {
+
+    addUserNameInPlace(userInQueueId, username);
+
+    decreaseAvailablePlaces();
 });
 
 connection.on("leaveQueue", function (queueId, userInQueueId, userPosition) {
@@ -61,6 +84,15 @@ connection.on("leaveQueue", function (queueId, userInQueueId, userPosition) {
         }
     }
     
+});
+
+connection.on("leaveDelayedQueue", function (queueId, userInQueueId) {
+
+    makeAvailable(queueId, userInQueueId);
+
+    unsetYourTime();
+
+    increaseAvailablePlaces();
 });
 
 connection.on("freezeQueue", function () {
@@ -103,19 +135,51 @@ function increaseClickerNumber() {
     clickerNumber.textContent = clickerValue.toString();
 }
 
-function nextUser(idQueue: string) {
+function nextUser(idQueue: string, isDelayed: string) {
     const uri = `https://localhost:7147/api/queue/${idQueue}/next`;
     const method = "post";
 
     api(apiEndpointUri, method, uri).then(function () {
-        const firstUser = document.getElementsByClassName(
-            'user-position',
-        )[0] as HTMLInputElement | null;
+        let divName = 'user-position';
+        const isTrue = (isDelayed === 'True');
+        if (isTrue) {
+            divName = 'user-join-button';
+            const firstUser = document.getElementsByClassName(
+                divName,
+            )[0] as HTMLDivElement | null;
 
-        const username = firstUser.getElementsByClassName("user-name")[0].textContent;
+            const idElement = firstUser.id;
 
-        connection.invoke("NextUser", groupName, username);
+            connection.invoke("NextUserDelayed", groupName, idElement);
+        }
+        else {
+            const firstUser = document.getElementsByClassName(
+                divName,
+            )[0] as HTMLInputElement | null;
+
+            const username = firstUser.getElementsByClassName("user-name")[0].textContent;
+
+            connection.invoke("NextUser", groupName, username);
+        }
+        
     });    
+}
+
+function makeAvailable(idQueue: string, idUserInQueue: string) {
+    const available = document.getElementById(
+        'username-' + idUserInQueue,
+    ) as HTMLDivElement | null;
+    available.textContent = "Available";
+
+    const userField = document.getElementById(
+        'user-field-' + idUserInQueue,
+    ) as HTMLDivElement | null;
+
+    userField.style.backgroundColor = "#a881af";
+    userField.style.cursor = "pointer";
+    userField.style.color = "white";
+
+    userField.setAttribute('onclick', `enterDelayedQueue('${idQueue}', '${idUserInQueue}')`)
 }
 
 function deleteFirstUserInQueue() {
@@ -151,9 +215,25 @@ function leaveQueue(idQueue: string, idParticipant: string) {
             connection.invoke("LeaveQueue", groupName, idQueue, idParticipant, currentUserPositionValue);
         }
         else throw new Error(response.statusText)
-    });
+    });   
+}
 
-    
+function leaveDelayedQueue(idQueue: string, idParticipant: string) {
+    const uri = `https://localhost:7147/api/queue/${idQueue}/participant/${idParticipant}`;
+    const method = "post";
+
+    api(apiEndpointUri, method, uri).then((response) => {
+        if (response.ok) {
+
+            let trashImage = document.getElementById(
+                'trash-image-' + idParticipant
+            ) as HTMLInputElement;
+            trashImage.style.display = 'none';
+
+            connection.invoke("LeaveDelayedQueue", groupName, idQueue, idParticipant);
+        }
+        else throw new Error(response.statusText)
+    });
 }
 
 function afterLeave() {
@@ -179,6 +259,23 @@ function afterLeave() {
     myPositionNotNull.style.display = 'none';
 }
 
+async function enterDelayedQueue(idQueue: string, idUserInQueue: string) {
+    console.log(idQueue, idUserInQueue);
+
+    const uri = `https://localhost:7147/api/queue/${idQueue}/participant/${idUserInQueue}/delayed`;
+    const method = "post";
+
+    let delayedUser: DelayedUser;
+    delayedUser = await request<DelayedUser>(apiEndpointUri, method, uri);
+
+    const usernameElem = document.getElementsByClassName('user-profile')[0] as HTMLDivElement;
+    const username = usernameElem.textContent;
+
+    setYourTime(idUserInQueue);
+
+    connection.invoke("EnterDelayedQueue", groupName, delayedUser.userInQueueId, username);
+}
+
 async function enterQueue(idQueue: string) {
     const uri = `https://localhost:7147/api/queue/${idQueue}/enter`;
     const method = "post";
@@ -194,6 +291,31 @@ async function enterQueue(idQueue: string) {
     afterJoin();
 
     changeLeaveButton(user.queueId, user.userInQueueId);
+}
+
+function setYourTime(userInQueueId: string) {
+    const userField = document.getElementById(
+        'user-field-' + userInQueueId,
+    ) as HTMLDivElement | null;
+
+    const time = userField.getElementsByClassName('user-info')[0]
+        .getElementsByClassName('destination-time')[0].textContent;
+
+    const yourTimeButton = document.getElementById(
+        'your-position-is-null',
+    ) as HTMLDivElement | null;
+
+    yourTimeButton.getElementsByClassName('position-user')[0].textContent = time;
+    yourTimeButton.getElementsByClassName('next-text')[0].textContent = "Your time";
+}
+
+function unsetYourTime() {
+    const yourTimeButton = document.getElementById(
+        'your-position-is-null',
+    ) as HTMLDivElement | null;
+
+    yourTimeButton.getElementsByClassName('position-user')[0].textContent = "";
+    yourTimeButton.getElementsByClassName('next-text')[0].textContent = "";
 }
 
 function changeLeaveButton(queueId: string, userInQueueId: string) {
@@ -217,10 +339,34 @@ function cloneUserElement(queueId: string, userInQueueId: string, username: stri
     elem.before(clone);
 }
 
+function addUserNameInPlace(userInQueueId: string, username: string) {
+    const usernameField = document.getElementById(
+        'username-' + userInQueueId,
+    ) as HTMLDivElement | null;
+    usernameField.getElementsByTagName('input')[0].style.display = '';
+    usernameField.getElementsByTagName('div')[0].textContent = username;
+
+    const userField = document.getElementById(
+        'user-field-' + userInQueueId,
+    ) as HTMLDivElement | null;
+
+    userField.setAttribute('onclick', '');
+    userField.style.cursor = '';
+    userField.style.backgroundColor = '';
+    userField.style.color = '';
+}
+
 interface User {
     userId: string;
     queueId: string;
     userInQueueId: string;
+}
+
+interface DelayedUser {
+    userId: string;
+    queueId: string;
+    userInQueueId: string;
+    destinationTime: Date;
 }
 
 function request<TResponse>(url: string, method: string, uri: string): Promise<TResponse> {
@@ -268,6 +414,24 @@ function decreaseAmountOfParticipant() {
     amountOfParticipant -= 1;
 
     participants.textContent = amountOfParticipant.toString();
+}
+
+function decreaseAvailablePlaces() {
+    let placesValue = document.getElementById(
+        'available-places',
+    ) as HTMLDivElement | null;
+
+    let placesNumber = Number(placesValue.textContent);
+    placesValue.textContent = (placesNumber - 1).toString();
+}
+
+function increaseAvailablePlaces() {
+    let placesValue = document.getElementById(
+        'available-places',
+    ) as HTMLDivElement | null;
+
+    let placesNumber = Number(placesValue.textContent);
+    placesValue.textContent = (placesNumber + 1).toString();
 }
 
 function decreaseUserPosition() {

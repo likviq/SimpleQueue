@@ -12,6 +12,10 @@ namespace SimpleQueue.WebUI.Models.DataTransferObjects
         public bool IsChat { get; set; }
         public DateTime CreatedTime => DateTime.Now;
         public DateTime? StartTime { get; set; }
+        public bool IsDelayed { get; set; }
+        public DateTime? DelayedTimeFrom { get; set; }
+        public DateTime? DelayedTimeTo { get; set; }
+        public int? DurationPerParticipant { get; set; }
         public IList<string>? TagsDto { get; set; } = new List<string>();
     }
 }

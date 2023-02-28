@@ -1,16 +1,33 @@
 ﻿@model SimpleQueue.WebUI.Models.ViewModels.GetQueueViewModel
+@using SimpleQueue.Domain.Entities;
 @{
     ViewData["Title"] = "Queue";
+    
+    var isDelayed = false;
+    if (TypeName.Delayed == Model.Type) {
+        isDelayed = true;
+    }
 }
 
 @{
     var currentUserInQueueId = "";
+    var availablePlaces = 0;
+    DateTime? destinationTime = new DateTime();
 
     foreach (var user in Model.Users) {
         if( user.Id == Model.YourId){
             currentUserInQueueId = user.IdInQueue.ToString();
+            destinationTime = user.DestinationTime;
+        }
+        if (user.Id == new Guid()){
+            availablePlaces += 1;
         }
     }
+
+    string formattedDate = destinationTime.HasValue 
+    ? destinationTime.Value.ToString("dd MMM HH:mm")
+    : "";
+    var isUserIn = currentUserInQueueId != null;
 }
 
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
@@ -43,16 +60,58 @@
         <div class="user-in-queue-container">
             @foreach (var user in Model.Users)
             {
-                <div class="user-position" id="user-@user.IdInQueue">
-                    <div class="user-info">
-                        <div class="user-name">
-                            @user.Username
+                @if (isDelayed) {
+                    @if (user.Id == null || user.Id == Guid.Empty) {
+                        <div class="user-join-button" id="user-field-@user.IdInQueue"
+                        style="cursor:pointer;background-color: #a881af;color: white" onclick="enterDelayedQueue('@Model.Id', '@user.IdInQueue')" >
+                            <div class="user-info">
+                                <div class="user-name" id="username-@user.IdInQueue">
+                                    <div>Available</div>
+                                    
+                                    <input class="trash-icon" onclick="leaveDelayedQueue('@Model.Id', '@user.IdInQueue')" 
+                                    id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg"
+                                    style="display:none"/>
+                                </div>
+                                <div class="destination-time">
+                                    @(user.DestinationTime.HasValue 
+                                        ? user.DestinationTime.Value.ToString("dd MMM HH:mm")
+                                        : "")
+                                </div>
+                            </div>
                         </div>
-                        <div class="delete-user" style=@(Model.OwnerId == Model.YourId ? "":"display:none")>
-                            <input onclick="leaveQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
+                    }
+                    else{
+                        <div class="user-join-button" id="user-field-@user.IdInQueue">
+                            <div class="user-info">
+                                <div class="user-name" id="username-@user.IdInQueue">
+                                    <div>@user.Username</div>
+                                    
+                                    <input class="trash-icon" onclick="leaveDelayedQueue('@Model.Id', '@user.IdInQueue')" 
+                                    id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg"
+                                    style=@(Model.OwnerId == Model.YourId || user.Id == Model.YourId ? "":"display:none")/>
+                                </div>
+                                <div class="destination-time">
+                                    @(user.DestinationTime.HasValue 
+                                        ? user.DestinationTime.Value.ToString("dd MMM HH:mm")
+                                        : "")
+                                </div>
+                            </div> 
+                        </div>
+                    }
+                }
+                else {
+                    <div class="user-position" id="user-@user.IdInQueue">
+                        <div class="user-info">
+                            <div class="user-name">
+                                @user.Username
+                            </div>
+                            <div class="delete-user" style=@(Model.OwnerId == Model.YourId ? "":"display:none")>
+                                <input onclick="leaveQueue('@Model.Id', '@user.IdInQueue')" id="trash-image-@user.IdInQueue" type="image" src="~/images/queue/trash-icon.svg" />
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                
             }
         </div>
         <div class="queue-controll-panel">
@@ -63,7 +122,7 @@
                 </div>
                 @if(User.Identity.IsAuthenticated && Model.YourId == Model.OwnerId){
                     <button class="next-button controll-object"
-                    onclick="nextUser('@Model.Id')">
+                    onclick="nextUser('@Model.Id', '@isDelayed')">
                         <div class="next-text">Next</div>
                     </button>
                     <button class="deactivate-button controll-object"
@@ -87,22 +146,43 @@
                         <div class="position-user">@Model.YourPosition</div>
                         <div class="next-text">You</div>
                     </div>
-                    <button id="leave-queue-button" class="deactivate-button controll-object"
-                    onclick="leaveQueue('@Model.Id', '@currentUserInQueueId')"
-                    style=@(Model.YourPosition != null ? "":"display:none")>
-                        <div class="deactivate-text">Leave</div>
-                    </button>
+
+                    
+                    @if (!isDelayed){
+                        <button id="leave-queue-button" class="deactivate-button controll-object"
+                        onclick="leaveQueue('@Model.Id', '@currentUserInQueueId')"
+                        style=@(Model.YourPosition != null ? "":"display:none")>
+                            <div class="deactivate-text">Leave</div>
+                        </button>
+                    }
+                    
 
                     <div id="your-position-is-null" class="position-in-queue people-in-queue controll-object"
                     style=@(Model.YourPosition == null ? "":"display:none")>
-                        <div class="position-user"></div>
-                        <div class="next-text"></div>
+                        @if (destinationTime == new DateTime() || destinationTime == null) {
+                            <div style="font-size:24px;line-height: 30px" class="position-user"></div>
+                            <div style="font-size:24px" class="next-text"></div>
+                        }
+                        else {
+                            <div style="font-size:24px;line-height: 30px" class="position-user">@formattedDate</div>
+                            <div style="font-size:24px" class="next-text">Your time</div>
+                        }
                     </div>
-                    <button id="join-queue-button" class="deactivate-button controll-object"
-                    onclick="enterQueue('@Model.Id')"
-                    style=@(Model.YourPosition == null ? "":"display:none")>
-                        <div class="deactivate-text">Enter</div>
-                    </button>
+
+                    @if (isDelayed) {
+                        <div id="your-position-is-not-null" class="position-in-queue people-in-queue controll-object"
+                        style="background-color:#fc945a">
+                            <div id="available-places" class="position-user">@availablePlaces</div>
+                            <div class="next-text">Available places</div>
+                        </div>
+                    } 
+                    else {
+                        <button id="join-queue-button" class="deactivate-button controll-object"
+                        onclick="enterQueue('@Model.Id')"
+                        style=@(Model.YourPosition == null ? "":"display:none")>
+                            <div class="deactivate-text">Enter</div>
+                        </button>
+                    } 
                     
                 }
                 <button class="end-button controll-object"

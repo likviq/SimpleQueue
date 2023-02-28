@@ -10,6 +10,7 @@ namespace SimpleQueue.Data
         private IQueueRepository _queueRepository;
         private IUserInQueueRepository _userInQueueRepository;
         private ITagRepository _tagRepository;
+        private IQueueTypeRepository _queueTypeRepository;
 
         public RepositoryManager(SimpleQueueDBContext context)
         {
@@ -53,6 +54,16 @@ namespace SimpleQueue.Data
                 if (_tagRepository == null)
                     _tagRepository = new TagRepository(_context);
                 return _tagRepository;
+            }
+        }
+
+        public IQueueTypeRepository QueueType
+        {
+            get
+            {
+                if (_queueTypeRepository == null)
+                    _queueTypeRepository = new QueueTypeRepository(_context);
+                return _queueTypeRepository;
             }
         }
 

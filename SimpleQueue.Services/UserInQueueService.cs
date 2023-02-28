@@ -18,7 +18,15 @@ namespace SimpleQueue.Services
 
         public void Delete(UserInQueue userInQueue)
         {
-            _repository.UserInQueue.DeleteUserInQueue(userInQueue);
+            if (userInQueue.DestinationTime == null)
+            {
+                _repository.UserInQueue.DeleteUserInQueue(userInQueue);
+            }
+            else
+            {
+                userInQueue.UserId = null;
+            }
+
             _repository.Save();
         }
 
@@ -31,6 +39,11 @@ namespace SimpleQueue.Services
         public bool IsUserInQueue(Guid userId, Guid queueId)
         {
             return _repository.UserInQueue.IsUserInQueue(userId, queueId);
+        }
+
+        public bool IsDestinationInQueue(Guid queueId, Guid userInQueueId)
+        {
+            return _repository.UserInQueue.IsDestinationInQueue(queueId, userInQueueId);
         }
 
         public async Task<int?> UserPositionInQueue(Guid userId, Guid queueId)
@@ -79,6 +92,16 @@ namespace SimpleQueue.Services
             return newParticipant;
         }
 
+        public async Task<UserInQueue> SetUserWithDestination(Guid userId, Guid userInQueueId)
+        {
+            var userInQueue = await GetUserInQueue(userInQueueId);
+            userInQueue.UserId = userId;
+
+            _repository.Save();
+
+            return userInQueue;
+        }
+
         public void MoveUserInQueueAfter(UserInQueue userInQueue, UserInQueue targetUserInQueue)
         {
             var nextAfterSwapUserInQueue = targetUserInQueue.Next;
@@ -100,6 +123,25 @@ namespace SimpleQueue.Services
             userInQueue.PreviousId = targetUserInQueue.Id;
 
             _repository.Save();
+        }
+
+        public List<UserInQueue> CreateDelayedPlaces(
+            DateTime from, DateTime to, int durationInMinutes)
+        {
+            var delayedPlaces = new List<UserInQueue>();
+
+            while(from < to)
+            {
+                var delayedPlace = new UserInQueue()
+                {
+                    DestinationTime = from
+                };
+                delayedPlaces.Add(delayedPlace);
+
+                from = from.AddMinutes(durationInMinutes);
+            }
+
+            return delayedPlaces;
         }
     }
 }
