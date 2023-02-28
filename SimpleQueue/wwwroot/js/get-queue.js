@@ -50,6 +50,7 @@ connection.on("increaseClicker", function (data) {
 connection.on("nextUser", function (username) {
     deleteFirstUserInQueue();
     decreaseAmountOfParticipant();
+    decreaseUserPosition();
     var usernameElem = document.getElementsByClassName('user-profile')[0];
     var currentUsername = usernameElem.textContent.replace(/ /g, '').trim();
     username = username.replace(/ /g, '').trim();
@@ -57,9 +58,23 @@ connection.on("nextUser", function (username) {
         afterLeave();
     }
 });
+connection.on("nextUserDelayed", function (idElement) {
+    var firstParticipant = document.getElementById(idElement);
+    firstParticipant.remove();
+    decreaseAmountOfParticipant();
+    var username = firstParticipant.getElementsByClassName('user-name')[0]
+        .getElementsByTagName('div')[0].textContent;
+    if (username == "Available") {
+        decreaseAvailablePlaces();
+    }
+});
 connection.on("enterQueue", function (queueId, userInQueueId, username) {
     cloneUserElement(queueId, userInQueueId, username);
     increaseAmountOfParticipant();
+});
+connection.on("enterDelayedQueue", function (userInQueueId, username) {
+    addUserNameInPlace(userInQueueId, username);
+    decreaseAvailablePlaces();
 });
 connection.on("leaveQueue", function (queueId, userInQueueId, userPosition) {
     deleteUserFromQueue(queueId, userInQueueId);
@@ -73,6 +88,11 @@ connection.on("leaveQueue", function (queueId, userInQueueId, userPosition) {
         catch (_a) {
         }
     }
+});
+connection.on("leaveDelayedQueue", function (queueId, userInQueueId) {
+    makeAvailable(queueId, userInQueueId);
+    unsetYourTime();
+    increaseAvailablePlaces();
 });
 connection.on("freezeQueue", function () {
     changeFreezeIcon();
@@ -100,14 +120,33 @@ function increaseClickerNumber() {
     var clickerNumber = document.getElementById('clicker-value');
     clickerNumber.textContent = clickerValue.toString();
 }
-function nextUser(idQueue) {
+function nextUser(idQueue, isDelayed) {
     var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/next");
     var method = "post";
     api(apiEndpointUri, method, uri).then(function () {
-        var firstUser = document.getElementsByClassName('user-position')[0];
-        var username = firstUser.getElementsByClassName("user-name")[0].textContent;
-        connection.invoke("NextUser", groupName, username);
+        var divName = 'user-position';
+        var isTrue = (isDelayed === 'True');
+        if (isTrue) {
+            divName = 'user-join-button';
+            var firstUser = document.getElementsByClassName(divName)[0];
+            var idElement = firstUser.id;
+            connection.invoke("NextUserDelayed", groupName, idElement);
+        }
+        else {
+            var firstUser = document.getElementsByClassName(divName)[0];
+            var username = firstUser.getElementsByClassName("user-name")[0].textContent;
+            connection.invoke("NextUser", groupName, username);
+        }
     });
+}
+function makeAvailable(idQueue, idUserInQueue) {
+    var available = document.getElementById('username-' + idUserInQueue);
+    available.textContent = "Available";
+    var userField = document.getElementById('user-field-' + idUserInQueue);
+    userField.style.backgroundColor = "#a881af";
+    userField.style.cursor = "pointer";
+    userField.style.color = "white";
+    userField.setAttribute('onclick', "enterDelayedQueue('".concat(idQueue, "', '").concat(idUserInQueue, "')"));
 }
 function deleteFirstUserInQueue() {
     var firstUser = document.getElementsByClassName('user-position')[0];
@@ -131,6 +170,19 @@ function leaveQueue(idQueue, idParticipant) {
             throw new Error(response.statusText);
     });
 }
+function leaveDelayedQueue(idQueue, idParticipant) {
+    var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/participant/").concat(idParticipant);
+    var method = "post";
+    api(apiEndpointUri, method, uri).then(function (response) {
+        if (response.ok) {
+            var trashImage = document.getElementById('trash-image-' + idParticipant);
+            trashImage.style.display = 'none';
+            connection.invoke("LeaveDelayedQueue", groupName, idQueue, idParticipant);
+        }
+        else
+            throw new Error(response.statusText);
+    });
+}
 function afterLeave() {
     var enterButton = document.getElementById('join-queue-button');
     enterButton.style.display = '';
@@ -140,6 +192,27 @@ function afterLeave() {
     leaveButton.style.display = 'none';
     var myPositionNotNull = document.getElementById('your-position-is-not-null');
     myPositionNotNull.style.display = 'none';
+}
+function enterDelayedQueue(idQueue, idUserInQueue) {
+    return __awaiter(this, void 0, void 0, function () {
+        var uri, method, delayedUser, usernameElem, username;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log(idQueue, idUserInQueue);
+                    uri = "https://localhost:7147/api/queue/".concat(idQueue, "/participant/").concat(idUserInQueue, "/delayed");
+                    method = "post";
+                    return [4 /*yield*/, request(apiEndpointUri, method, uri)];
+                case 1:
+                    delayedUser = _a.sent();
+                    usernameElem = document.getElementsByClassName('user-profile')[0];
+                    username = usernameElem.textContent;
+                    setYourTime(idUserInQueue);
+                    connection.invoke("EnterDelayedQueue", groupName, delayedUser.userInQueueId, username);
+                    return [2 /*return*/];
+            }
+        });
+    });
 }
 function enterQueue(idQueue) {
     return __awaiter(this, void 0, void 0, function () {
@@ -162,6 +235,19 @@ function enterQueue(idQueue) {
         });
     });
 }
+function setYourTime(userInQueueId) {
+    var userField = document.getElementById('user-field-' + userInQueueId);
+    var time = userField.getElementsByClassName('user-info')[0]
+        .getElementsByClassName('destination-time')[0].textContent;
+    var yourTimeButton = document.getElementById('your-position-is-null');
+    yourTimeButton.getElementsByClassName('position-user')[0].textContent = time;
+    yourTimeButton.getElementsByClassName('next-text')[0].textContent = "Your time";
+}
+function unsetYourTime() {
+    var yourTimeButton = document.getElementById('your-position-is-null');
+    yourTimeButton.getElementsByClassName('position-user')[0].textContent = "";
+    yourTimeButton.getElementsByClassName('next-text')[0].textContent = "";
+}
 function changeLeaveButton(queueId, userInQueueId) {
     document.getElementById('leave-queue-button')
         .setAttribute('onclick', "leaveQueue('".concat(queueId, "', '").concat(userInQueueId, "')"));
@@ -175,6 +261,16 @@ function cloneUserElement(queueId, userInQueueId, username) {
         .setAttribute('onclick', "leaveQueue('".concat(queueId, "', '").concat(userInQueueId, "')"));
     elem.getElementsByClassName('user-name')[0].innerHTML = username;
     elem.before(clone);
+}
+function addUserNameInPlace(userInQueueId, username) {
+    var usernameField = document.getElementById('username-' + userInQueueId);
+    usernameField.getElementsByTagName('input')[0].style.display = '';
+    usernameField.getElementsByTagName('div')[0].textContent = username;
+    var userField = document.getElementById('user-field-' + userInQueueId);
+    userField.setAttribute('onclick', '');
+    userField.style.cursor = '';
+    userField.style.backgroundColor = '';
+    userField.style.color = '';
 }
 function request(url, method, uri) {
     url = prepareRequest(url, method, uri);
@@ -200,6 +296,16 @@ function decreaseAmountOfParticipant() {
     var participants = document.getElementById('admin-number');
     amountOfParticipant -= 1;
     participants.textContent = amountOfParticipant.toString();
+}
+function decreaseAvailablePlaces() {
+    var placesValue = document.getElementById('available-places');
+    var placesNumber = Number(placesValue.textContent);
+    placesValue.textContent = (placesNumber - 1).toString();
+}
+function increaseAvailablePlaces() {
+    var placesValue = document.getElementById('available-places');
+    var placesNumber = Number(placesValue.textContent);
+    placesValue.textContent = (placesNumber + 1).toString();
 }
 function decreaseUserPosition() {
     var currentUserPosition = document.getElementsByClassName('position-user')[0];

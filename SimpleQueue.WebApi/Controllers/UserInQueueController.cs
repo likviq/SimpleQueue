@@ -125,8 +125,8 @@ namespace SimpleQueue.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("queue/{queueId}/time/{destinationTime}")]
-        public async Task<IActionResult> EnterQueue(Guid queueId, DateTime destinationTime)
+        [HttpPost("queue/{queueId}/participant/{userInQueueId}/delayed")]
+        public async Task<IActionResult> EnterQueue(Guid queueId, Guid userInQueueId)
         {
             try
             {
@@ -139,18 +139,18 @@ namespace SimpleQueue.WebApi.Controllers
                     return NotFound();
                 }
 
-                var isUserInQueue = _userInQueueService.IsDestinationInQueue(queueId, destinationTime);
+                var isUserInQueue = _userInQueueService.IsDestinationInQueue(queueId, userInQueueId);
                 if (!isUserInQueue)
                 {
-                    _logger.LogWarning($"Place with destination time - {destinationTime} " +
+                    _logger.LogWarning($"Place with participant id - {userInQueueId} " +
                         $"in queue with id - {queueId} is already taken or doesn't exist");
                     return UnprocessableEntity();
                 }
 
-                var userWithDestination = _userInQueueService.SetUserWithDestination(
-                    queueId, userId, destinationTime);
+                var userWithDestination = await _userInQueueService.SetUserWithDestination(
+                    userId, userInQueueId);
                 _logger.LogInformation($"User with id - {userId} has been added to the queue with " +
-                    $"id - {queueId} and destination time - {destinationTime}");
+                    $"id - {queueId}");
 
                 var userInDelayedQueueViewModel = _mapper
                     .Map<UserInDelayedQueueViewModel>(userWithDestination);
@@ -166,7 +166,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 _logger.LogError($"Method {nameof(EnterQueue)} from the controller " +
                     $"{nameof(UserInQueueController)} was broken due to an error: {ex.Message}");
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

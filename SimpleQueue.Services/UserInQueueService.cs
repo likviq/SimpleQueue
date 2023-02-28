@@ -16,14 +16,17 @@ namespace SimpleQueue.Services
             return _repository.UserInQueue.Get(userInQueueId);
         }
 
-        public Task<UserInQueue?> GetUserInQueue(Guid queueId, DateTime destinationTime)
-        {
-            return _repository.UserInQueue.Get(queueId, destinationTime);
-        }
-
         public void Delete(UserInQueue userInQueue)
         {
-            _repository.UserInQueue.DeleteUserInQueue(userInQueue);
+            if (userInQueue.DestinationTime == null)
+            {
+                _repository.UserInQueue.DeleteUserInQueue(userInQueue);
+            }
+            else
+            {
+                userInQueue.UserId = null;
+            }
+
             _repository.Save();
         }
 
@@ -38,9 +41,9 @@ namespace SimpleQueue.Services
             return _repository.UserInQueue.IsUserInQueue(userId, queueId);
         }
 
-        public bool IsDestinationInQueue(Guid queueId, DateTime destinationTime)
+        public bool IsDestinationInQueue(Guid queueId, Guid userInQueueId)
         {
-            return _repository.UserInQueue.IsDestinationInQueue(queueId, destinationTime);
+            return _repository.UserInQueue.IsDestinationInQueue(queueId, userInQueueId);
         }
 
         public async Task<int?> UserPositionInQueue(Guid userId, Guid queueId)
@@ -89,10 +92,10 @@ namespace SimpleQueue.Services
             return newParticipant;
         }
 
-        public async Task<UserInQueue> SetUserWithDestination(Guid queueId, Guid userId, DateTime destinationTime)
+        public async Task<UserInQueue> SetUserWithDestination(Guid userId, Guid userInQueueId)
         {
-            var userInQueue = await GetUserInQueue(queueId, destinationTime);
-            userInQueue.DestinationTime = destinationTime;
+            var userInQueue = await GetUserInQueue(userInQueueId);
+            userInQueue.UserId = userId;
 
             _repository.Save();
 

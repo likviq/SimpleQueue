@@ -64,7 +64,10 @@
         height: 52px; }
         .main-body .queue-content .user-in-queue-container .user-join-button .user-info {
           display: flex;
-          justify-content: space-between; }
+          justify-content: space-between;
+          padding: 11px 20px; }
+          .main-body .queue-content .user-in-queue-container .user-join-button .user-info .user-name {
+            display: flex; }
       .main-body .queue-content .user-in-queue-container .user-position .user-info {
         display: flex;
         justify-content: space-between;
@@ -141,11 +144,15 @@
           font-size: 36px;
           line-height: 44px; }
         .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .clicker-number {
-          font-size: 37px;
-          line-height: 44px; }
+          font-size: 57px;
+          line-height: 65px; }
         .main-body .queue-content .queue-controll-panel .controll-buttons .end-button .end-text {
           font-size: 44px;
           line-height: 66px; }
+
+.trash-icon {
+  height: 26px;
+  margin-left: 6px; }
 
 @media (max-width: 1368px) {
   body .main-body .queue-content {

@@ -90,6 +90,10 @@ $body-font-family: 'Montserrat';
                 .user-info {
                     display: flex;
                     justify-content: space-between;
+                    padding: 11px 20px;
+                    .user-name {
+                        display: flex;
+                    }
                 }
             }
 
@@ -216,8 +220,8 @@ $body-font-family: 'Montserrat';
 
                 .end-button {
                     .clicker-number {
-                        font-size: 37px;
-                        line-height: 44px;
+                        font-size: 57px;
+                        line-height: 65px;
                     }
 
                     .end-text {
@@ -230,6 +234,10 @@ $body-font-family: 'Montserrat';
     }
 }
 
+.trash-icon {
+    height: 26px;
+    margin-left: 6px;
+}
 
 @media (max-width: 1368px) {
     body {
