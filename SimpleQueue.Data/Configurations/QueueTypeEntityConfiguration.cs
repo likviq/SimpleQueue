@@ -17,12 +17,12 @@ namespace SimpleQueue.Data.Configurations
                 .HasData(
                 new QueueType
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("2550a9b8-55c5-499d-82db-0f151ff291c5"),
                     Name = TypeName.Fast
                 },
                 new QueueType
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("4a0ede84-0d59-4a97-9a82-96d8e386c730"),
                     Name = TypeName.Delayed
                 });
         }

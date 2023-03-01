@@ -18,6 +18,7 @@ namespace SimpleQueue.Data.Repositories
         public async Task<Queue?> GetQueueAsync(Guid id) =>
             await FindByCondition(q => q.Id.Equals(id))
             .Include(q => q.QueueType)
+            .Include(q => q.ImageBlob)
             .Include(q => q.UserInQueues.OrderBy(userInQueue => userInQueue.JoinTime))
             .ThenInclude(x => x.User)
             .FirstOrDefaultAsync();

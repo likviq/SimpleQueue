@@ -174,6 +174,8 @@ namespace SimpleQueue.WebUI.Controllers
             {
                 var imageFile = createQueueDto.ImageFile;
                 var imageBlob = await _azureStorage.UploadAsync(imageFile);
+
+                queue.ImageBlob = imageBlob;
             }
 
             var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;

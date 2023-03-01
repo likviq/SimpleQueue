@@ -18,7 +18,7 @@ namespace SimpleQueue.Infrastructure
         public AzureStorage(IConfiguration configuration, ILogger<AzureStorage> logger)
         {
             _storageConnectionString = configuration.GetValue<string>("AzureStorage:blobStorage");
-            _storageContainerName = configuration.GetValue<string>("AzureStorage:blobStorageName");
+            _storageContainerName = configuration.GetValue<string>("AzureStorage:blobContainerName");
             _logger = logger;
         }
 

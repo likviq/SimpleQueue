@@ -8,8 +8,11 @@
 </head>
 <body>
     <div class="form-back">      
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div>
+                <div class="form-wrapper">
+                    <input type="file" asp-for="ImageFile" placeholder="Queue title..." />
+                </div>
                 <div class="form-wrapper">
                     <label class="label" asp-for="Title">Queue Name</label>
                     <input type="text" asp-for="Title" placeholder="Queue title..." />

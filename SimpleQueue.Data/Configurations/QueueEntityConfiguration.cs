@@ -55,6 +55,11 @@ namespace SimpleQueue.Data.Configurations
                 .HasOne<QueueType>(s => s.QueueType)
                 .WithMany(g => g.Queues)
                 .HasForeignKey(s => s.QueueTypeId);
+
+            builder
+                .HasOne<ImageBlob>(ad => ad.ImageBlob)
+                .WithOne(s => s.Queue)
+                .HasForeignKey<Queue>(ad => ad.ImageBlobId);
         }
     }
 }

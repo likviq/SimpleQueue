@@ -12,6 +12,10 @@
     border-radius: 32px;
     display: flex;
     padding: 24px; }
+    .main-body .queue-info .queue-image-container img {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px; }
     .main-body .queue-info .container-for-info {
       display: flex;
       justify-content: space-between;

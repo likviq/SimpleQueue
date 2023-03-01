@@ -11,5 +11,6 @@ namespace SimpleQueue.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string ImageLink { get; set; }
+        public Queue Queue { get; set; }
     }
 }

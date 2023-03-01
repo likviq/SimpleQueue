@@ -30,8 +30,10 @@
     var isUserIn = currentUserInQueueId != null;
 
     var qrCodeLink = "/queue/" + @Model.Id + "/qrcode";
-}
 
+    var queueImage = (@Model.ImageLink == null) ? "~/images/queue/queue-image.svg" : @Model.ImageLink;
+}
+@Model.ImageLink;
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
 
 <input type="hidden" id="queue-id" value="@Model.Id" />

@@ -7,6 +7,8 @@
         public string Description { get; set; }
         public Guid? QueueTypeId { get; set; }
         public QueueType? QueueType { get; set; }
+        public Guid? ImageBlobId { get; set; }
+        public ImageBlob? ImageBlob { get; set; }
         public float? Latitude { get; set; }
         public float? Longitude { get; set; }
         public string? Password { get; set; }
