@@ -1,0 +1,23 @@
+﻿@model SimpleQueue.WebUI.Models.ViewModels.QrCodeViewModel
+
+@{
+    Layout = "";
+}
+
+@{
+    var svgImage = "<svg" + @Model.SvgImage.Split("<svg").Last();
+}
+
+<link rel="stylesheet" href="~/css/qrcode.css" asp-append-version="true" />
+
+
+<div class="main-container">
+    <div class="queue-info">
+        <div class="queue-title">@Model.Title</div>
+        <div class="queue-description">@Model.Description</div>
+    </div>
+    <div class="qrcode">
+        @Html.Raw(@Model.SvgImage)
+    </div>
+    <a class="link" href=@Model.QueueLink>@Model.QueueLink</a>
+</div>

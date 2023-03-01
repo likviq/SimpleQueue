@@ -24,6 +24,7 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly ITagService _tagService;
         private readonly IQueueTagService _queueTagService;
         private readonly IQueueTypeService _queueTypeService;
+        private readonly IQrCodeGenerator _qrCodeGenerator;
         private readonly ILoggerManager _logger;
         public QueueController(
             IMapper mapper, 
@@ -32,6 +33,7 @@ namespace SimpleQueue.WebUI.Controllers
             ITagService tagService,
             IQueueTagService queueTagService,
             IQueueTypeService queueTypeService,
+            IQrCodeGenerator qrCodeGenerator,
             ILoggerManager logger)
         {
             _mapper = mapper;
@@ -40,6 +42,7 @@ namespace SimpleQueue.WebUI.Controllers
             _tagService = tagService;
             _queueTagService = queueTagService;
             _queueTypeService = queueTypeService;
+            _qrCodeGenerator = qrCodeGenerator;
             _logger = logger;
         }
 
@@ -200,6 +203,31 @@ namespace SimpleQueue.WebUI.Controllers
 
             var responseContent = await response.Content.ReadFromJsonAsync<List<QueueSearchResultViewModel>>();
             return View(responseContent);
+        }
+
+        [HttpGet("/queue/{id}/qrcode")]
+        public async Task<IActionResult> QrCode(Guid id)
+        {
+            var queue = await _queueService.GetQueue(id);
+
+            if (queue == null)
+            {
+                _logger.LogError($"Queue with id - {id} does not exist");
+                return NotFound();
+            }
+
+            var queueViewModel = _mapper.Map<QrCodeViewModel>(queue);
+
+            string baseUrl = string.Format("{0}://{1}",
+                       HttpContext.Request.Scheme, HttpContext.Request.Host);
+            string complexUrl = baseUrl + "/queue/" + id;
+
+            var svgImage = await _qrCodeGenerator.GenerateQrCode(complexUrl);
+
+            queueViewModel.SvgImage = svgImage;
+            queueViewModel.QueueLink = complexUrl;
+
+            return View(queueViewModel);
         }
     }
 }

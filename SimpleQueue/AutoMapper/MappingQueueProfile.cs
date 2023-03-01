@@ -42,6 +42,8 @@ namespace SimpleQueue.WebUI.Automapper
                 opt => opt.MapFrom(queue => queue.StartTime < DateTime.Now));
 
             CreateMap<Queue, QueueSearchResultViewModel>();
+
+            CreateMap<Queue, QrCodeViewModel>();
         }
     }
 }

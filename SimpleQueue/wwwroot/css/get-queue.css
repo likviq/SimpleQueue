@@ -30,15 +30,20 @@
       .main-body .queue-info .container-for-info .queue-info-right-part {
         display: flex; }
         .main-body .queue-info .container-for-info .queue-info-right-part .edit-queue-image {
-          width: 75px;
-          height: 75px;
-          margin: auto; }
+          width: 50px;
+          height: 50px;
+          margin: auto 20px auto 0; }
+          .main-body .queue-info .container-for-info .queue-info-right-part .edit-queue-image .copy-image {
+            width: 50px;
+            height: 50px; }
+        .main-body .queue-info .container-for-info .queue-info-right-part .copy-image {
+          cursor: pointer; }
         .main-body .queue-info .container-for-info .queue-info-right-part .status-queue-image {
           background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 23.44%, rgba(0, 0, 0, 0.2) 100%);
           border-radius: 25px;
           width: 50px;
           height: 50px;
-          margin: auto 25px; }
+          margin: auto 10px auto 0; }
   .main-body .queue-content {
     width: 100%;
     display: flex;

@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.IdentityServer"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.WebApi", "SimpleQueue.WebApi\SimpleQueue.WebApi.csproj", "{7FE6345B-9375-40D8-9CAE-95F9B1165932}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleQueue.DatabaseControll", "SimpleQueue.DatabaseControll\SimpleQueue.DatabaseControll.csproj", "{66E921A1-275E-436A-A747-35248730ECD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleQueue.DatabaseControll", "SimpleQueue.DatabaseControll\SimpleQueue.DatabaseControll.csproj", "{66E921A1-275E-436A-A747-35248730ECD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleQueue.Infrastructure", "SimpleQueue.Infrustructure\SimpleQueue.Infrastructure.csproj", "{3A379974-654A-4BA4-9ECB-4F3B2937AA29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{66E921A1-275E-436A-A747-35248730ECD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66E921A1-275E-436A-A747-35248730ECD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66E921A1-275E-436A-A747-35248730ECD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A379974-654A-4BA4-9ECB-4F3B2937AA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A379974-654A-4BA4-9ECB-4F3B2937AA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A379974-654A-4BA4-9ECB-4F3B2937AA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A379974-654A-4BA4-9ECB-4F3B2937AA29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
