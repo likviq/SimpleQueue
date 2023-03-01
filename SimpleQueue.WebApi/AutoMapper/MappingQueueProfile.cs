@@ -8,7 +8,9 @@ namespace SimpleQueue.WebApi.AutoMapper
     {
         public MappingQueueProfile()
         {
-            CreateMap<Queue, QueueSearchResultViewModel>();
+            CreateMap<Queue, QueueSearchResultViewModel>()
+                .ForMember(view => view.ImageLink,
+                opt => opt.MapFrom(queue => queue.ImageBlob.ImageLink));
         }
     }
 }

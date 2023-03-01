@@ -18,7 +18,8 @@
                 <a asp-controller="Queue" asp-action="Get" asp-route-id=@joinedQueue.Id>
                     <div class="queue-info joined-queue">
                         <div class="queue-image-container">
-                            <img src="~/images/queue/queue-image.svg">
+                            <img src=@(joinedQueue.ImageLink == null ? "/images/queue/queue-image.svg" 
+                            : joinedQueue.ImageLink)>
                         </div>
                         <div class="container-for-info">
                             <div class="queue-information">
@@ -44,7 +45,8 @@
                 <a asp-controller="Queue" asp-action="Get" asp-route-id=@createdQueue.Id>
                     <div class="queue-info created-queue">
                         <div class="queue-image-container">
-                            <img src="~/images/queue/queue-image.svg">
+                            <img src=@(createdQueue.ImageLink == null ? "/images/queue/queue-image.svg" 
+                            : createdQueue.ImageLink)>
                         </div>
                         <div class="container-for-info">
                             <div class="queue-information">

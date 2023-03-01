@@ -25,10 +25,12 @@ namespace SimpleQueue.Data.Repositories
 
         public async Task<List<Queue>> GetOwnerQueuesAsync(Guid userId) => 
             await FindByCondition(x => x.OwnerId.Equals(userId))
+            .Include(q => q.ImageBlob)
             .ToListAsync();
 
         public async Task<List<Queue>> GetParticipantQueues(Guid userId) =>
-            await FindAll().Include(item => item.UserInQueues)
+            await FindAll().Include(q => q.ImageBlob)
+            .Include(item => item.UserInQueues)
             .Where(x => x.UserInQueues.Any(v => v.UserId.Equals(userId)))
             .ToListAsync();
 
@@ -37,6 +39,7 @@ namespace SimpleQueue.Data.Repositories
         public async Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true)
         {
             var queues = await FindAll()
+                .Include(q => q.ImageBlob)
                 .Include(queue => queue.UserInQueues)
                 .Include(queue => queue.QueueTags)
                 .ThenInclude(queueTag => queueTag.Tag)

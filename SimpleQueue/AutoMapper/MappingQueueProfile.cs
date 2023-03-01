@@ -41,9 +41,13 @@ namespace SimpleQueue.WebUI.Automapper
 
             CreateMap<Queue, BriefQueueInfoViewModel>()
                 .ForMember(view => view.IsStarted,
-                opt => opt.MapFrom(queue => queue.StartTime < DateTime.Now));
+                opt => opt.MapFrom(queue => queue.StartTime < DateTime.Now))
+                .ForMember(view => view.ImageLink,
+                opt => opt.MapFrom(queue => queue.ImageBlob.ImageLink));
 
-            CreateMap<Queue, QueueSearchResultViewModel>();
+            CreateMap<Queue, QueueSearchResultViewModel>()
+                .ForMember(view => view.ImageLink,
+                opt => opt.MapFrom(queue => queue.ImageBlob.ImageLink));
 
             CreateMap<Queue, QrCodeViewModel>();
         }
