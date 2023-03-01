@@ -22,4 +22,13 @@ function addTag() {
 function deleteTag(element) {
     element.parentNode.remove();
 }
+function setBgImage(input, target) {
+    var image = document.getElementById('image-holder');
+    var fReader = new FileReader();
+    fReader.readAsDataURL(image.files[0]);
+    fReader.onloadend = function (event) {
+        var img = document.getElementById('image-place');
+        img.src = event.target.result;
+    };
+}
 //# sourceMappingURL=create-queue.js.map
