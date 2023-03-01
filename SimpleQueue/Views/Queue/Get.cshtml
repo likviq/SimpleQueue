@@ -28,6 +28,8 @@
     ? destinationTime.Value.ToString("dd MMM HH:mm")
     : "";
     var isUserIn = currentUserInQueueId != null;
+
+    var qrCodeLink = "/queue/" + @Model.Id + "/qrcode";
 }
 
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
@@ -49,7 +51,12 @@
                 </div>
             </div>
             <div class="queue-info-right-part">
-                <img class="edit-queue-image" src="~/images/queue/edit-icon.svg">
+                <a class="edit-queue-image copy-image" onclick="copyQueueLink()">
+                    <img class="copy-image" src="~/images/queue/copy-link.png">
+                </a>
+                <a class="edit-queue-image" href=@qrCodeLink>
+                    <img src="~/images/queue/queue-qrcode-example.svg">
+                </a>
                 <div id="status-queue-image" class="status-queue-image" 
                 style=@(Model.IsFrozen == false ? "background-color:#82FF9D":"")></div>
             </div>

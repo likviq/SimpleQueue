@@ -530,3 +530,7 @@ function api(url: string, method: string, uri: string) {
 function prepareRequest(url: string, method: string, uri: string): string {
     return url + "?" + "method=" + method + "&uri=" + uri;
 }
+
+function copyQueueLink() {
+    navigator.clipboard.writeText(window.location.href);
+}

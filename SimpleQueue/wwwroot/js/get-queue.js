@@ -368,4 +368,7 @@ function api(url, method, uri) {
 function prepareRequest(url, method, uri) {
     return url + "?" + "method=" + method + "&uri=" + uri;
 }
+function copyQueueLink() {
+    navigator.clipboard.writeText(window.location.href);
+}
 //# sourceMappingURL=get-queue.js.map
