@@ -11,10 +11,8 @@
       font-size: 30px;
       line-height: 45px;
       margin-bottom: 15px; }
-  .main-container .qrcode svg rect {
-    fill: none;
-    width: 0;
-    height: 0; }
+  .main-container .qrcode {
+    width: 1000px; }
   .main-container .link {
     text-decoration: none;
     color: blueviolet; }

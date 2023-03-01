@@ -21,17 +21,7 @@ $body-font-family: 'Montserrat';
     }
 
     .qrcode {
-        svg {
-
-            rect {
-                fill: none;
-                width: 0;
-                height: 0;
-            }
-
-            path {
-            }
-        }
+        width: 1000px;
     }
 
     .link {

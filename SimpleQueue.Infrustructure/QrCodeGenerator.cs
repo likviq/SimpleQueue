@@ -8,8 +8,9 @@ namespace SimpleQueue.Infrastructure
         public Task<string> GenerateQrCode(string url)
         {
             var qr = QrCode.EncodeText(url, QrCode.Ecc.Medium);
-
-            var svgResult = qr.ToSvgString(64);
+            
+            var borderSize = 4;
+            var svgResult = qr.ToSvgString(borderSize);
 
             return Task.FromResult(svgResult);
         }
