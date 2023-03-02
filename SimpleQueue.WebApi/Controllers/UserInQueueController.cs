@@ -38,14 +38,14 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueue(queueId);
+                var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"Queue with id - {queueId} not found");
                     return NotFound();
                 }
 
-                var userInQueue = await _userInQueueService.GetUserInQueue(userInQueueId);
+                var userInQueue = await _userInQueueService.GetAsync(userInQueueId);
                 if (userInQueue == null)
                 {
                     _logger.LogWarning($"UserInQueue with id - {userInQueueId} not found");
@@ -88,21 +88,21 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueue(queueId);
+                var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"Queue with id - {queueId} not found");
                     return NotFound();
                 }
 
-                var isUserInQueue = _userInQueueService.IsUserInQueue(userId, queueId);
+                var isUserInQueue = await _userInQueueService.IsUserInQueueAsync(userId, queueId);
                 if (isUserInQueue)
                 {
                     _logger.LogWarning($"User with id - {userId} already in queue with id - {queueId}");
                     return UnprocessableEntity();
                 }
 
-                var userInQueue = await _userInQueueService.InitializeUserInQueue(userId, queueId);
+                var userInQueue = await _userInQueueService.InitializeUserInQueueAsync(userId, queueId);
                 _logger.LogInformation($"User with id - {userId} has been added to the queue with id - {queueId}." +
                     $"Id in {nameof(UserInQueue)} object is {userInQueue.Id}");
 
@@ -132,14 +132,14 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueue(queueId);
+                var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"Queue with id - {queueId} not found");
                     return NotFound();
                 }
 
-                var isUserInQueue = _userInQueueService.IsDestinationInQueue(queueId, userInQueueId);
+                var isUserInQueue = await _userInQueueService.IsDestinationInQueueAsync(queueId, userInQueueId);
                 if (!isUserInQueue)
                 {
                     _logger.LogWarning($"Place with participant id - {userInQueueId} " +
@@ -147,7 +147,7 @@ namespace SimpleQueue.WebApi.Controllers
                     return UnprocessableEntity();
                 }
 
-                var userWithDestination = await _userInQueueService.SetUserWithDestination(
+                var userWithDestination = await _userInQueueService.SetUserWithDestinationAsync(
                     userId, userInQueueId);
                 _logger.LogInformation($"User with id - {userId} has been added to the queue with " +
                     $"id - {queueId}");
@@ -176,22 +176,22 @@ namespace SimpleQueue.WebApi.Controllers
         {
             var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-            var queue = await _queueService.GetQueue(queueId);
+            var queue = await _queueService.GetAsync(queueId);
             if (queue == null)
             {
                 _logger.LogWarning($"Queue with id - {queueId} not found");
                 return NotFound();
             }
 
-            var isUserInQueue = _userInQueueService.IsUserInQueue(userId, queueId);
+            var isUserInQueue = await _userInQueueService.IsUserInQueueAsync(userId, queueId);
             if (!isUserInQueue && queue.OwnerId != userId)
             {
                 _logger.LogWarning($"There is no user with id - {userId} in queue with id - {queueId}");
                 return NotFound();
             }
 
-            var userInQueue = await _userInQueueService.GetUserInQueue(userInQueueId);
-            var targetUserInQueue = await _userInQueueService.GetUserInQueue(targetUserInQueueId);
+            var userInQueue = await _userInQueueService.GetAsync(userInQueueId);
+            var targetUserInQueue = await _userInQueueService.GetAsync(targetUserInQueueId);
             if (userInQueue.QueueId != queueId || targetUserInQueue.QueueId != userInQueue.QueueId)
             {
                 _logger.LogWarning($"{userInQueueId} and {targetUserInQueueId} are in different queues");

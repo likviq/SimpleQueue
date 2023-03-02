@@ -15,21 +15,21 @@ namespace SimpleQueue.Data.Repositories
 
         public void CreateQueue(Queue queue) => Create(queue);
 
-        public async Task<Queue?> GetQueueAsync(Guid id) =>
-            await FindByCondition(q => q.Id.Equals(id))
+        public Task<Queue?> GetQueueAsync(Guid id) =>
+            FindByCondition(q => q.Id.Equals(id))
             .Include(q => q.QueueType)
             .Include(q => q.ImageBlob)
             .Include(q => q.UserInQueues.OrderBy(userInQueue => userInQueue.JoinTime))
             .ThenInclude(x => x.User)
             .FirstOrDefaultAsync();
 
-        public async Task<List<Queue>> GetOwnerQueuesAsync(Guid userId) => 
-            await FindByCondition(x => x.OwnerId.Equals(userId))
+        public Task<List<Queue>> GetOwnerQueuesAsync(Guid userId) => 
+            FindByCondition(x => x.OwnerId.Equals(userId))
             .Include(q => q.ImageBlob)
             .ToListAsync();
 
-        public async Task<List<Queue>> GetParticipantQueues(Guid userId) =>
-            await FindAll().Include(q => q.ImageBlob)
+        public Task<List<Queue>> GetParticipantQueuesAsync(Guid userId) =>
+            FindAll().Include(q => q.ImageBlob)
             .Include(item => item.UserInQueues)
             .Where(x => x.UserInQueues.Any(v => v.UserId.Equals(userId)))
             .ToListAsync();

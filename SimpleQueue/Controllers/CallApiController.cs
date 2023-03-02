@@ -11,7 +11,7 @@ namespace SimpleQueue.WebApi.Controllers
     [ApiController]
     public class CallApiController : ControllerBase
     {
-        public async Task<IActionResult> CallApi([FromQuery] string method, [FromQuery] string uri)
+        public async Task<IActionResult> CallApiAsync([FromQuery] string method, [FromQuery] string uri)
         {
             var url = HttpUtility.UrlDecode(uri);
 

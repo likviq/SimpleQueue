@@ -11,32 +11,32 @@ namespace SimpleQueue.Data.Repositories
         {
         }
 
-        public async Task<UserInQueue?> FirstParticipant(Guid queueId) =>
-            await FindByCondition(x => x.QueueId.Equals(queueId) && x.PreviousId == null)
+        public Task<UserInQueue?> FirstParticipantAsync(Guid queueId) =>
+            FindByCondition(x => x.QueueId.Equals(queueId) && x.PreviousId == null)
             .FirstOrDefaultAsync();
 
         public void DeleteUserInQueue(UserInQueue userInQueue) =>
             Delete(userInQueue);
 
-        public async Task<UserInQueue?> Get(Guid? userInQueueId) =>
-            await FindByCondition(x => x.Id.Equals(userInQueueId))
+        public Task<UserInQueue?> GetAsync(Guid? userInQueueId) =>
+            FindByCondition(x => x.Id.Equals(userInQueueId))
             .FirstOrDefaultAsync();
 
         public void CreateUserInQueue(UserInQueue userInQueue) =>
             Create(userInQueue);
 
-        public bool IsUserInQueue(Guid userId, Guid queueId) =>
-            FindByCondition(x => x.UserId.Equals(userId) && x.QueueId.Equals(queueId))
-            .FirstOrDefault() != null;
+        public async Task<bool> IsUserInQueueAsync(Guid userId, Guid queueId) =>
+            await FindByCondition(x => x.UserId.Equals(userId) && x.QueueId.Equals(queueId))
+            .FirstOrDefaultAsync() != null;
 
-        public bool IsDestinationInQueue(Guid queueId, Guid userInQueueId) =>
-            FindByCondition(participant => participant.QueueId.Equals(queueId)
+        public async Task<bool> IsDestinationInQueueAsync(Guid queueId, Guid userInQueueId) =>
+            await FindByCondition(participant => participant.QueueId.Equals(queueId)
             && participant.Id.Equals(userInQueueId)
             && participant.UserId.Equals(null))
-            .FirstOrDefault() != null;
+            .FirstOrDefaultAsync() != null;
 
-        public async Task<UserInQueue?> LastParticipantInQueue(Guid queueId) =>
-            await FindByCondition(x => x.NextId == null && x.QueueId.Equals(queueId))
+        public Task<UserInQueue?> LastParticipantInQueueAsync(Guid queueId) =>
+            FindByCondition(x => x.NextId == null && x.QueueId.Equals(queueId))
             .FirstOrDefaultAsync();
     }
 }

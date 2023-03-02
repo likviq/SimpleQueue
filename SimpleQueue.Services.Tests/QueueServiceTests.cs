@@ -28,7 +28,7 @@ namespace SimpleQueue.Services.Tests
         {
             var id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e");
             
-            var result = await _mockQueueService.GetQueue(id);
+            var result = await _mockQueueService.GetAsync(id);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<Queue>(result);
@@ -48,7 +48,7 @@ namespace SimpleQueue.Services.Tests
                 StartTime = DateTime.Now
             };
 
-            var result = _mockQueueService.CreateQueue(queue);
+            var result = _mockQueueService.CreateAsync(queue);
 
             Assert.NotNull(result);
         }

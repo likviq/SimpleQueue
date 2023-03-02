@@ -10,14 +10,14 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IQueueService
     {
-        Task CreateQueue(Queue queue);
-        Task<Queue> GetQueue(Guid id);
-        Task<List<Queue>> GetAllOwnerQueues(Guid userId);
-        Task<List<Queue>> GetAllParticipantQueues(Guid userId);
-        Task FreezeQueue(Guid id);
-        Task<UserInQueue?> NextParticipant(Guid id);
+        Task CreateAsync(Queue queue);
+        Task<Queue?> GetAsync(Guid id);
+        Task<List<Queue>> GetAllOwnerQueuesAsync(Guid userId);
+        Task<List<Queue>> GetAllParticipantQueuesAsync(Guid userId);
+        Task FreezeAsync(Guid id);
+        Task<UserInQueue?> NextParticipantAsync(Guid id);
         void DeleteParticipant(UserInQueue participant);
-        void DeleteQueue(Queue queue);
+        void Delete(Queue queue);
         Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true);
     }
 }

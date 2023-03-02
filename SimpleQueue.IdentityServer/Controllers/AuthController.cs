@@ -125,7 +125,7 @@ namespace SimpleQueue.IdentityServer.Controllers
                 var userEntity = _mapper.Map<User>(vm);
                 _logger.LogInformation($"{nameof(RegisterViewModel)} object has been converted to an {nameof(userEntity)} object");
 
-                await _userService.RegisterUser(userEntity);
+                await _userService.RegisterUserAsync(userEntity);
             }
             catch (Exception ex)
             {
@@ -236,7 +236,7 @@ namespace SimpleQueue.IdentityServer.Controllers
                 vm.Id = new Guid(user.Id);
                 var userEntity = _mapper.Map<User>(vm);
 
-                await _userService.RegisterUser(userEntity);
+                await _userService.RegisterUserAsync(userEntity);
             }
             catch (Exception ex)
             {

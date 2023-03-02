@@ -9,6 +9,6 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IQueueTagService
     {
-        Task<List<QueueTag>> InitializeTags(List<Tag> tagTitles);
+        Task<List<QueueTag>> InitializeTagsAsync(List<Tag> tagTitles);
     }
 }

@@ -5,7 +5,7 @@ namespace SimpleQueue.Infrastructure
 {
     public class QrCodeGenerator : IQrCodeGenerator
     {
-        public Task<string> GenerateQrCode(string url)
+        public Task<string> GenerateQrCodeAsync(string url)
         {
             var qr = QrCode.EncodeText(url, QrCode.Ecc.Medium);
             

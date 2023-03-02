@@ -8,7 +8,7 @@ namespace SimpleQueue.Domain.Interfaces
         void CreateQueue(Queue queue);
         Task<Queue?> GetQueueAsync(Guid id);
         Task<List<Queue>> GetOwnerQueuesAsync(Guid userId);
-        Task<List<Queue>> GetParticipantQueues(Guid userId);
+        Task<List<Queue>> GetParticipantQueuesAsync(Guid userId);
         void DeleteQueue(Queue queue);
         Task<PagedList<Queue>> GetQueuesAsync(QueueParameters queueParameters, bool trackChanges = true);
     }

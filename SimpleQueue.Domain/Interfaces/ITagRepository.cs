@@ -6,7 +6,7 @@ namespace SimpleQueue.Domain.Interfaces
     {
         void CreateTag(Tag tag);
         void CreateTags(List<Tag> tags);
-        Task<Tag?> GetTag(string title);
-        Task<Tag?> GetTag(Guid id);
+        Task<Tag?> GetTagAsync(string title);
+        Task<Tag?> GetTagAsync(Guid id);
     }
 }
