@@ -58,7 +58,7 @@ namespace SimpleQueue.WebUI.Controllers
                 return BadRequest();
             }
 
-            var queue = await _queueService.GetQueueAsync(id);
+            var queue = await _queueService.GetAsync(id);
             
             if (queue == null)
             {
@@ -164,7 +164,7 @@ namespace SimpleQueue.WebUI.Controllers
             if (tagsDto != null)
             {
                 var tags = _mapper.Map<List<Tag>>(tagsDto);
-                await _tagService.CreateTagsAsync(tags);
+                await _tagService.CreateManyAsync(tags);
 
                 var queueTags = await _queueTagService.InitializeTagsAsync(tags);
                 _logger.LogInformation($"{queueTags.Count} tags have been created " +
@@ -186,7 +186,7 @@ namespace SimpleQueue.WebUI.Controllers
             var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             queue.OwnerId = new Guid(userId);
 
-            await _queueService.CreateQueueAsync(queue);
+            await _queueService.CreateAsync(queue);
             _logger.LogInformation("New queue was successfully created");
 
             return RedirectToAction(nameof(Index), "Home");
@@ -225,7 +225,7 @@ namespace SimpleQueue.WebUI.Controllers
         [HttpGet("/queue/{id}/qrcode")]
         public async Task<IActionResult> QrCodeAsync(Guid id)
         {
-            var queue = await _queueService.GetQueueAsync(id);
+            var queue = await _queueService.GetAsync(id);
 
             if (queue == null)
             {

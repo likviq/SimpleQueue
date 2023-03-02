@@ -11,23 +11,23 @@ namespace SimpleQueue.Services
             _repository = repository;
         }
 
-        public Task<Tag?> GetTagAsync(string title)
+        public Task<Tag?> GetAsync(string title)
         {
             return _repository.Tag.GetTagAsync(title);
         }
 
-        public Task<Tag?> GetTagAsync(Guid id)
+        public Task<Tag?> GetAsync(Guid id)
         {
             return _repository.Tag.GetTagAsync(id);
         }
 
-        public async Task CreateTagsAsync(List<Tag> tags)
+        public async Task CreateManyAsync(List<Tag> tags)
         {
             var tagsList = new List<Tag>();
 
             foreach(var tag in tags)
             {
-                var tagDb = await GetTagAsync(tag.TagTitle);
+                var tagDb = await GetAsync(tag.TagTitle);
                 if (tagDb == null)
                 {
                     tagsList.Add(tag);

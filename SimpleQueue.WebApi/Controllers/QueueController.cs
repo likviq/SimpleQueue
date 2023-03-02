@@ -32,7 +32,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-                var queue = await _queueService.GetQueueAsync(queueId);
+                var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
@@ -46,7 +46,7 @@ namespace SimpleQueue.WebApi.Controllers
                     return Unauthorized();
                 }
 
-                await _queueService.FreezeQueueAsync(queueId);
+                await _queueService.FreezeAsync(queueId);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueueAsync(queueId);
+                var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
@@ -106,7 +106,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueueAsync(queueId);
+                var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
@@ -120,7 +120,7 @@ namespace SimpleQueue.WebApi.Controllers
                     return Forbid();
                 }
 
-                _queueService.DeleteQueue(queue);
+                _queueService.Delete(queue);
                 
                 _logger.LogInformation($"User with id - {userId} successfully deleted own queue with id - {queueId}");
                 

@@ -11,7 +11,7 @@ namespace SimpleQueue.Services
             _repository = repository;
         }
 
-        public Task<UserInQueue?> GetUserInQueueAsync(Guid userInQueueId)
+        public Task<UserInQueue?> GetAsync(Guid userInQueueId)
         {
             return _repository.UserInQueue.GetAsync(userInQueueId);
         }
@@ -94,7 +94,7 @@ namespace SimpleQueue.Services
 
         public async Task<UserInQueue> SetUserWithDestinationAsync(Guid userId, Guid userInQueueId)
         {
-            var userInQueue = await GetUserInQueueAsync(userInQueueId);
+            var userInQueue = await GetAsync(userInQueueId);
             userInQueue.UserId = userId;
 
             _repository.Save();

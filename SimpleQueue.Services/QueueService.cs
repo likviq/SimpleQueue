@@ -11,7 +11,7 @@ namespace SimpleQueue.Services
         {
             _repository = repository;
         }
-        public Task CreateQueueAsync(Queue queue)
+        public Task CreateAsync(Queue queue)
         {
             _repository.Queue.CreateQueue(queue);
             _repository.Save();
@@ -19,7 +19,7 @@ namespace SimpleQueue.Services
             return Task.CompletedTask;
         }
 
-        public Task<Queue?> GetQueueAsync(Guid id)
+        public Task<Queue?> GetAsync(Guid id)
         {
             return _repository.Queue.GetQueueAsync(id);
         }
@@ -34,7 +34,7 @@ namespace SimpleQueue.Services
             return _repository.Queue.GetParticipantQueuesAsync(userId);
         }
 
-        public async Task FreezeQueueAsync(Guid id)
+        public async Task FreezeAsync(Guid id)
         {
             var queue = await _repository.Queue.GetQueueAsync(id);
 
@@ -54,7 +54,7 @@ namespace SimpleQueue.Services
             _repository.Save();
         }
 
-        public void DeleteQueue(Queue queue)
+        public void Delete(Queue queue)
         {
             _repository.Queue.DeleteQueue(queue);
             _repository.Save();

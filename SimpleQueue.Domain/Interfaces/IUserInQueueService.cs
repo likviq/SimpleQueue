@@ -4,7 +4,7 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IUserInQueueService
     {
-        Task<UserInQueue?> GetUserInQueueAsync(Guid userInQueueId);
+        Task<UserInQueue?> GetAsync(Guid userInQueueId);
         void Delete(UserInQueue userInQueue);
         void EnterQueue(UserInQueue userInQueue);
         Task<bool> IsUserInQueueAsync(Guid userId, Guid queueId);

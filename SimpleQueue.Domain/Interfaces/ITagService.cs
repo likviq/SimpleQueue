@@ -4,8 +4,8 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface ITagService
     {
-        Task<Tag?> GetTagAsync(string title);
-        Task<Tag?> GetTagAsync(Guid id);
-        Task CreateTagsAsync(List<Tag> tags);
+        Task<Tag?> GetAsync(string title);
+        Task<Tag?> GetAsync(Guid id);
+        Task CreateManyAsync(List<Tag> tags);
     }
 }
