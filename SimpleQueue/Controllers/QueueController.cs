@@ -173,7 +173,9 @@ namespace SimpleQueue.WebUI.Controllers
             if (createQueueDto.ImageFile != null)
             {
                 var imageFile = createQueueDto.ImageFile;
+
                 var imageBlob = await _azureStorage.UploadAsync(imageFile);
+                _logger.LogInfo($"Image with name - {imageBlob.Name} successfully uploaded to the storage");
 
                 queue.ImageBlob = imageBlob;
             }

@@ -22,21 +22,6 @@ namespace SimpleQueue.Infrastructure
             _logger = logger;
         }
 
-        public Task<ImageBlob> DeleteAsync(string blobFilename)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ImageBlob> DownloadAsync(string blobFilename)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<ImageBlob>> ListAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ImageBlob> UploadAsync(IFormFile blob)
         {
             ImageBlob imageBlob = new();
@@ -58,7 +43,8 @@ namespace SimpleQueue.Infrastructure
             catch (RequestFailedException ex)
                when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
             {
-                _logger.LogError($"File with name {blob.FileName} already exists in container. Set another name to store the file in the container: '{_storageContainerName}.'");
+                _logger.LogError($"File with name {blob.FileName} already exists in container. " +
+                    $"Set another name to store the file in the container: '{_storageContainerName}.'");
                 
                 return await Task.FromResult<ImageBlob>(null);
             }
@@ -70,6 +56,15 @@ namespace SimpleQueue.Infrastructure
             }
 
             return imageBlob;
+        }
+
+        public Task DeleteAsync(string blobFilename)
+        {
+            BlobContainerClient client = new BlobContainerClient(_storageConnectionString, _storageContainerName);
+
+            BlobClient file = client.GetBlobClient(blobFilename);
+
+            return file.DeleteAsync();
         }
     }
 }
