@@ -124,7 +124,6 @@ namespace SimpleQueue.WebUI.Controllers
         [HttpGet("/queue")]
         public IActionResult Create()
         {
-            var token = HttpContext.GetTokenAsync("access_token");
             return View();
         }
 
@@ -151,6 +150,8 @@ namespace SimpleQueue.WebUI.Controllers
 
                 var delayedPlaces = _userInQueueService.CreateDelayedPlaces(
                     (DateTime)fromTime, (DateTime)toTime, (int)duration);
+                _logger.LogInformation($"Successfully created places for the delayed queue" +
+                    $"with title - {queue.Title}");
 
                 queue.UserInQueues = delayedPlaces;
 
@@ -166,6 +167,8 @@ namespace SimpleQueue.WebUI.Controllers
                 await _tagService.CreateTags(tags);
 
                 var queueTags = await _queueTagService.InitializeTags(tags);
+                _logger.LogInformation($"{queueTags.Count} tags have been created " +
+                    $"for the queue with the name - {queue.Title}");
 
                 queue.QueueTags = queueTags;
             }
@@ -194,9 +197,6 @@ namespace SimpleQueue.WebUI.Controllers
         {
             var client = new HttpClient();
 
-            //DateTime date = DateTime.ParseExact(queueParameters.EndTime.ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            //string formattedDate = date.ToString("MM.dd.yyyy HH:mm:ss");  
-
             var isFrozenQuery = queueParameters.IsFrozen == null ? "" : $"&IsFrozen={queueParameters.IsFrozen}";
             var isChatQuery = queueParameters.IsChat == null ? "" : $"&IsChat={queueParameters.IsChat}";
             var isProtectedQuery = queueParameters.IsProtected == null ? "" : $"&IsProtected={queueParameters.IsProtected}";
@@ -212,9 +212,13 @@ namespace SimpleQueue.WebUI.Controllers
                 isFrozenQuery + isChatQuery + isProtectedQuery + sortByQuery)
             };
 
+            _logger.LogInformation("Request for searching queues have been prepared");
+
             HttpResponseMessage response = await client.SendAsync(request);
 
             var responseContent = await response.Content.ReadFromJsonAsync<List<QueueSearchResultViewModel>>();
+            _logger.LogInformation($"Were found {responseContent.Count} queues");
+
             return View(responseContent);
         }
 
@@ -228,14 +232,20 @@ namespace SimpleQueue.WebUI.Controllers
                 _logger.LogError($"Queue with id - {id} does not exist");
                 return NotFound();
             }
+            _logger.LogInformation($"Queue with id - {id} for qr code generate has been received");
 
             var queueViewModel = _mapper.Map<QrCodeViewModel>(queue);
+            _logger.LogInformation($"Queue with id - {id} has been converted " +
+                $"to an object {nameof(QrCodeViewModel)}");
+
 
             string baseUrl = string.Format("{0}://{1}",
                        HttpContext.Request.Scheme, HttpContext.Request.Host);
             string complexUrl = baseUrl + "/queue/" + id;
+            _logger.LogInformation($"Link to the queue for generating the qr code has been created");
 
             var svgImage = await _qrCodeGenerator.GenerateQrCode(complexUrl);
+            _logger.LogInformation($"Svg image has been created");
 
             queueViewModel.SvgImage = svgImage;
             queueViewModel.QueueLink = complexUrl;

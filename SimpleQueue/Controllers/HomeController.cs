@@ -17,7 +17,6 @@ namespace SimpleQueue.Controllers
         public HomeController(ILogger<HomeController> logger, IMapper mapper)
         {
             _logger = logger;
-            _logger.LogDebug("NLog injected into HomeController");
             _mapper = mapper;
         }
 
