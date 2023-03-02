@@ -26,7 +26,7 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly IQueueTypeService _queueTypeService;
         private readonly IQrCodeGenerator _qrCodeGenerator;
         private readonly IAzureStorage _azureStorage;
-        private readonly ILoggerManager _logger;
+        private readonly ILogger<QueueController> _logger;
         public QueueController(
             IMapper mapper, 
             IQueueService queueService, 
@@ -36,7 +36,7 @@ namespace SimpleQueue.WebUI.Controllers
             IQueueTypeService queueTypeService,
             IQrCodeGenerator qrCodeGenerator,
             IAzureStorage azureStorage,
-            ILoggerManager logger)
+            ILogger<QueueController> logger)
         {
             _mapper = mapper;
             _queueService = queueService;
@@ -66,17 +66,17 @@ namespace SimpleQueue.WebUI.Controllers
                 return NotFound();
             }
 
-            _logger.LogInfo($"Queue with id - {id} has been received");
+            _logger.LogInformation($"Queue with id - {id} has been received");
 
             var queueViewModel = _mapper.Map<GetQueueViewModel>(queue);
-            _logger.LogInfo($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
+            _logger.LogInformation($"Queue with id - {id} has been converted to an object {nameof(GetQueueViewModel)}");
 
             if (User.Identity.IsAuthenticated != false)
             {
                 var identityUserId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 queueViewModel.YourId = identityUserId;
-                _logger.LogInfo($"User with id - {identityUserId} visit queue with id - {id}");
+                _logger.LogInformation($"User with id - {identityUserId} visit queue with id - {id}");
 
                 queueViewModel.YourPosition = await _userInQueueService.UserPositionInQueue(identityUserId, queueViewModel.Id);
             }
@@ -99,23 +99,23 @@ namespace SimpleQueue.WebUI.Controllers
             var ownerQueues = await _queueService.GetAllOwnerQueues(userId);
             if (ownerQueues == null)
             {
-                _logger.LogWarn($"No queue was found that is owned by user with id - {userId}");
+                _logger.LogWarning($"No queue was found that is owned by user with id - {userId}");
             }
 
             var participantQueues = await _queueService.GetAllParticipantQueues(userId);
             if (participantQueues == null)
             {
-                _logger.LogWarn($"No queues were found with user id - {userId} as a member");
+                _logger.LogWarning($"No queues were found with user id - {userId} as a member");
             }
 
             var ownerQueuesViewModel = _mapper.Map<List<BriefQueueInfoViewModel>>(ownerQueues);
-            _logger.LogInfo($"Owner queues with has been converted to the list of object {nameof(BriefQueueInfoViewModel)}");
+            _logger.LogInformation($"Owner queues with has been converted to the list of object {nameof(BriefQueueInfoViewModel)}");
 
             var participantQueuesViewModel = _mapper.Map<List<BriefQueueInfoViewModel>>(participantQueues);
-            _logger.LogInfo($"Participant queues with has been converted to the list of object {nameof(BriefQueueInfoViewModel)}");
+            _logger.LogInformation($"Participant queues with has been converted to the list of object {nameof(BriefQueueInfoViewModel)}");
 
             var queues = new AllUserQueuesViewModel(ownerQueuesViewModel, participantQueuesViewModel);
-            _logger.LogInfo($"Two models were successfully converted to {nameof(AllUserQueuesViewModel)}");
+            _logger.LogInformation($"Two models were successfully converted to {nameof(AllUserQueuesViewModel)}");
 
             return View(queues);
         }
@@ -139,7 +139,7 @@ namespace SimpleQueue.WebUI.Controllers
             }
 
             var queue = _mapper.Map<Queue>(createQueueDto);
-            _logger.LogInfo($"{nameof(CreateQueueDto)} object has been converted to the {nameof(Queue)} entity");
+            _logger.LogInformation($"{nameof(CreateQueueDto)} object has been converted to the {nameof(Queue)} entity");
 
             var queueType = await _queueTypeService.GetQueueType(TypeName.Fast);
 
@@ -175,7 +175,7 @@ namespace SimpleQueue.WebUI.Controllers
                 var imageFile = createQueueDto.ImageFile;
 
                 var imageBlob = await _azureStorage.UploadAsync(imageFile);
-                _logger.LogInfo($"Image with name - {imageBlob.Name} successfully uploaded to the storage");
+                _logger.LogInformation($"Image with name - {imageBlob.Name} successfully uploaded to the storage");
 
                 queue.ImageBlob = imageBlob;
             }
@@ -184,7 +184,7 @@ namespace SimpleQueue.WebUI.Controllers
             queue.OwnerId = new Guid(userId);
 
             await _queueService.CreateQueue(queue);
-            _logger.LogInfo("New queue was successfully created");
+            _logger.LogInformation("New queue was successfully created");
 
             return RedirectToAction(nameof(Index), "Home");
         }

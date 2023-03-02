@@ -11,10 +11,10 @@ namespace SimpleQueue.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILoggerManager _logger;
+        private readonly ILogger<HomeController> _logger;
         private readonly IMapper _mapper;
 
-        public HomeController(ILoggerManager logger, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug("NLog injected into HomeController");

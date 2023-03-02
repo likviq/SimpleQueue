@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using NLog.Web;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Infrastructure;
@@ -40,7 +39,6 @@ builder.Services.AddControllersWithViews()
 
 // NLog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
-builder.Host.UseNLog();
 
 builder.Services.AddTransient<ExceptionHandlingException>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -50,7 +48,6 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IQueueTagService, QueueTagService>();
 builder.Services.AddScoped<IQueueTypeService, QueueTypeService>();
 builder.Services.AddSingleton<IQrCodeGenerator, QrCodeGenerator>();
-builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddTransient<IAzureStorage, AzureStorage>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 builder.Services.AddAutoMapper(typeof(MappingTagProfile));
@@ -111,6 +108,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-NLog.LogManager.Shutdown();
-

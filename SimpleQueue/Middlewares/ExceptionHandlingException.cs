@@ -4,8 +4,8 @@ namespace SimpleQueue.WebUI.Middlewares
 {
     public class ExceptionHandlingException : IMiddleware
     {
-        private readonly ILoggerManager _logger;
-        public ExceptionHandlingException(ILoggerManager logger)
+        private readonly ILogger<ExceptionHandlingException> _logger;
+        public ExceptionHandlingException(ILogger<ExceptionHandlingException> logger)
         {
             _logger = logger;
         }
