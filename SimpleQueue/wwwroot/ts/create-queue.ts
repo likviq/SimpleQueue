@@ -46,3 +46,19 @@ function addTag() {
 function deleteTag(element) {
     element.parentNode.remove();
 }
+
+function setBgImage(input, target) {
+    const image = document.getElementById(
+        'image-holder',
+    ) as HTMLInputElement | null;
+
+    var fReader = new FileReader();
+
+    fReader.readAsDataURL(image.files[0]);
+    fReader.onloadend = function (event) {
+        const img = document.getElementById(
+            'image-place',
+        ) as HTMLImageElement | null;
+        img.src = event.target.result as string;
+    }
+}

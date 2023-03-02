@@ -51,6 +51,7 @@ builder.Services.AddScoped<IQueueTagService, QueueTagService>();
 builder.Services.AddScoped<IQueueTypeService, QueueTypeService>();
 builder.Services.AddSingleton<IQrCodeGenerator, QrCodeGenerator>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+builder.Services.AddTransient<IAzureStorage, AzureStorage>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
 builder.Services.AddAutoMapper(typeof(MappingTagProfile));
 

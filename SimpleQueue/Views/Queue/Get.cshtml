@@ -30,6 +30,8 @@
     var isUserIn = currentUserInQueueId != null;
 
     var qrCodeLink = "/queue/" + @Model.Id + "/qrcode";
+
+    var queueImage = (@Model.ImageLink == null) ? "/images/queue/queue-image.svg" : @Model.ImageLink;
 }
 
 <link rel="stylesheet" href="~/css/get-queue.css" asp-append-version="true" />
@@ -39,7 +41,7 @@
 <div class="main-body">
     <div class="queue-info">
         <div class="queue-image-container">
-            <img src="~/images/queue/queue-image.svg">
+            <img src=@(Model.ImageLink == null ? "/images/queue/queue-image.svg" : Model.ImageLink)>
         </div>
         <div class="container-for-info">
             <div class="queue-information">

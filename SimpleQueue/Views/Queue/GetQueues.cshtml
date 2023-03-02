@@ -80,7 +80,7 @@
     {
         <a class="queue-body" id=@queue.Id asp-controller="Queue" asp-action="Get" asp-route-id=@queue.Id>
             <div class="queue-image">
-                <img src="~/images/queue/queue-image.svg">
+                <img src=@(queue.ImageLink == null ? "/images/queue/queue-image.svg" : queue.ImageLink)>
             </div>
             <div class="queue-info">
                 <div class="queue-title">

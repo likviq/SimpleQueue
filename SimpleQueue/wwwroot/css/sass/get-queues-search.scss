@@ -102,9 +102,13 @@ $body-font-family: 'Montserrat';
         color: #555555;
 
         .queue-image {
-            height: 100px;
-            width: 100px;
             margin: 27px 44px 21px 25px;
+
+            img {
+                width: 100px;
+                height: 100px;
+                border-radius: 20px;
+            }
         }
 
         .queue-info {

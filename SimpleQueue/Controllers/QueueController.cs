@@ -25,6 +25,7 @@ namespace SimpleQueue.WebUI.Controllers
         private readonly IQueueTagService _queueTagService;
         private readonly IQueueTypeService _queueTypeService;
         private readonly IQrCodeGenerator _qrCodeGenerator;
+        private readonly IAzureStorage _azureStorage;
         private readonly ILoggerManager _logger;
         public QueueController(
             IMapper mapper, 
@@ -34,6 +35,7 @@ namespace SimpleQueue.WebUI.Controllers
             IQueueTagService queueTagService,
             IQueueTypeService queueTypeService,
             IQrCodeGenerator qrCodeGenerator,
+            IAzureStorage azureStorage,
             ILoggerManager logger)
         {
             _mapper = mapper;
@@ -43,6 +45,7 @@ namespace SimpleQueue.WebUI.Controllers
             _queueTagService = queueTagService;
             _queueTypeService = queueTypeService;
             _qrCodeGenerator = qrCodeGenerator;
+            _azureStorage = azureStorage;
             _logger = logger;
         }
 
@@ -165,6 +168,16 @@ namespace SimpleQueue.WebUI.Controllers
                 var queueTags = await _queueTagService.InitializeTags(tags);
 
                 queue.QueueTags = queueTags;
+            }
+
+            if (createQueueDto.ImageFile != null)
+            {
+                var imageFile = createQueueDto.ImageFile;
+
+                var imageBlob = await _azureStorage.UploadAsync(imageFile);
+                _logger.LogInfo($"Image with name - {imageBlob.Name} successfully uploaded to the storage");
+
+                queue.ImageBlob = imageBlob;
             }
 
             var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
