@@ -2,6 +2,6 @@
 {
     public interface IQrCodeGenerator
     {
-        Task<string> GenerateQrCode(string url);
+        Task<string> GenerateQrCodeAsync(string url);
     }
 }

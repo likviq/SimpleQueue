@@ -32,7 +32,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-                var queue = await _queueService.GetQueue(queueId);
+                var queue = await _queueService.GetQueueAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
@@ -46,7 +46,7 @@ namespace SimpleQueue.WebApi.Controllers
                     return Unauthorized();
                 }
 
-                await _queueService.FreezeQueue(queueId);
+                await _queueService.FreezeQueueAsync(queueId);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueue(queueId);
+                var queue = await _queueService.GetQueueAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
@@ -80,7 +80,7 @@ namespace SimpleQueue.WebApi.Controllers
                     return Unauthorized();
                 }
 
-                var participant = await _queueService.NextParticipant(queueId);
+                var participant = await _queueService.NextParticipantAsync(queueId);
                 if (participant == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} has no members");
@@ -106,7 +106,7 @@ namespace SimpleQueue.WebApi.Controllers
             {
                 var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                var queue = await _queueService.GetQueue(queueId);
+                var queue = await _queueService.GetQueueAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");

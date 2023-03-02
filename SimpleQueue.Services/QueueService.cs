@@ -11,7 +11,7 @@ namespace SimpleQueue.Services
         {
             _repository = repository;
         }
-        public Task CreateQueue(Queue queue)
+        public Task CreateQueueAsync(Queue queue)
         {
             _repository.Queue.CreateQueue(queue);
             _repository.Save();
@@ -19,22 +19,22 @@ namespace SimpleQueue.Services
             return Task.CompletedTask;
         }
 
-        public Task<Queue?> GetQueue(Guid id)
+        public Task<Queue?> GetQueueAsync(Guid id)
         {
             return _repository.Queue.GetQueueAsync(id);
         }
 
-        public Task<List<Queue>> GetAllOwnerQueues(Guid userId)
+        public Task<List<Queue>> GetAllOwnerQueuesAsync(Guid userId)
         {
             return _repository.Queue.GetOwnerQueuesAsync(userId);
         }
 
-        public Task<List<Queue>> GetAllParticipantQueues(Guid userId)
+        public Task<List<Queue>> GetAllParticipantQueuesAsync(Guid userId)
         {
-            return _repository.Queue.GetParticipantQueues(userId);
+            return _repository.Queue.GetParticipantQueuesAsync(userId);
         }
 
-        public async Task FreezeQueue(Guid id)
+        public async Task FreezeQueueAsync(Guid id)
         {
             var queue = await _repository.Queue.GetQueueAsync(id);
 
@@ -43,9 +43,9 @@ namespace SimpleQueue.Services
             _repository.Save();
         }
 
-        public Task<UserInQueue?> NextParticipant(Guid id)
+        public Task<UserInQueue?> NextParticipantAsync(Guid id)
         {
-            return _repository.UserInQueue.FirstParticipant(id);
+            return _repository.UserInQueue.FirstParticipantAsync(id);
         }
 
         public void DeleteParticipant(UserInQueue participant)

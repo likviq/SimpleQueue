@@ -4,12 +4,12 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IUserInQueueRepository
     {
-        Task<UserInQueue?> FirstParticipant(Guid queueId);
+        Task<UserInQueue?> FirstParticipantAsync(Guid queueId);
         void DeleteUserInQueue(UserInQueue userInQueue);
-        Task<UserInQueue?> Get(Guid? userInQueueId);
+        Task<UserInQueue?> GetAsync(Guid? userInQueueId);
         void CreateUserInQueue(UserInQueue userInQueue);
-        bool IsUserInQueue(Guid userId, Guid queueId);
-        bool IsDestinationInQueue(Guid queueId, Guid userInQueueId);
-        Task<UserInQueue?> LastParticipantInQueue(Guid queueId);
+        Task<bool> IsUserInQueueAsync(Guid userId, Guid queueId);
+        Task<bool> IsDestinationInQueueAsync(Guid queueId, Guid userInQueueId);
+        Task<UserInQueue?> LastParticipantInQueueAsync(Guid queueId);
     }
 }

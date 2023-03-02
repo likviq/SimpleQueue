@@ -4,6 +4,6 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IUserService
     {
-        Task RegisterUser(User user);
+        Task RegisterUserAsync(User user);
     }
 }

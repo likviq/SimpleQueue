@@ -54,7 +54,7 @@ namespace SimpleQueue.WebUI.Tests.Controllers
             _mockMapper.Setup(x => x.Map<Queue>(It.IsAny<CreateQueueDto>()))
                 .Returns(It.IsAny<Queue>());
 
-            _mockQueueService.Setup(option => option.CreateQueue(It.IsAny<Queue>()));
+            _mockQueueService.Setup(option => option.CreateQueueAsync(It.IsAny<Queue>()));
 
             var result = await _controller.CreateAsync(queueDto);
 
@@ -94,7 +94,7 @@ namespace SimpleQueue.WebUI.Tests.Controllers
             _mockMapper.Setup(x => x.Map<GetQueueViewModel>(It.IsAny<Queue>()))
                 .Returns(It.IsAny<GetQueueViewModel>());
 
-            _mockQueueService.Setup(option => option.GetQueue(It.IsAny<Guid>()));
+            _mockQueueService.Setup(option => option.GetQueueAsync(It.IsAny<Guid>()));
 
             var result = await _controller.GetAsync(It.IsAny<Guid>());
 

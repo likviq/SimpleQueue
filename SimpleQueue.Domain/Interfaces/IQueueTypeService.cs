@@ -4,6 +4,6 @@ namespace SimpleQueue.Domain.Interfaces
 {
     public interface IQueueTypeService
     {
-        Task<QueueType?> GetQueueType(TypeName typeName);
+        Task<QueueType?> GetQueueTypeAsync(TypeName typeName);
     }
 }

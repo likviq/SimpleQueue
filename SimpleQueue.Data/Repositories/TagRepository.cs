@@ -17,12 +17,12 @@ namespace SimpleQueue.Data.Repositories
 
         public void CreateTags(List<Tag> tags) => CreateMany(tags);
 
-        public async Task<Tag?> GetTag(string title) => 
-            await FindByCondition(tag => tag.TagTitle.Equals(title))
+        public Task<Tag?> GetTagAsync(string title) => 
+            FindByCondition(tag => tag.TagTitle.Equals(title))
             .FirstOrDefaultAsync();
 
-        public async Task<Tag?> GetTag(Guid id) =>
-            await FindByCondition(tag => tag.Id.Equals(id))
+        public Task<Tag?> GetTagAsync(Guid id) =>
+            FindByCondition(tag => tag.Id.Equals(id))
             .FirstOrDefaultAsync();
     }
 }

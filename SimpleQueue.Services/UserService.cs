@@ -10,7 +10,7 @@ namespace SimpleQueue.Services
         {
             _repository = repository;
         }
-        public Task RegisterUser(User user)
+        public Task RegisterUserAsync(User user)
         {
             _repository.User.CreateUser(user);
             _repository.Save();

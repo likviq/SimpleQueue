@@ -10,7 +10,7 @@ namespace SimpleQueue.Services
         {
             _repository = repository;
         }
-        public Task<QueueType?> GetQueueType(TypeName typeName)
+        public Task<QueueType?> GetQueueTypeAsync(TypeName typeName)
         {
             return _repository.QueueType.GetQueueAsync(typeName);
         }

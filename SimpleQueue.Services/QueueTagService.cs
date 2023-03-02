@@ -15,12 +15,12 @@ namespace SimpleQueue.Services
         {
             _repository = repository;
         }
-        public async Task<List<QueueTag>> InitializeTags(List<Tag> tagTitles)
+        public async Task<List<QueueTag>> InitializeTagsAsync(List<Tag> tagTitles)
         {
             var queueTags = new List<QueueTag>();
             foreach (var tagTitle in tagTitles)
             {
-                var tag = await _repository.Tag.GetTag(tagTitle.TagTitle);
+                var tag = await _repository.Tag.GetTagAsync(tagTitle.TagTitle);
 
                 var queueTagObject = new QueueTag(){
                     TagId = tag.Id
