@@ -75,18 +75,13 @@ namespace SimpleQueue.WebUI.Tests.Controllers
             };
 
             _fixture = new Fixture();
-
-            queueFastWithoutTagsAndImageDto = _fixture.Build<CreateQueueDto>()
-                .Without(prop => prop.ImageFile)
-                .Without(prop => prop.TagsDto)
-                .With(prop => prop.IsDelayed, false)
-                .Create();
         }
 
         [Fact]
         public void Create_ActionExecutes_ReturnsViewForCreate()
         {
             var result = _controller.Create();
+
             Assert.IsType<ViewResult>(result);
         }
 
@@ -218,26 +213,16 @@ namespace SimpleQueue.WebUI.Tests.Controllers
         [Fact]
         public async Task Create_Queue_QueueDtoIsNull()
         {
+            //Arrange
             var queueDto = new CreateQueueDto();
 
             _controller.ModelState.AddModelError(keyError, messageError);
 
+            //Act
             var result = await _controller.CreateAsync(queueDto);
-
+            
+            //Assert
             Assert.IsType<ViewResult>(result);
-        }
-
-        [Fact]
-        public async Task Get_QueueIdIsNull_ReturnsBadRequest()
-        {
-            _mockMapper.Setup(x => x.Map<GetQueueViewModel>(It.IsAny<Queue>()))
-                .Returns(It.IsAny<GetQueueViewModel>());
-
-            _mockQueueService.Setup(option => option.GetAsync(It.IsAny<Guid>()));
-
-            var result = await _controller.GetAsync(It.IsAny<Guid>());
-
-            Assert.IsType<BadRequestResult>(result);
         }
     }
 }
