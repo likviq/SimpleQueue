@@ -331,7 +331,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             var result = await _controller.GetQueues(queueParams);
 
             //Assert
-            Assert.IsType<BadRequestResult>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }

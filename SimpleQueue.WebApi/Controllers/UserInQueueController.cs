@@ -32,12 +32,10 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}")]
-        public async Task<IActionResult> DeleteUser(Guid queueId, Guid userInQueueId)
+        public async Task<IActionResult> DeleteParticipant(Guid queueId, Guid userInQueueId)
         {
             try
             {
-                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
                 var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
@@ -58,6 +56,8 @@ namespace SimpleQueue.WebApi.Controllers
                     return NotFound();
                 }
 
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
                 if (queue.OwnerId != userId && userId != userInQueue.UserId)
                 {
                     _logger.LogWarning($"Someone with id - {userId} tried to delete a UserInQueue " +
@@ -70,11 +70,11 @@ namespace SimpleQueue.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Method {nameof(DeleteUser)} from the controller {nameof(UserInQueueController)} " +
+                _logger.LogError($"Method {nameof(DeleteParticipant)} from the controller {nameof(UserInQueueController)} " +
                     $"was broken due to an error: {ex.Message}");
                 return BadRequest();
             }
-            _logger.LogInformation($"Method {nameof(DeleteUser)} from the controller {nameof(UserInQueueController)} " +
+            _logger.LogInformation($"Method {nameof(DeleteParticipant)} from the controller {nameof(UserInQueueController)} " +
                 $"completed successfully");
 
             return NoContent();
@@ -86,14 +86,14 @@ namespace SimpleQueue.WebApi.Controllers
         {
             try
             {
-                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
                 var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"Queue with id - {queueId} not found");
                     return NotFound();
                 }
+
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 var isUserInQueue = await _userInQueueService.IsUserInQueueAsync(userId, queueId);
                 if (isUserInQueue)
@@ -130,8 +130,6 @@ namespace SimpleQueue.WebApi.Controllers
         {
             try
             {
-                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
                 var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
@@ -146,6 +144,8 @@ namespace SimpleQueue.WebApi.Controllers
                         $"in queue with id - {queueId} is already taken or doesn't exist");
                     return UnprocessableEntity();
                 }
+
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 var userWithDestination = await _userInQueueService.SetUserWithDestinationAsync(
                     userId, userInQueueId);
@@ -174,14 +174,14 @@ namespace SimpleQueue.WebApi.Controllers
         [HttpPost("queue/{queueId}/participant/{userInQueueId}/after/{targetUserInQueueId}")]
         public async Task<IActionResult> ChangePosition(Guid queueId, Guid userInQueueId, Guid targetUserInQueueId)
         {
-            var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
             var queue = await _queueService.GetAsync(queueId);
             if (queue == null)
             {
                 _logger.LogWarning($"Queue with id - {queueId} not found");
                 return NotFound();
             }
+
+            var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
             var isUserInQueue = await _userInQueueService.IsUserInQueueAsync(userId, queueId);
             if (!isUserInQueue && queue.OwnerId != userId)
