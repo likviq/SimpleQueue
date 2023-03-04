@@ -144,12 +144,12 @@ namespace SimpleQueue.WebUI.Controllers
 
             if (createQueueDto.IsDelayed)
             {
-                var fromTime = createQueueDto.DelayedTimeFrom;
-                var toTime = createQueueDto.DelayedTimeTo;
-                var duration = createQueueDto.DurationPerParticipant;
+                var fromTime = (DateTime)createQueueDto.DelayedTimeFrom;
+                var toTime = (DateTime)createQueueDto.DelayedTimeTo;
+                var duration = (int)createQueueDto.DurationPerParticipant;
 
                 var delayedPlaces = _userInQueueService.CreateDelayedPlaces(
-                    (DateTime)fromTime, (DateTime)toTime, (int)duration);
+                    fromTime, toTime, duration);
                 _logger.LogInformation($"Successfully created places for the delayed queue" +
                     $"with title - {queue.Title}");
 
@@ -161,7 +161,7 @@ namespace SimpleQueue.WebUI.Controllers
             queue.QueueType = queueType;
 
             var tagsDto = createQueueDto.TagsDto;
-            if (tagsDto != null)
+            if (tagsDto.Any())
             {
                 var tags = _mapper.Map<List<Tag>>(tagsDto);
                 await _tagService.CreateManyAsync(tags);

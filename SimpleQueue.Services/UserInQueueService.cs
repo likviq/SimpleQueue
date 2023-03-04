@@ -48,7 +48,7 @@ namespace SimpleQueue.Services
 
         public async Task<int?> UserPositionInQueueAsync(Guid userId, Guid queueId)
         {
-            var participant = _repository.UserInQueue.FirstParticipantAsync(queueId).Result;
+            var participant = await _repository.UserInQueue.FirstParticipantAsync(queueId);
             var position = 1;
 
             if (participant == null)

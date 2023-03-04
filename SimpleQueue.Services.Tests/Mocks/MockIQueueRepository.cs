@@ -18,14 +18,21 @@ namespace SimpleQueue.Services.Tests.Mocks
 
             var queues = new List<Queue>()
             {
-                new Queue() 
-                { 
-                    Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
-                    Title = "Title",
+                new Queue
+                {
+                    Id = Guid.Parse("f2bd3543-ebbc-4b41-a4ed-5be0c87c5c2e"),
+                    Title = "Frozen queue",
                     Description = "Description",
                     Chat = true,
-                    CreatedTime = DateTime.Now,
-                    StartTime = DateTime.Now
+                    IsFrozen = true,
+                },
+                new Queue
+                {
+                    Id = Guid.Parse("920cc596-e573-4cfd-89f8-94ac18290d10"),
+                    Title = "Not frozen queue",
+                    Description = "Description",
+                    Chat = true,
+                    IsFrozen = false,
                 }
             };
 

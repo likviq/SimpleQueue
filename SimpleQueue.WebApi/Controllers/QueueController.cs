@@ -64,14 +64,14 @@ namespace SimpleQueue.WebApi.Controllers
         {
             try
             {
-                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
                 var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
                     return NotFound();
                 }
+
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 if (queue.OwnerId != userId)
                 {
@@ -104,14 +104,14 @@ namespace SimpleQueue.WebApi.Controllers
         {
             try
             {
-                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
                 var queue = await _queueService.GetAsync(queueId);
                 if (queue == null)
                 {
                     _logger.LogWarning($"queue with id - {queueId} not found");
                     return NotFound();
                 }
+
+                var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 if (queue.OwnerId != userId)
                 {
