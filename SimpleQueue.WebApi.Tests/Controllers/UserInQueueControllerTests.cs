@@ -70,7 +70,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             _mockUserInQueueService.Setup(x => x.Delete(participant));
 
             //Act
-            var result = await _controller.DeleteParticipant(queueId, participant.Id);
+            var result = await _controller.DeleteParticipantAsync(queueId, participant.Id);
 
             //Assert
             Assert.IsType<NoContentResult>(result);
@@ -101,7 +101,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(participant);
 
             //Act
-            var result = await _controller.DeleteParticipant(queueId, participant.Id);
+            var result = await _controller.DeleteParticipantAsync(queueId, participant.Id);
 
             //Assert
             Assert.IsType<ForbidResult>(result);
@@ -122,7 +122,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(participant);
 
             //Act
-            var result = await _controller.DeleteParticipant(queueId, participant.Id);
+            var result = await _controller.DeleteParticipantAsync(queueId, participant.Id);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -143,7 +143,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<UserInQueue>);
 
             //Act
-            var result = await _controller.DeleteParticipant(queueId, participantId);
+            var result = await _controller.DeleteParticipantAsync(queueId, participantId);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -160,7 +160,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<Queue>);
 
             //Act
-            var result = await _controller.DeleteParticipant(queueId, participantId);
+            var result = await _controller.DeleteParticipantAsync(queueId, participantId);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -198,7 +198,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .Returns(It.IsAny<UserInQueueViewModel>());
 
             //Act
-            var result = await _controller.EnterQueue(queueId);
+            var result = await _controller.EnterQueueAsync(queueId);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
@@ -230,7 +230,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(true);
 
             //Act
-            var result = await _controller.EnterQueue(queueId);
+            var result = await _controller.EnterQueueAsync(queueId);
 
             //Assert
             Assert.IsType<UnprocessableEntityResult>(result);
@@ -247,7 +247,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<Queue>);
 
             //Act
-            var result = await _controller.EnterQueue(queueId);
+            var result = await _controller.EnterQueueAsync(queueId);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -285,7 +285,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .Returns(It.IsAny<UserInDelayedQueueViewModel>());
 
             //Act
-            var result = await _controller.EnterQueue(queueId, participant.Id);
+            var result = await _controller.EnterQueueAsync(queueId, participant.Id);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
@@ -306,7 +306,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(false);
 
             //Act
-            var result = await _controller.EnterQueue(queueId, participant.Id);
+            var result = await _controller.EnterQueueAsync(queueId, participant.Id);
 
             //Assert
             Assert.IsType<UnprocessableEntityResult>(result);
@@ -323,7 +323,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<Queue>);
 
             //Act
-            var result = await _controller.EnterQueue(queueId, participant.Id);
+            var result = await _controller.EnterQueueAsync(queueId, participant.Id);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -366,7 +366,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             _mockUserInQueueService.Setup(x => x.MoveUserInQueueAfter(participant, targetParticipant));
 
             //Act
-            var result = await _controller.ChangePosition(queueId, participant.Id, targetParticipant.Id);
+            var result = await _controller.ChangePositionAsync(queueId, participant.Id, targetParticipant.Id);
 
             //Assert
             Assert.IsType<OkResult>(result);
@@ -407,7 +407,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(targetParticipant);
 
             //Act
-            var result = await _controller.ChangePosition(queueId, participant.Id, targetParticipant.Id);
+            var result = await _controller.ChangePositionAsync(queueId, participant.Id, targetParticipant.Id);
 
             //Assert
             Assert.IsType<ForbidResult>(result);
@@ -448,7 +448,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(targetParticipant);
 
             //Act
-            var result = await _controller.ChangePosition(queueId, participant.Id, targetParticipant.Id);
+            var result = await _controller.ChangePositionAsync(queueId, participant.Id, targetParticipant.Id);
 
             //Assert
             Assert.IsType<BadRequestResult>(result);
@@ -484,7 +484,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(false);
 
             //Act
-            var result = await _controller.ChangePosition(queueId, participant.Id, targetParticipant.Id);
+            var result = await _controller.ChangePositionAsync(queueId, participant.Id, targetParticipant.Id);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -503,7 +503,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<Queue>);
 
             //Act
-            var result = await _controller.ChangePosition(queueId, participant.Id, targetParticipant.Id);
+            var result = await _controller.ChangePositionAsync(queueId, participant.Id, targetParticipant.Id);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);

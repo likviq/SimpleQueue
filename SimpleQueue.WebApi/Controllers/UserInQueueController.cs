@@ -32,7 +32,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}")]
-        public async Task<IActionResult> DeleteParticipant(Guid queueId, Guid userInQueueId)
+        public async Task<IActionResult> DeleteParticipantAsync(Guid queueId, Guid userInQueueId)
         {
             try
             {
@@ -70,11 +70,11 @@ namespace SimpleQueue.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Method {nameof(DeleteParticipant)} from the controller {nameof(UserInQueueController)} " +
+                _logger.LogError($"Method {nameof(DeleteParticipantAsync)} from the controller {nameof(UserInQueueController)} " +
                     $"was broken due to an error: {ex.Message}");
                 return BadRequest();
             }
-            _logger.LogInformation($"Method {nameof(DeleteParticipant)} from the controller {nameof(UserInQueueController)} " +
+            _logger.LogInformation($"Method {nameof(DeleteParticipantAsync)} from the controller {nameof(UserInQueueController)} " +
                 $"completed successfully");
 
             return NoContent();
@@ -82,7 +82,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}/enter")]
-        public async Task<IActionResult> EnterQueue(Guid queueId)
+        public async Task<IActionResult> EnterQueueAsync(Guid queueId)
         {
             try
             {
@@ -111,14 +111,14 @@ namespace SimpleQueue.WebApi.Controllers
                 _logger.LogInformation($"{nameof(UserInQueueViewModel)} object successfully " +
                     $"created from {nameof(UserInQueue)}");
 
-                _logger.LogInformation($"Method {nameof(EnterQueue)} from the controller {nameof(UserInQueueController)} " +
+                _logger.LogInformation($"Method {nameof(EnterQueueAsync)} from the controller {nameof(UserInQueueController)} " +
                 $"completed successfully");
 
                 return Ok(userInQueueViewModel);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Method {nameof(EnterQueue)} from the controller {nameof(UserInQueueController)} " +
+                _logger.LogError($"Method {nameof(EnterQueueAsync)} from the controller {nameof(UserInQueueController)} " +
                     $"was broken due to an error: {ex.Message}");
                 return BadRequest();
             }           
@@ -126,7 +126,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}/delayed")]
-        public async Task<IActionResult> EnterQueue(Guid queueId, Guid userInQueueId)
+        public async Task<IActionResult> EnterQueueAsync(Guid queueId, Guid userInQueueId)
         {
             try
             {
@@ -157,14 +157,14 @@ namespace SimpleQueue.WebApi.Controllers
                 _logger.LogInformation($"{nameof(UserInDelayedQueueViewModel)} object successfully " +
                     $"created from {nameof(UserInQueue)}");
 
-                _logger.LogInformation($"Method {nameof(EnterQueue)} from the controller " +
+                _logger.LogInformation($"Method {nameof(EnterQueueAsync)} from the controller " +
                     $"{nameof(UserInQueueController)} completed successfully");
 
                 return Ok(userInDelayedQueueViewModel);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Method {nameof(EnterQueue)} from the controller " +
+                _logger.LogError($"Method {nameof(EnterQueueAsync)} from the controller " +
                     $"{nameof(UserInQueueController)} was broken due to an error: {ex.Message}");
                 return BadRequest(ex.Message);
             }
@@ -172,7 +172,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}/after/{targetUserInQueueId}")]
-        public async Task<IActionResult> ChangePosition(Guid queueId, Guid userInQueueId, Guid targetUserInQueueId)
+        public async Task<IActionResult> ChangePositionAsync(Guid queueId, Guid userInQueueId, Guid targetUserInQueueId)
         {
             var queue = await _queueService.GetAsync(queueId);
             if (queue == null)
