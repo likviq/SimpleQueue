@@ -47,6 +47,7 @@ builder.Services.AddScoped<IUserInQueueService, UserInQueueService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IQueueTagService, QueueTagService>();
 builder.Services.AddScoped<IQueueTypeService, QueueTypeService>();
+builder.Services.AddSingleton<ClientPolicy>(new ClientPolicy());
 builder.Services.AddSingleton<IQrCodeGenerator, QrCodeGenerator>();
 builder.Services.AddTransient<IAzureStorage, AzureStorage>();
 builder.Services.AddAutoMapper(typeof(MappingQueueProfile));
