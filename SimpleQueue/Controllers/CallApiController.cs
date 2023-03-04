@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SimpleQueue.Infrastructure;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
@@ -11,6 +12,11 @@ namespace SimpleQueue.WebApi.Controllers
     [ApiController]
     public class CallApiController : ControllerBase
     {
+        private readonly ClientPolicy _clientPolicy;
+        public CallApiController(ClientPolicy clientPolicy)
+        {
+            _clientPolicy = clientPolicy;
+        }
         public async Task<IActionResult> CallApiAsync([FromQuery] string method, [FromQuery] string uri)
         {
             var url = HttpUtility.UrlDecode(uri);
@@ -26,7 +32,9 @@ namespace SimpleQueue.WebApi.Controllers
                 RequestUri = new Uri(url)
             };
 
-            HttpResponseMessage response = await client.SendAsync(request);
+            HttpResponseMessage response = await _clientPolicy.RetryPolicy.ExecuteAsync(
+                () => client.SendAsync(request));
+
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
