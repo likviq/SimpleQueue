@@ -1,3 +1,15 @@
+getLocation();
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+}
+function showPosition(position) {
+    var LatitudeInput = document.getElementById('latitude');
+    var LongitudeInput = document.getElementById('longitude');
+    LatitudeInput.value = position.coords.latitude;
+    LongitudeInput.value = position.coords.longitude;
+}
 function changeQueuePrivacy() {
     var checkbox = document.getElementsByClassName('queue-privacy')[0];
     var passwordInput = document.getElementById('password-value');

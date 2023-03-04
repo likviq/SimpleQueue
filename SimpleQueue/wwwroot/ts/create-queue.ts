@@ -1,4 +1,25 @@
-﻿function changeQueuePrivacy() {
+﻿getLocation();
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+}
+
+function showPosition(position) {
+    const LatitudeInput = document.getElementById(
+        'latitude',
+    ) as HTMLInputElement | null;
+
+    const LongitudeInput = document.getElementById(
+        'longitude',
+    ) as HTMLInputElement | null;
+
+    LatitudeInput.value = position.coords.latitude;
+    LongitudeInput.value = position.coords.longitude;
+}
+
+function changeQueuePrivacy() {
     const checkbox = document.getElementsByClassName(
         'queue-privacy',
     )[0] as HTMLInputElement | null;
