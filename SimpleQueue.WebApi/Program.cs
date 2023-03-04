@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SimpleQueue.Data;
 using SimpleQueue.Domain.Interfaces;
 using SimpleQueue.Services;
 using SimpleQueue.WebApi.AutoMapper;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "SimpleQueue.WebApi", 
+        Version = "v1",
+        Description = "An API to perform operations with database",
+        Contact = new OpenApiContact
+        {
+            Name = "Petro Pavliuk",
+            Email = "p4tro.pavlyk@gmail.com"
+        }
+    });
+});
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IQueueService, QueueService>();
@@ -62,7 +78,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(option =>
+    {
+        option.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleQueue.WebApi");
+    });
 }
 
 app.UseRouting();
