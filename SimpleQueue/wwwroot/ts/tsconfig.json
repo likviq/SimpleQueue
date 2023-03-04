@@ -8,6 +8,8 @@
     "module": "es6",
     "moduleResolution": "Node",
     "target": "es5",
+    "baseUrl": ".",
+    "typeRoots": [ "./node_modules/@types" ],
     "outDir": "../js"
   },
   "compileOnSave": true,
