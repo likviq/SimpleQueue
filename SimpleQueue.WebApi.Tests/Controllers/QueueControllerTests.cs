@@ -319,7 +319,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetQueues_QueueParamsIsInValid_QueueList()
+        public async Task GetQueues_QueueParamsIsInValid_BadRequest()
         {
             //Arrange
             QueueParameters queueParams = _fixture.Build<QueueParameters>()
@@ -331,7 +331,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             var result = await _controller.GetQueues(queueParams);
 
             //Assert
-            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<BadRequestResult>(result);
         }
     }
 }
