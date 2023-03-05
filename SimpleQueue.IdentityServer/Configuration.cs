@@ -67,6 +67,7 @@ namespace SimpleQueue.IdentityServer
                     RequirePkce = true,
                     RequireConsent = false,
                     AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowOfflineAccess = true
                 }
             };
     }

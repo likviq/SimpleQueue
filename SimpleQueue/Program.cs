@@ -1,3 +1,6 @@
+using IdentityModel;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -11,20 +14,69 @@ using SimpleQueue.WebUI.AutoMapper;
 using SimpleQueue.WebUI.Hubs;
 using SimpleQueue.WebUI.Middlewares;
 using System.Globalization;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var clientId = "client_id_mvc";
+var clientSecret = builder.Configuration.GetValue<string>("IdentityClientSecrets:client_id_mvc");
 
 builder.Services.AddAuthentication(config =>
 {
     config.DefaultScheme = "Cookie";
     config.DefaultChallengeScheme = "oidc";
 })
-    .AddCookie("Cookie")
+    .AddCookie("Cookie", config =>
+    {
+        config.Events = new CookieAuthenticationEvents
+        {
+            OnValidatePrincipal = async opt =>
+            {
+                var now = DateTimeOffset.UtcNow;
+                var timeElapsed = now.Subtract(opt.Properties.IssuedUtc.Value);
+                var timeRemaining = opt.Properties.ExpiresUtc.Value.Subtract(now);
+
+                if (timeElapsed > timeRemaining)
+                {
+                    var identity = (ClaimsIdentity)opt.Principal.Identity;
+                    var accessTokenClaim = identity.FindFirst("access_token");
+                    var idTokenClaim = identity.FindFirst("id_token");
+                    var refreshTokenClaim = identity.FindFirst("refresh_token");
+
+                    var refreshToken = refreshTokenClaim.Value;
+
+                    var response = await new HttpClient().RequestRefreshTokenAsync(new RefreshTokenRequest
+                    {
+                        Address = "https://localhost:7210/",
+                        ClientId = clientId,
+                        ClientSecret = clientSecret,
+                        RefreshToken = refreshToken
+                    });
+
+                    if (!response.IsError)
+                    {
+                        identity.RemoveClaim(accessTokenClaim);
+                        identity.RemoveClaim(idTokenClaim);
+                        identity.RemoveClaim(refreshTokenClaim);
+
+                        identity.AddClaims(new[]
+                        {
+                            new Claim("access_token", response.AccessToken),
+                            new Claim("id_token", response.IdentityToken),
+                            new Claim("refresh_token", response.RefreshToken)
+                        });
+
+                        opt.ShouldRenew = true;
+                    }
+                }
+            }
+        };
+    })
     .AddOpenIdConnect("oidc", config =>
     {
         config.Authority = "https://localhost:7210";
-        config.ClientId = "client_id_mvc";
-        config.ClientSecret = "client_secret_mvc";
+        config.ClientId = clientId;
+        config.ClientSecret = clientSecret;
         config.SaveTokens = true;
         config.ResponseType = "code";
         config.SignedOutCallbackPath = "/Home/Index";
@@ -32,6 +84,7 @@ builder.Services.AddAuthentication(config =>
         config.Scope.Add(OpenIdConnectScope.OpenId);
 
         config.Scope.Add("simplequeue-webapi");
+        config.Scope.Add("offline_access");
     });
 
 builder.Services.AddControllersWithViews()
