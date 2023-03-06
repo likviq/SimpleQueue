@@ -63,7 +63,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
 
             _mockQueueService.Setup(x => x.FreezeAsync(queueId));
             //Act
-            var result = await _controller.FreezeQueue(queueId);
+            var result = await _controller.FreezeQueueAsync(queueId);
 
             //Assert
             Assert.IsType<OkResult>(result);
@@ -90,7 +90,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             };
 
             //Act
-            var result = await _controller.FreezeQueue(queueId);
+            var result = await _controller.FreezeQueueAsync(queueId);
 
             //Assert
             Assert.IsType<UnauthorizedResult>(result);
@@ -116,7 +116,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             };
 
             //Act
-            var result = await _controller.FreezeQueue(queueId);
+            var result = await _controller.FreezeQueueAsync(queueId);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -149,7 +149,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             _mockQueueService.Setup(x => x.DeleteParticipant(participant));
 
             //Act
-            var result = await _controller.NextParticipant(queueId);
+            var result = await _controller.NextParticipantAsync(queueId);
 
             //Assert
             Assert.IsType<NoContentResult>(result);
@@ -179,7 +179,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<UserInQueue>());
 
             //Act
-            var result = await _controller.NextParticipant(queueId);
+            var result = await _controller.NextParticipantAsync(queueId);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -207,7 +207,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(queue);
 
             //Act
-            var result = await _controller.NextParticipant(queueId);
+            var result = await _controller.NextParticipantAsync(queueId);
 
             //Assert
             Assert.IsType<UnauthorizedResult>(result);
@@ -223,7 +223,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(It.IsAny<Queue>);
 
             //Act
-            var result = await _controller.NextParticipant(queueId);
+            var result = await _controller.NextParticipantAsync(queueId);
 
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -252,7 +252,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
             _mockQueueService.Setup(x => x.Delete(queue));
 
             //Act
-            var result = await _controller.DeleteQueue(queueId);
+            var result = await _controller.DeleteQueueAsync(queueId);
 
             //Assert
             Assert.IsType<NoContentResult>(result);
@@ -280,7 +280,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .ReturnsAsync(queue);
 
             //Act
-            var result = await _controller.DeleteQueue(queueId);
+            var result = await _controller.DeleteQueueAsync(queueId);
 
             //Assert
             Assert.IsType<ForbidResult>(result);
@@ -312,7 +312,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .Returns(It.IsAny<List<QueueSearchResultViewModel>>());
 
             //Act
-            var result = await _controller.GetQueues(queueParams);
+            var result = await _controller.GetQueuesAsync(queueParams);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
@@ -328,7 +328,7 @@ namespace SimpleQueue.WebApi.Tests.Controllers
                 .Create();
 
             //Act
-            var result = await _controller.GetQueues(queueParams);
+            var result = await _controller.GetQueuesAsync(queueParams);
 
             //Assert
             Assert.IsType<BadRequestResult>(result);

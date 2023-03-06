@@ -26,7 +26,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}")]
-        public async Task<IActionResult> FreezeQueue(Guid queueId)
+        public async Task<IActionResult> FreezeQueueAsync(Guid queueId)
         {          
             try
             {
@@ -60,7 +60,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpPost("queue/{queueId}/next")]
-        public async Task<IActionResult> NextParticipant(Guid queueId)
+        public async Task<IActionResult> NextParticipantAsync(Guid queueId)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace SimpleQueue.WebApi.Controllers
 
         [Authorize]
         [HttpDelete("queue/{queueId}")]
-        public async Task<IActionResult> DeleteQueue(Guid queueId)
+        public async Task<IActionResult> DeleteQueueAsync(Guid queueId)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace SimpleQueue.WebApi.Controllers
         }
 
         [HttpGet("queues")]
-        public async Task<IActionResult> GetQueues([FromQuery] QueueParameters queueParameters)
+        public async Task<IActionResult> GetQueuesAsync([FromQuery] QueueParameters queueParameters)
         {
             if (!queueParameters.ValidTimeRange)
             {

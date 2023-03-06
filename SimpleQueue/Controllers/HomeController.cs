@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimpleQueue.Models;
-using SimpleQueue.Domain.Interfaces;
-using AutoMapper;
-using SimpleQueue.Domain.Entities;
-using SimpleQueue.WebUI.Models.DataTransferObjects;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.AspNetCore.Authentication;
 
@@ -12,17 +8,16 @@ namespace SimpleQueue.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _mapper = mapper;
         }
 
         [HttpGet("/login")]
         public IActionResult Login()
         {
+            _logger.LogInformation($"Login operation started");
             return Challenge(new AuthenticationProperties
             {
                 RedirectUri = "/"
@@ -45,6 +40,7 @@ namespace SimpleQueue.Controllers
         [HttpGet("/logout")]
         public IActionResult Logout()
         {
+            _logger.LogInformation($"Sign out operation started");
             return SignOut("Cookie", "oidc");
         }
 
