@@ -42,16 +42,16 @@ namespace SimpleQueue.IdentityServer
         public static IEnumerable<Client> GetClients(WebApplicationBuilder builder) =>
             new List<Client>{
                 new Client{
-                    ClientId = "client_id",
+                    ClientId = "clientId",
                     ClientSecrets = { new Secret(builder.Configuration
-                        .GetValue<string>("IdentityClientSecrets:client_id").ToSha256())},
+                        .GetValue<string>("IdentityClientSecrets:clientId").ToSha256())},
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "ApiOne" }
                 },
                 new Client{
-                    ClientId = "client_id_mvc",
+                    ClientId = "clientIdMvc",
                     ClientSecrets = { new Secret(builder.Configuration
-                        .GetValue<string>("IdentityClientSecrets:client_id_mvc").ToSha256())},
+                        .GetValue<string>("IdentityClientSecrets:clientIdMvc").ToSha256())},
                     
                     AllowedGrantTypes = GrantTypes.Code,
                     

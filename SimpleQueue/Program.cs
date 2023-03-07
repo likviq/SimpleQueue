@@ -1,3 +1,6 @@
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,8 +21,18 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var clientId = "client_id_mvc";
-var clientSecret = builder.Configuration.GetValue<string>("IdentityClientSecrets:client_id_mvc");
+string kvURL = builder.Configuration.GetValue<string>("KeyVaultConfig:KVUrl");
+string tenantId = builder.Configuration.GetValue<string>("KeyVaultConfig:TenantId");
+string clientKeyVaultId = builder.Configuration.GetValue<string>("KeyVaultConfig:ClientId");
+string clientKeyVaultSecret = builder.Configuration.GetValue<string>("KeyVaultConfig:ClientSecretId");
+
+var credentials = new ClientSecretCredential(tenantId, clientKeyVaultId, clientKeyVaultSecret);
+var clientAzure = new SecretClient(new Uri(kvURL), credentials);
+
+builder.Configuration.AddAzureKeyVault(clientAzure, new AzureKeyVaultConfigurationOptions());
+
+var clientId = "clientIdMvc";
+var clientSecret = builder.Configuration.GetValue<string>("IdentityClientSecrets:clientIdMvc");
 
 builder.Services.AddAuthentication(config =>
 {

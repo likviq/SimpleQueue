@@ -9,8 +9,21 @@ using SimpleQueue.IdentityServer.AutoMapper;
 using SimpleQueue.IdentityServer.Data;
 using SimpleQueue.Services;
 using System.Reflection;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string kvURL = builder.Configuration.GetValue<string>("KeyVaultConfig:KVUrl");
+string tenantId = builder.Configuration.GetValue<string>("KeyVaultConfig:TenantId");
+string clientKeyVaultId = builder.Configuration.GetValue<string>("KeyVaultConfig:ClientId");
+string clientKeyVaultSecret = builder.Configuration.GetValue<string>("KeyVaultConfig:ClientSecretId");
+
+var credentials = new ClientSecretCredential(tenantId, clientKeyVaultId, clientKeyVaultSecret);
+var clientAzure = new SecretClient(new Uri(kvURL), credentials);
+
+builder.Configuration.AddAzureKeyVault(clientAzure, new AzureKeyVaultConfigurationOptions());
 
 var connectionConfigString = builder.Configuration.GetConnectionString("mySqlConfigConnection");
 
