@@ -30,6 +30,20 @@ namespace SimpleQueue.WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Remove the participant with the specified Id from the queue
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <param name="userInQueueId"></param>
+        /// <returns></returns>
+        /// <response code="204">The participant was successfully deleted</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="403">If the user is not the owner and is not exactly the participant that is being deleted</response>
+        /// <response code="404">If the queue or the participant was not found or participant is in wrong queue</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}")]
         public async Task<IActionResult> DeleteParticipantAsync(Guid queueId, Guid userInQueueId)
@@ -80,6 +94,19 @@ namespace SimpleQueue.WebApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// The user enters the queue
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <returns>participant object(UserInQueue)</returns>
+        /// <response code="200">The user has successfully joined the queue</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="404">If the queue is not found</response>
+        /// <response code="422">If user is already in queue</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize]
         [HttpPost("queue/{queueId}/enter")]
         public async Task<IActionResult> EnterQueueAsync(Guid queueId)
@@ -124,6 +151,19 @@ namespace SimpleQueue.WebApi.Controllers
             }           
         }
 
+        /// <summary>
+        /// The user enters the deleyed queue
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <returns>participant object(UserInQueue)</returns>
+        /// <response code="200">The user has successfully joined the queue</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="404">If the queue is not found</response>
+        /// <response code="422">If such a place does not exist or it is already taken</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}/delayed")]
         public async Task<IActionResult> EnterQueueAsync(Guid queueId, Guid userInQueueId)
@@ -170,6 +210,19 @@ namespace SimpleQueue.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// The user enters the delayed queue
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <returns></returns>
+        /// <response code="200">The user has successfully moved</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="403">If someone else tried to move the participant in the queue</response>
+        /// <response code="404">If the queue is not found or someone unknown trying to move user</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize]
         [HttpPost("queue/{queueId}/participant/{userInQueueId}/after/{targetUserInQueueId}")]
         public async Task<IActionResult> ChangePositionAsync(Guid queueId, Guid userInQueueId, Guid targetUserInQueueId)
