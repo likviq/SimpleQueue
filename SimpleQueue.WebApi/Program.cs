@@ -97,6 +97,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(option =>
     {
         option.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleQueue.WebApi");
+        option.DefaultModelsExpandDepth(-1);
     });
 }
 
