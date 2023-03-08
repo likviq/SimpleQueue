@@ -46,6 +46,22 @@ builder.Services.AddSwaggerGen(options =>
             Email = "p4tro.pavlyk@gmail.com"
         }
     });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    var basePath = AppContext.BaseDirectory;
+
+    var xmlPath = Path.Combine(basePath, "SimpleQueue.WebApi.xml");
+    options.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();

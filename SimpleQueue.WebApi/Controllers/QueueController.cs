@@ -24,6 +24,19 @@ namespace SimpleQueue.WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Сhanges the freezing status of the queue to the opposite
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <returns>Task IActionResult</returns>
+        /// <response code="200">Successfully changed queue status</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="401">If current user is not an owner</response>
+        /// <response code="404">If no queue was found</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize]
         [HttpPost("queue/{queueId}")]
         public async Task<IActionResult> FreezeQueueAsync(Guid queueId)
@@ -58,6 +71,18 @@ namespace SimpleQueue.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Gets the first user in the queue and removes it
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <response code="204">The first participant was successfully deleted</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="401">If current user is not an owner</response>
+        /// <response code="404">If the queue is not found or there is no member in it</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize]
         [HttpPost("queue/{queueId}/next")]
         public async Task<IActionResult> NextParticipantAsync(Guid queueId)
@@ -98,6 +123,18 @@ namespace SimpleQueue.WebApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete the queue entirely
+        /// </summary>
+        /// <param name="queueId"></param>
+        /// <response code="204">The queue was successfully deleted</response>
+        /// <response code="400">If there is an exception during execution</response>
+        /// <response code="403">If current user is not an owner</response>
+        /// <response code="404">If the queue is not found</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize]
         [HttpDelete("queue/{queueId}")]
         public async Task<IActionResult> DeleteQueueAsync(Guid queueId)
@@ -133,6 +170,15 @@ namespace SimpleQueue.WebApi.Controllers
             }   
         }
 
+        /// <summary>
+        /// Search, filtering and pagination of the queue according to the specified parameters
+        /// </summary>
+        /// <param name="queueParameters"></param>
+        /// <returns>Queues that match the parameters are received</returns>
+        /// <response code="200">The request succeeded and returned some queues</response>
+        /// <response code="400">If Start Time is later than End Time</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("queues")]
         public async Task<IActionResult> GetQueuesAsync([FromQuery] QueueParameters queueParameters)
         {
