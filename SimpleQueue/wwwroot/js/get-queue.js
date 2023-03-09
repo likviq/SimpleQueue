@@ -40,6 +40,12 @@ function setGroupName() {
     var queueIdInput = document.getElementById('queue-id');
     return queueIdInput.value;
 }
+var clickerColor = Math.floor(Math.random() * 270) + 60;
+setClickerStartColor();
+function setClickerStartColor() {
+    var clickerButton = document.getElementsByClassName('clicker-button')[0];
+    clickerButton.style.backgroundColor = "hsl(" + clickerColor + ", 90%, 65%)";
+}
 //@ts-ignore
 var connection = new signalR.HubConnectionBuilder()
     .withUrl("/hub/queue")
@@ -119,6 +125,8 @@ function increaseClickerNumber() {
     clickerValue = clickerValue + 1;
     var clickerNumber = document.getElementById('clicker-value');
     clickerNumber.textContent = clickerValue.toString();
+    clickerColor = clickerColor + 1;
+    setClickerStartColor();
 }
 function nextUser(idQueue, isDelayed) {
     var uri = "https://localhost:7147/api/queue/".concat(idQueue, "/next");
@@ -199,7 +207,6 @@ function enterDelayedQueue(idQueue, idUserInQueue) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(idQueue, idUserInQueue);
                     uri = "https://localhost:7147/api/queue/".concat(idQueue, "/participant/").concat(idUserInQueue, "/delayed");
                     method = "post";
                     return [4 /*yield*/, request(apiEndpointUri, method, uri)];
@@ -276,7 +283,6 @@ function request(url, method, uri) {
     url = prepareRequest(url, method, uri);
     return fetch(url)
         .then(function (response) {
-        console.log(response.headers.get("Content-Type"));
         return response.json();
     })
         .then(function (data) { return data; });
