@@ -10,6 +10,17 @@ function setGroupName() {
     return queueIdInput.value;
 }
 
+let clickerColor = Math.floor(Math.random() * 270) + 60;
+setClickerStartColor();
+
+function setClickerStartColor() {
+    let clickerButton = document.getElementsByClassName(
+        'clicker-button',
+    )[0] as HTMLDivElement | null;
+
+    clickerButton.style.backgroundColor = "hsl(" + clickerColor + ", 90%, 65%)"
+}
+
 //@ts-ignore
 let connection = new signalR.HubConnectionBuilder()
     .withUrl("/hub/queue")
@@ -133,6 +144,9 @@ function increaseClickerNumber() {
     ) as HTMLInputElement | null;
 
     clickerNumber.textContent = clickerValue.toString();
+
+    clickerColor = clickerColor + 1;
+    setClickerStartColor();
 }
 
 function nextUser(idQueue: string, isDelayed: string) {
@@ -260,7 +274,6 @@ function afterLeave() {
 }
 
 async function enterDelayedQueue(idQueue: string, idUserInQueue: string) {
-    console.log(idQueue, idUserInQueue);
 
     const uri = `https://localhost:7147/api/queue/${idQueue}/participant/${idUserInQueue}/delayed`;
     const method = "post";
@@ -375,7 +388,6 @@ function request<TResponse>(url: string, method: string, uri: string): Promise<T
 
     return fetch(url)
         .then(function (response){
-            console.log(response.headers.get("Content-Type"));
             return response.json()
         })
         .then((data) => data as TResponse);
