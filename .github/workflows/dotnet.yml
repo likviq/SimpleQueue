@@ -31,7 +31,7 @@ jobs:
     - name: Publish
       run: dotnet publish --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
     - name: Api Publish
-      run: dotnet publish ./SimpleQueue.WebApi/WebApi.csproj -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/api'
+      run: dotnet publish ./SimpleQueue.WebApi/SimpleQueue.WebApi.csproj -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/api'
       
     - name: Deployment
       uses: azure/webapps-deploy@v2
