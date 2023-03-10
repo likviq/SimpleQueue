@@ -32,6 +32,8 @@ jobs:
       run: dotnet publish ./SimpleQueue/SimpleQueue.WebUI.csproj --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
     - name: Api Publish
       run: dotnet publish ./SimpleQueue.WebApi/SimpleQueue.WebApi.csproj -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/api'
+    - name: IdentityServer Publish
+      run: dotnet publish ./SimpleQueue.IdentityServer/SimpleQueue.IdentityServer.csproj -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/identity'
       
     - name: Deployment
       uses: azure/webapps-deploy@v2
